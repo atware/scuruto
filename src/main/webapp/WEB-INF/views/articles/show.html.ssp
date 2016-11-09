@@ -1,0 +1,241 @@
+#import(org.joda.time.format.DateTimeFormat)
+#import(lib.Markdown)
+#import(controller.Controllers)
+#import(view_model.ArticleReaction)
+<%@val s: skinny.Skinny %>
+<%@val keyAndErrorMessages: skinny.KeyAndErrorMessages %>
+<%@val loginUser: Option[model.User] %>
+<%@val item: model.Article %>
+<%@val comments: Seq[model.Comment] %>
+<%@val sidebar: view_model.ArticleSidebar %>
+<%@val reaction: ArticleReaction %>
+<% attributes("title") = item.title %>
+
+<%val author: model.User = item.author.get %>
+<article id="item-page">
+  <header class="article-header">
+    <div class="container">
+      <div class="row">
+        <a class="col-md-1" href="/users/${author.userId}"><img src="${author.imageUrl}" width="65" /></a>
+        <div class="col-md-8">
+          <h1 class="item-title">${item.title}</h1>
+          <ul class="tag-list unstyled">
+          #for (tag <- item.tags)
+            <li><a href="/tags/${tag.name}">${tag.name}(${tag.taggingsCount})</a></li>
+          #end
+          </ul>
+          <ul class="item-status unstyled">
+            <li>
+              <time datetime="${item.createdAt}" itemprop="datePublished">
+                <%= item.createdAt.map{_.toString("yyyy/MM/dd HH:mm")} %>
+              </time> ${s.i18n.get("feed.do-post")}
+            </li>
+            #if (item.userId == loginUser.get.userId)
+            ・
+            <li>
+              <a href="${s.url(Controllers.articles.editUrl, "id" -> item.articleId)}">${s.i18n.get("edit")}</a>
+            </li>
+            #end
+          </ul>
+        </div>
+        <section class="col-md-3">
+          <div>
+            <ul id="item-stats-list" class="unstyled">
+              <li>
+                <div id="stock-user-count" class="count">
+                  <i class="glyphicon glyphicon-folder-close"></i>
+                  <span id="stocks_count" data-bind="text: stocks_count">${item.stocksCount}</span>
+                </div>
+                <div class="text">${s.i18n.get("stock")}</div>
+              </li>
+              <li>
+                <div id="like-user-count" class="count">
+                  <i class="glyphicon glyphicon-thumbs-up"></i>
+                  <span id="likes_count" data-bind="text: likes_count">${item.likesCount}</span>
+                </div>
+                <div class="text">${s.i18n.get("like")}</div>
+              </li>
+              <li>
+                <div class="count">
+                  <i class="glyphicon glyphicon-comment"></i>
+                  <span id="comments_count" data-bind="text: comments_count">${item.commentsCount}</span>
+                </div>
+                <div class="text">${s.i18n.get("comment")}</div>
+              </li>
+            </ul>
+          </div>
+          <%
+            val do_stock_style: String = if (reaction.stockable) "" else "display:none;"
+            val do_unstock_style: String = if (reaction.stockable) "display:none;" else ""
+            val do_like_style: String = if (reaction.likeable) "" else "display:none;"
+            val do_unlike_style: String = if (reaction.likeable) "display:none;" else ""
+          %>
+          <a class="btn btn-primary btn-block js-stock-btn" href="javascript:void(0)" title="Stock" data-bind="click: stock" style="${do_stock_style}">
+            ${s.i18n.get("article.stock-this")}
+          </a>
+          <a class="btn btn-default btn-block js-unstock-btn" href="javascript:void(0)" title="Unstock" data-bind="click: unstock" style="${do_unstock_style}">
+            ${s.i18n.get("unstock")}
+          </a>
+
+            <ul class="list-unstyled list-inline itemsShowHeaderStock_stockUsers" style="margin-bottom: 0px;">
+            #for (stockedUser <- reaction.stockedUsers.take(ArticleReaction.DISPLAY_LIMIT))
+              <li>
+                <a href="/users/${stockedUser.userId}">
+                  <img src="${stockedUser.imageUrl}" alt="${stockedUser.name}" title="${stockedUser.name} "/>
+                </a>
+              </li>
+            #end
+            #if (reaction.stockedUsers.size > ArticleReaction.DISPLAY_LIMIT)
+              <a href="/articles/${item.articleId}/stockers"><span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"></span></a>
+            #end
+            </ul>
+
+          <div class="link-like">
+          <a class="js-like-btn" href="javascript:void(0)" title="Like" data-bind="click: like" style="${do_like_style}; text-decoration: underline;">
+            ${s.i18n.get("like")}
+          </a>
+          <a class="js-unlike-btn" href="javascript:void(0)" title="Unlike" data-bind="click: unlike" style="${do_unlike_style}; text-decoration: underline;">
+            ${s.i18n.get("unlike")}
+          </a>
+      </div>
+        </section>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <div class="row">
+    <div class="col-md-9">
+      <div class="markdown-content">
+        ${unescape(Markdown.toHtml(item.body))}
+      </div>
+      <div id="item-footer-action-box">
+        <a id="do_stock" class="btn btn-primary js-stock-btn" href="javascript:void(0)" title="Stock" data-bind="click: stock" style="${do_stock_style}">
+          ${s.i18n.get("article.stock-this")}
+        </a>
+        <a id="do_unstock" class="btn btn-default js-unstock-btn" href="javascript:void(0)" title="Unstock" data-bind="click: unstock" style="${do_unstock_style}">
+          ${s.i18n.get("unstock")}
+        </a>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <section class="authorInfo" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+        <a href="/users/${author.userId}">
+          <img class="authorInfo_userIcon" itemprop="image" src="${author.imageUrl}" width="40">
+        </a>
+        <div class="authorProfileStats">
+          <strong class="authorProfileStats_userName" itemprop="name">
+            <a href="/users/${author.userId}" itemprop="url">${author.name}</a>
+          </strong>
+          <div class="authorProfileStats_contribution">
+            <span class="count">${sidebar.contribution}</span>
+            <span class="unit">Contribution</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+  </div>
+</article>
+<section>
+  <div class="container">
+  <div class="row">
+    <div class="col-md-9">
+    <div class="comments-wrapper">
+    #for (comment <- comments)
+      <div id="comment-${comment.commentId}">
+        <div class="comment">
+          <div class="creator" itemprop="creator" itemscope="" itemtype="http://schema.org/Person">
+            <a href="/users/${comment.author.get.userId}" itemprop="url" title="${comment.author.get.name}">
+              <img class="user-icon" itemprop="image" src="${comment.author.get.imageUrl}" width="36" title="${comment.author.get.name}">
+            </a>
+            <div class="creator-info">
+              <div class="name" itemprop="name">
+                <a href="/users/${comment.author.get.userId}">${comment.author.get.name}</a>
+              </div>
+            </div>
+          </div>
+          <div class="right-box">
+            <div class="text-right">
+              <a href="#comment-${comment.commentId}">
+                <time datetime="${comment.createdAt}" itemprop="commentTime">
+                  <%= comment.createdAt.map{_.toString("yyyy/MM/dd HH:mm")} %>
+                </time>
+              </a>
+            </div>
+            <div class="text-right">
+            #if (comment.userId == loginUser.get.userId)
+              <span>
+                <a href="javascript:void(0)" data-bind="click: startEditComment.bind($data, ${comment.commentId})">${s.i18n.get("edit")}</a>
+              </span>
+              <span>
+                <a href="javascript:void(0)" data-bind="click: deleteComment.bind($data, ${comment.commentId})">${s.i18n.get("delete")}</a>
+              </span>
+            #else
+              <span>&nbsp;</span>
+            #end
+            </div>
+          </div>
+        </div>
+        <div class="comment-content markdown-content">
+          ${unescape(Markdown.toHtml(comment.body))}
+        </div>
+        <div class="comment-content-raw" style="display: none;">${comment.body}</div>
+      </div>
+    #end
+    </div>
+    <div>
+      <form id="form" method="post" action="${s.url(Controllers.comments.createUrl)}" class="form">
+        <input type="hidden" name="article_id" value="${item.articleId}" />
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#tab1" data-toggle="tab">${s.i18n.get("comment")}</a></li>
+          <li><a href="#tab2" data-toggle="tab" data-bind="click: showPreview">${s.i18n.get("preview")}</a></li>
+          <li class="pull-right"><a href="#markdown-help" data-toggle="modal"><i class="glyphicon glyphicon-question-sign"></i></a></li>
+          <li class="pull-right"><a href="http://www.emoji-cheat-sheet.com/"><i class="emoji emoji-smile"></i></a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="tab1" class="tab-pane fade in active">
+            <div>
+              <textarea class="form-control mono" name="body" rows="5" data-bind="value: body"></textarea>
+            </div>
+          </div>
+          <div id="tab2" class="tab-pane fade">
+            <div class="markdown-content" data-bind="html: preview"></div>
+          </div>
+        </div>
+        <div class="form-actions text-right">
+          ${unescape(s.csrfHiddenInputTag)}
+          <input type="submit" class="btn btn-primary" value="${s.i18n.get("submit")}" />
+        </div>
+      </form>
+    </div>
+    <%-- comment form for edit --%>
+    <div id="comment-edit-form" class="comment-edit-form" style="display: none;" data-editing-id="0">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#tab11" data-toggle="tab">${s.i18n.get("comment")}</a></li>
+        <li><a href="#tab12" data-toggle="tab" data-bind="click: showEditPreview">${s.i18n.get("preview")}</a></li>
+        <li class="pull-right"><a href="#markdown-help" data-toggle="modal"><i class="glyphicon glyphicon-question-sign"></i></a></li>
+        <li class="pull-right"><a href="http://www.emoji-cheat-sheet.com/"><i class="emoji emoji-smile"></i></a></li>
+      </ul>
+      <div class="tab-content">
+        <div id="tab11" class="tab-pane fade in active">
+          <div>
+            <textarea class="form-control mono" name="body" rows="5" data-bind="value: editBody"></textarea>
+          </div>
+        </div>
+        <div id="tab12" class="tab-pane fade">
+          <div class="markdown-content" data-bind="html: editPreview"></div>
+        </div>
+      </div>
+      <div class="form-actions text-right">
+        <a class="btn btn-default" href="javascript:void(0)" data-bind="click: cancelEditComment">${s.i18n.get("cancel")}</a>
+        <a class="btn btn-primary" href="javascript:void(0)" data-bind="click: updateComment">${s.i18n.get("edit")}</a>
+      </div>
+    </div>
+    <%-- /comment form for edit --%>
+  </div>
+  </div><!-- /container -->
+</section>
+
+${include("_markdown_help.html.ssp")}
+
+${include("_show_script.html.ssp")}

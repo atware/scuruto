@@ -1,0 +1,40 @@
+.top-contributors {
+  margin-top: 50px;
+}
+
+.top-contributors i {
+  font-size: 13px;
+  color: gold;
+  padding-right: 3px;
+}
+
+.top-contributors h4 {
+  padding-bottom: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.contributor-item {
+  margin-bottom: 20px;
+}
+
+.contributor-item strong {
+  font-size: 1.2em;
+}
+
+.contributor-item h1 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 10px 5px 0;
+  display: inline-block;
+}
+
+.contributor-item .count i {
+  font-size: 13px;
+  color: #CCC;
+  padding-right: 3px;
+}
+
+.contributor-item img {
+  width: 16px;
+  height: 16px;
+}

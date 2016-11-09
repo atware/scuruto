@@ -1,0 +1,3 @@
+<% attributes("layout") = "" %>
+
+${include("_items.html.ssp")}

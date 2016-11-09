@@ -1,0 +1,15 @@
+#import(skinny.SkinnyConfig)
+<% attributes("layout") = "" %>
+<%@val ogp: view_model.Ogp %>
+<html>
+<head>
+<meta property=og:title content="${ogp.title} | ${SkinnyConfig.stringConfigValue("site.title").getOrElse("Site Title")}">
+<meta property=og:description content="${ogp.description}">
+<meta property=og:image content="${ogp.image}">
+<meta property=og:url content="${ogp.url}">
+<meta property=og:locale content="ja_JP">
+<meta property=og:type content="website">
+<meta property=og:site_name content="${SkinnyConfig.stringConfigValue("site.title").getOrElse("Site Title")}">
+</head>
+<body></body>
+</html>

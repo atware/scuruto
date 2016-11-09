@@ -1,0 +1,50 @@
+@media (max-width: 568px) {
+  .feed-item {
+    padding: 15px 0 0 0;
+  }
+  .feed-item-inner-sub {
+    position: inherit;
+    top: 0;
+    margin-left: 50px;
+  }
+}
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
+  .navbar-fixed-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .navbar-right .dropdown-menu {
+    right: 0;
+    left: auto;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    width: 700px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 900px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1000px;
+  }
+}
+
+@media (min-device-width:320px) and (max-device-width:568px) and (orientation : portrait) {/* iPhone5 */
+  .notification-contents {
+    width: 200px;
+  }
+}
+@media (min-device-width: 375px) and (max-device-width: 667px) and (orientation : portrait) {/* iPhone6 */
+  .notification-contents {
+    width: 250px;
+  }
+}

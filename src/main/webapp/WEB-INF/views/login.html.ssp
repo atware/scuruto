@@ -1,0 +1,23 @@
+#import(controller.Controllers)
+#import(lib.LoginProvidor)
+<%@val s: skinny.Skinny %>
+<%@val keyAndErrorMessages: skinny.KeyAndErrorMessages %>
+<%@val ref: Option[String] %>
+<% attributes("title") = s.i18n.get("login.title").getOrElse("Login") %>
+
+<div class="container" style="min-height: 400px;">
+  <h3></h3>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="catch-copy">
+        <h1>${unescape(s.i18n.get("login.catch-copy"))}</h1>
+      </div>
+    </div>
+    <div class="col-md-4" style="margin-top: 30px;">
+      <% val providor = Controllers.login.providor.name.toLowerCase %>
+      ${include(s"_login_$providor.html.ssp")}
+    </div>
+  </div>
+</div>
+#set(script)
+#end

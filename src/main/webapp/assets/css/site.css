@@ -1,0 +1,85 @@
+body {
+  padding-top: 50px;
+  padding-bottom: 20px;
+}
+
+.mono {
+  font-family: 'Bitstream Vera Sans Mono', Courier, monospace;
+}
+
+.font-large {
+  font-size: 150% !important;
+}
+
+ul.unstyled {
+  margin-left: 0;
+  list-style: none;
+}
+
+.list-unstyled, .list-inline {
+  padding-left: 0;
+  list-style: none;
+}
+
+.list-inline > li {
+  display: inline-block;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.right-box {
+  font-size: 13px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: #7b7b7b;
+}
+
+.form-actions {
+  margin-top: 20px;
+}
+
+.menulink {
+  padding: 15px;
+}
+
+.navbar-right img {
+  width: 22px;
+  height: 22px;
+  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  background-color: white;
+}
+
+.prettyprint {
+  width: auto;
+  white-space: pre;
+  overflow: auto;
+}
+
+.catch-copy h1 {
+  margin: 20px;
+  line-height: 1.4;
+  font-weight: 300;
+}
+
+.header-left {
+  float: left;
+  position: relative;
+}
+.header-right {
+  float: right;
+  position: relative;
+}
+.header-right > ul > li {
+  float: left;
+}
+.header-right li a {
+  padding-top: 13px;
+  text-shadow: none !important;
+  color: #666 !important;
+}

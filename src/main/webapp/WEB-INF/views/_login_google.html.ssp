@@ -1,0 +1,13 @@
+#import(controller.Controllers)
+<%@val s: skinny.Skinny %>
+<%@val keyAndErrorMessages: skinny.KeyAndErrorMessages %>
+<%@val ref: Option[String] %>
+<p><span class="glyphicon glyphicon-lock" style="margin-right: 6px;"></span><span class="font-large">${s.i18n.get("login.header")}</span></p>
+<p>
+  <form action="${s.url(Controllers.login.loginUrl, 'ref -> ref)}" method="post">
+    ${unescape(s.csrfHiddenInputTag)}
+    <button type=""submit" class="btn btn-link" style="padding: 0;">
+      <img src="/assets/img/sign-in-with-google.png" alt="Sign in with Google" width="300" />
+    </button>
+  </form>
+</p>

@@ -1,0 +1,143 @@
+<%@val s: skinny.Skinny %>
+
+#set(script)
+<script>
+$(function(){
+sharedocs.lightboxfy();
+function ViewModel() {
+  var self = this;
+  this.stocks_count = ko.observable($('#stocks_count').text());
+  this.likes_count  = ko.observable($('#likes_count').text());
+  this.comments_count  = ko.observable($('#comments_count').text());
+  this.body = ko.observable("");
+  this.preview = ko.observable();
+  this.editBody = ko.observable("");
+  this.editPreview = ko.observable();
+
+  var csrfToken = $('meta[name=csrf-token]').attr("content") || $(event.target).data('csrf-token');
+  var articleId = $('#form input[name=article_id]').val();
+  self.plus = function(name){
+    $.ajax({
+      type: "POST",
+      url: '/' + name +'s',
+      data: {"article_id": articleId, "csrf-token": csrfToken}
+    }).done(function(data){
+      if (name == "stock") {
+        viewModel.stocks_count(data);
+      } else {
+        viewModel.likes_count(data);
+      }
+      $('.js-' + name + '-btn').toggle();$('.js-un' + name + '-btn').toggle();
+    });
+  };
+  self.minus = function(name){
+    $.ajax({
+      type: "DELETE",
+      url: '/' + name + 's?'+"article_id="+articleId+"&"+"csrf-token="+csrfToken
+    }).done(function(data){
+      if (name == "stock") {
+        viewModel.stocks_count(data);
+      } else {
+        viewModel.likes_count(data);
+      }
+      $('.js-' + name + '-btn').toggle();$('.js-un' + name + '-btn').toggle();
+    });
+  };
+  self.stock = function(){
+    self.plus('stock');
+  };
+  self.unstock = function(){
+    self.minus('stock');
+  };
+  self.like = function(){
+    self.plus('like');
+  };
+  self.unlike = function(){
+    self.minus('like');
+  };
+  self.showPreview = function(){
+    $.ajax({
+      type: "POST",
+      url: '/api/preview',
+      data: {"body": this.body, "csrf-token": $('#form input[name=csrf-token]').val() }
+    }).done(function(data){
+      var json = $.parseJSON(data);
+      viewModel.preview(json.html);
+      sharedocs.link_target();
+      sharedocs.auto_prettify();
+      sharedocs.auto_emojify();
+      sharedocs.lightboxfy();
+    });
+  };
+  self.showEditPreview = function(){
+    $.ajax({
+      type: "POST",
+      url: '/api/preview',
+      data: {"body": this.editBody, "csrf-token": $('#form input[name=csrf-token]').val() }
+    }).done(function(data){
+      var json = $.parseJSON(data);
+      viewModel.editPreview(json.html);
+      sharedocs.link_target();
+      sharedocs.auto_prettify();
+      sharedocs.auto_emojify();
+      sharedocs.lightboxfy();
+    });
+  };
+  self.startEditComment = function(commentId){
+    self.cancelEditComment();
+    var $editForm = $('#comment-edit-form');
+    $editForm.appendTo('#comment-'+commentId);
+    $editForm.attr('data-editing-id', commentId);
+    ko.cleanNode($editForm[0]);
+    ko.applyBindings(viewModel, $editForm[0]);
+    $('#comment-edit-form textarea').val($('#comment-'+commentId+' .comment-content-raw').text()).change();
+    $('#comment-'+commentId+' .comment-content').hide();
+    $editForm.show();
+    emoji.textcomplete();
+  };
+  self.cancelEditComment = function(){
+    var $editForm = $('#comment-edit-form');
+    $editForm.hide();
+    $editForm.parent().find('.comment-content').show()
+  };
+  self.updateComment = function(){
+    var $editForm = $('#comment-edit-form');
+    var commentId = $editForm.attr('data-editing-id');
+    $.ajax({
+      type: "POST",
+      url: '/comments/' + commentId,
+      dataType: 'json',
+      data: { "body": this.editBody, "csrf-token": $('#form input[name=csrf-token]').val() }
+    }).done(function(data){
+      var $updatedComment = $editForm.parent().find('.comment-content')
+      $updatedComment.html(data.html);
+      $editForm.hide();
+      $updatedComment.show();
+      $updatedComment.parent().find('.comment-content-raw').text(data.raw);
+      sharedocs.link_target();
+      sharedocs.auto_prettify();
+      sharedocs.auto_emojify();
+      sharedocs.lightboxfy();
+    });
+  };
+  self.deleteComment = function(commentId){
+    if (!confirm("<%=s.i18n.get("delete-confirm")%>" )){
+      return;
+    }
+    $.ajax({
+      type: "DELETE",
+      url: '/comments/' + commentId,
+      data: { "csrf-token": $('#form input[name=csrf-token]').val() }
+    }).done(function(data){
+      viewModel.comments_count(data);
+      $('#comment-' + commentId).fadeOut('normal').queue(function() {
+        this.remove();
+      });
+    });
+  };
+}
+  var viewModel = new ViewModel();
+  ko.applyBindings(viewModel);
+});
+</script>
+#end

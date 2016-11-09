@@ -1,0 +1,77 @@
+#import(controller.Controllers)
+<%@val s: skinny.Skinny %>
+<%@val loginUser: Option[model.User] %>
+<%@val result: view_model.SearchResult %>
+<% attributes("title") = result.q %>
+
+<div class="container">
+<div class="col-md-9">
+<h3 class="search-result-title"><code>${result.q}</code>の検索結果</h3>
+
+#if (result.tag.isEmpty && result.articles.data.isEmpty)
+<hr/>
+<p>${unescape(s.i18n.get("search.notfound"))}</p>
+#end
+
+#if (result.tag.isDefined)
+<% val t = result.tag.get %>
+<div class="exactlyMatchedTag">
+  <a class="exactlyMatchedTag_tag" href="/tags/${t.name}">${t.name}</a>
+  <div class="exactlyMatchedTag_stats">${t.taggingsCount}投稿</div>
+</div>
+#end
+
+#if (result.articles.data.nonEmpty)
+<p>${result.articles.totalCount}${s.i18n.get("tags.posts")}</p>
+<hr/>
+
+<div class="feed">
+#for (item <- result.articles.data)
+  <div class="feed-item">
+    <div class="feed-item-inner-left">
+      <a href="${s.url(Controllers.users.showUrl, "id" -> item.author.get.userId)}" itemprop="url" title="${item.author.get.name}"><img class="user-icon" itemprop="image" src="${item.author.get.imageUrl}" width="36" title="${item.author.get.name}"></a>
+    </div>
+    <div class="feed-item-inner-main">
+      <div class="feed-item-inner-main-header">
+        <a href="${s.url(Controllers.users.showUrl, "id" -> item.author.get.userId)}" itemprop="url" title="${item.author.get.name}">${item.author.get.name}</a> が <%= item.createdAt.map{_.toString("yyyy/MM/dd HH:mm")} %> に投稿
+      </div>
+      <div class="feed-item-inner-main-body">
+        <h1><a href="${s.url(Controllers.articles.showUrl, "id" -> item.articleId)}">${item.title}</a></h1>
+        <ul class="list-unstyled list-inline tag-list">
+        #for (tag <- item.tags)
+          <li><a href="/tags/${tag.name}">${tag.name}(${tag.taggingsCount})</a></li>
+        #end
+        </ul>
+      </div>
+    </div>
+    <div class="feed-item-inner-sub">
+      <ul class="list-unstyled list-inline item-stats-list">
+        <li><div class="count"><i class="glyphicon glyphicon-folder-close"></i>${item.stocksCount}</div></li>
+        <li><div class="count"><i class="glyphicon glyphicon-thumbs-up"></i>${item.likesCount}</div></li>
+        <li><div class="count"><i class="glyphicon glyphicon-comment"></i>${item.commentsCount}</div></li>
+      </ul>
+    </div>
+  </div>
+#end
+</div>
+#if (result.articles.totalPages > 1)
+    <ul class="pagination">
+    <li>
+        <a href="${s.url(Controllers.search.searchUrl, "q" -> result.q, "page" -> 1)}">&laquo;</a>
+    </li>
+    #for (i <- (1 to result.articles.totalPages))
+        <li>
+            <a href="${s.url(Controllers.search.searchUrl, "q" -> result.q, "page" -> i)}">${i}</a>
+        </li>
+    #end
+    <li>
+        <a href="${s.url(Controllers.search.searchUrl, "q" -> result.q, "page" -> result.articles.totalPages)}">&raquo;</a>
+    </li>
+    </ul>
+#end
+#end
+</div>
+</div>
+
+#set(script)
+#end

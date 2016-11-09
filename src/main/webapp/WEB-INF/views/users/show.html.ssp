@@ -1,0 +1,87 @@
+#import(controller.Controllers)
+<%@val s: skinny.Skinny %>
+<%@val loginUser: Option[model.User] %>
+<%@val user: view_model.UserWithStats %>
+<%@val items: Seq[model.Article] %>
+<%@val pagination: view_model.Pagination[model.Article] %>
+<% attributes("title") = user.profile.name %>
+
+<header class="user-header">
+  <div class="container">
+    <div class="row">
+      <a class="col-md-1" href="#"><img src="${user.profile.imageUrl}" width="65" /></a>
+      <div class="col-md-8">
+        <h1 class="item-title">${user.profile.name}</h1>
+        <div class="authorProfileStats_contribution">
+          <span class="count">${user.contribution}</span>
+          <span class="unit">Contribution</span> |
+          <span class="count">${pagination.totalCount}</span>
+          <span class="unit">${s.i18n.get("posts")}</span> |
+          <span class="count">${user.stockedCount}</span>
+          <span class="unit">${s.i18n.get("stock")}</span> |
+          <span class="count">${user.likedCount}</span>
+          <span class="unit">${s.i18n.get("like")}</span>
+        </div>
+      </div>
+    </div>
+    <div class="bio">${user.profile.comment}</div>
+  </div>
+</header>
+
+<div class="container">
+<div class="col-md-9">
+<div class="feed">
+#for (item <- items)
+  <div class="feed-item">
+    <div class="feed-item-inner-left">
+      <a href="${s.url(Controllers.users.showUrl, "id" -> item.author.get.userId)}" itemprop="url" title="${item.author.get.name}">
+        <img class="user-icon" itemprop="image" src="${item.author.get.imageUrl}" width="36" title="${item.author.get.name}">
+      </a>
+    </div>
+    <div class="feed-item-inner-main">
+      <div class="feed-item-inner-main-header">
+        <a href="${s.url(Controllers.users.showUrl, "id" -> item.author.get.userId)}" itemprop="url" title="${item.author.get.name}">${item.author.get.name}</a> ${s.i18n.get("feed.at")} <%= item.createdAt.map{_.toString("yyyy/MM/dd HH:mm")} %> ${s.i18n.get("feed.do-post")}
+      </div>
+      <div class="feed-item-inner-main-body">
+        <h1><a href="${s.url(Controllers.articles.showUrl, "id" -> item.articleId)}">${item.title}</a></h1>
+        <ul class="list-unstyled list-inline tag-list">
+        #for (tag <- item.tags)
+          <li><a href="/tags/${tag.name}">${tag.name}(${tag.taggingsCount})</a></li>
+        #end
+        </ul>
+      </div>
+    </div>
+    <div class="feed-item-inner-sub">
+      <ul class="list-unstyled list-inline item-stats-list">
+        <li><div class="count"><i class="glyphicon glyphicon-folder-close"></i>${item.stocksCount}</div></li>
+        <li><div class="count"><i class="glyphicon glyphicon-thumbs-up"></i>${item.likesCount}</div></li>
+        <li><div class="count"><i class="glyphicon glyphicon-comment"></i>${item.commentsCount}</div></li>
+      </ul>
+    </div>
+  </div>
+#end
+</div>
+#if (pagination.totalPages > 1)
+    <ul class="pagination">
+    <li>
+        <a href="${s.url(Controllers.users.showUrl, "id" -> user.profile.userId, "page" -> 1)}">&laquo;</a>
+    </li>
+    #for (i <- (1 to pagination.totalPages))
+      #if (i == pagination.currentPage)
+        <li class="active">
+      #else
+        <li>
+      #end
+          <a href="${s.url(Controllers.users.showUrl, "id" -> user.profile.userId, "page" -> i)}">${i}</a>
+        </li>
+    #end
+    <li>
+        <a href="${s.url(Controllers.users.showUrl, "id" -> user.profile.userId, "page" -> pagination.totalPages)}">&raquo;</a>
+    </li>
+    </ul>
+#end
+</div>
+</div>
+
+#set(script)
+#end

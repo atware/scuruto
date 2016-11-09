@@ -1,0 +1,97 @@
+#item-page .article-header {
+  padding-top: 10px;
+  background-color: #EEEEEE;
+  margin-bottom: 10px;
+}
+
+#item-page .article-header .item-title {
+  word-wrap: break-word;
+  word-break: break-all;
+  margin: 0;
+  font-size: 32px;
+  font-weight: 400;
+}
+
+#item-page .article-header .item-status {
+  color: #555;
+  font-size: 95%;
+  margin-top: 10px;
+  padding-left: 0;
+}
+
+#item-page .article-header .item-status li {
+  display: inline-block;
+}
+
+#item-stats-list {
+  display: table;
+  width: 100%;
+  vertical-align: middle;
+  margin-bottom: 10px;
+  padding-left: 0;
+}
+
+#item-stats-list li {
+  width: 33%;
+  display: table-cell;
+  border-right: solid 1px #bfbfbf;
+  margin-right: -1px;
+  text-align: center;
+}
+
+#item-stats-list li .count {
+  line-height: 22px;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+#item-stats-list li:last-child {
+  border-right: 0;
+  margin-right: 0;
+}
+
+#item-stats-list li .count i {
+  font-size: 13px;
+  color: #CCC;
+}
+
+#item-footer-action-box {
+  margin-top: 35px;
+}
+
+.item-stats-list li .count i {
+  font-size: 13px;
+  color: #CCC;
+  padding-right: 3px;
+}
+
+.article-image {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  position: relative;
+  background-color: #EEE;
+  text-align: center;
+  font-size: 13px;
+  color: #999;
+  margin: 10px;
+  padding: 10px 0;
+}
+
+.article-image-input {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  opacity: .0001;
+  cursor: pointer;
+  margin-left: -120px;
+}
+
+.link-like {
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

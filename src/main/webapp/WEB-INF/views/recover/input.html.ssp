@@ -1,0 +1,38 @@
+#import(controller.Controllers)
+<%@val s: skinny.Skinny %>
+<%@val keyAndErrorMessages: skinny.KeyAndErrorMessages %>
+<% attributes("title") = s.i18n.get("recover.input.title").getOrElse("Recover") %>
+
+<div class="container" style="min-height: 400px;">
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+      <h3></h3>
+      <p><span class="font-large">${s.i18n.get("recover.input.header")}</span></p>
+      #for (w <- s.flash.get("warn"))
+        <p class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> ${w}</p>
+      #end
+      <div>
+        <form action="${s.url(Controllers.recover.recoverUrl)}" method="post">
+          ${unescape(s.csrfHiddenInputTag)}
+          <div class="form-group">
+            <input type="email" name="email" value="${s.params.getAs[String]("email")}" class="form-control input-lg" placeholder="${s.i18n.get("login.password.label.email")}">
+            #if (keyAndErrorMessages.hasErrors("email"))
+              <div class="col-xs-12 has-error">
+              #for (error <- keyAndErrorMessages.getErrors("email"))
+                <label class="control-label">${error}</label>
+              #end
+              </div>
+            #end
+          </div>
+          <button type="submit" class="btn-lg btn-primary center-block">${s.i18n.get("recover.input.send")}</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-md-4">
+    </div>
+  </div>
+</div>
+#set(script)
+#end

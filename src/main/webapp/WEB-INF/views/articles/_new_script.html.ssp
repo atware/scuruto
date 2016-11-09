@@ -1,0 +1,146 @@
+#import(controller.Controllers)
+#set(script)
+<script>
+var timer;
+var SAVE_LOCAL_KEY = 'sharedocs-article-new';
+$(function(){
+  var saveLocal = function() {
+    var data = {
+      title: viewModel.title(),
+      tags1: viewModel.tags1(),
+      tags2: viewModel.tags2(),
+      tags3: viewModel.tags3(),
+      tags4: viewModel.tags4(),
+      tags5: viewModel.tags5(),
+      body: viewModel.body()
+    };
+    store.set(SAVE_LOCAL_KEY, data);
+  };
+  timer = setInterval(saveLocal, 1000*10);
+
+  function ViewModel() {
+    var self = this;
+    var saved = store.get(SAVE_LOCAL_KEY);
+    if (typeof saved === "undefined") {
+      this.title = ko.observable($('#title').val());
+      this.body = ko.observable($('#body').text());
+      this.tags1 = ko.observable($('#tag1').val());
+      this.tags2 = ko.observable($('#tag2').val());
+      this.tags3 = ko.observable($('#tag3').val());
+      this.tags4 = ko.observable($('#tag4').val());
+      this.tags5 = ko.observable($('#tag5').val());
+    } else {
+      this.title = ko.observable(saved.title);
+      this.body = ko.observable(saved.body);
+      this.tags1 = ko.observable(saved.tags1);
+      this.tags2 = ko.observable(saved.tags2);
+      this.tags3 = ko.observable(saved.tags3);
+      this.tags4 = ko.observable(saved.tags4);
+      this.tags5 = ko.observable(saved.tags5);
+    }
+    this.preview = ko.observable();
+
+    self.autocompleteTag = function(searchTerm, callback) {
+      $.ajax({
+        dataType: "json",
+        url: "/api/tags",
+        data: {
+          q: searchTerm
+        }
+      }).done(callback);
+    };
+
+    self.doPreview = function(){
+      $.ajax({
+        type: "POST",
+        url: '/api/preview',
+        data: {
+          "body": this.body,
+          "csrf-token": $('#form input[name=csrf-token]').val()
+        }
+      }).done(function(data) {
+        var json = $.parseJSON(data);
+        viewModel.preview(json.html);
+        sharedocs.link_target();
+        sharedocs.auto_prettify();
+        sharedocs.auto_emojify();
+        sharedocs.lightboxfy();
+      });
+    };
+  }
+  var viewModel = new ViewModel();
+  ko.applyBindings(viewModel);
+
+
+  $('#dropzone').on('drop', function (e) {
+    e.preventDefault();
+    var file = e.originalEvent.dataTransfer.files[0];
+    upload(file);
+  }).on("dragover",function(e) {
+    e.preventDefault();
+  });
+
+  $('#article-image').on('drop', function(e) {
+    e.preventDefault();
+  }).on('change', function (e) {
+    var file = e.target.files[0];
+    upload(file);
+  });
+
+  var UPLOAD_MAX = 1024*1024;
+  function upload(file) {
+    if (!file.type.match(/^image\/(png|jpeg|gif|jpg)$/)) {
+      alert("アップロード可能なファイルは jpg/png/gif のみです");
+      return false;
+    } else
+    if (file.size > UPLOAD_MAX) {
+      alert("アップロード可能なファイルサイズは" + UPLOAD_MAX/(1024*1024) + "MBまでです。");
+      return false;
+    }
+
+    $.ajax({
+      url: '/upload/policies',
+      type: 'POST',
+      dataType: 'json',
+      data: {
+        filename: file.name,
+        size: file.size,
+        content_type: file.type
+      }
+    }).done(function (data) {
+      //console.log(data);
+      var name, fd = new FormData();
+      for (name in data.form) if (data.form.hasOwnProperty(name)) {
+        fd.append(name, data.form[name]);
+      }
+      fd.append('file', file);
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', data.url, true);
+      xhr.send(fd);
+
+      var md = "![" + file.name + "](" + "<%= Controllers.uploadedFileBaseUrl.value %>" + data.form['key'] + ")";
+      var ta = $('#body');
+      ta.focus();
+      if (navigator.userAgent.match(/MSIE/)) {
+        var r = document.selection.createRange();
+        r.text = md;
+        r.select();
+      } else {
+        var s = viewModel.body();
+        var p = ta.get(0).selectionStart;
+        var np = p + md.length;
+        viewModel.body(s.substr(0, p) + md + s.substr(p));
+        ta.val(s.substr(0, p) + md + s.substr(p));
+        ta.get(0).setSelectionRange(np, np);
+      }
+    });
+  }
+});
+
+function preSubmit() {
+  if (timer) clearTimeout(timer);
+  store.remove(SAVE_LOCAL_KEY);
+}
+</script>
+#end

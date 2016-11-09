@@ -1,0 +1,1 @@
+require('expose?notification!../../assets/js/notification_en.js');

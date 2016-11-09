@@ -1,0 +1,116 @@
+<%@val s: skinny.Skinny %>
+<%@val keyAndErrorMessages: skinny.KeyAndErrorMessages %>
+<%@val loginUser: Option[model.User] %>
+<% attributes("title") = loginUser.get.name %>
+
+<form action="/users/${loginUser.get.userId}" method="post">
+<header class="user-header">
+  <div class="container">
+    <div class="row">
+      <input type="file" id="upload" style="display: none;" />
+      <input type="hidden" id="imageUrl" name="imageUrl" value="${loginUser.get.imageUrl}" />
+      <a id="profile-image-link" class="col-md-1" href="#"><img id="profile-image" src="${loginUser.get.imageUrl}" width="65" /></a>
+      <div class="col-md-8">
+        <h1 id="username" class="item-title" style="display: ${if (keyAndErrorMessages.hasErrors("name")) "none" else "block"};">
+          ${loginUser.get.name}
+        </h1>
+        <div class="row">
+          <div class="col-xs-6">
+            <input type="text" class="form-control" id="username-input" name="name" value="${loginUser.get.name}" maxlength="200"
+                    style="display: ${if (keyAndErrorMessages.hasErrors("name")) "block" else "none"};" />
+            #if (keyAndErrorMessages.hasErrors("name"))
+              <div class="col-xs-12 has-error">
+              #for (error <- keyAndErrorMessages.getErrors("name"))
+                <label class="control-label">${error}</label>
+              #end
+              </div>
+            #end
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="form-group">
+    <label for="user_bio">${s.i18n.get("user.bio")}</label>
+    <div class="row">
+      <div class="col-sm-8">
+        <textarea class="form-control" maxlength="200" name="comment" rows="3">${loginUser.get.comment}</textarea>
+        #if (keyAndErrorMessages.hasErrors("comment"))
+          <div class="col-xs-12 has-error">
+          #for (error <- keyAndErrorMessages.getErrors("comment"))
+            <label class="control-label">${error}</label>
+          #end
+          </div>
+        #end
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="user_locale">${s.i18n.get("user.locale")}</label>
+    <div class="row">
+      <div class="col-sm-4">
+        <select class="form-control" id="user_locale" name="locale">
+          <option value="ja" ${if (loginUser.get.locale == "ja") "selected=\"selected\""}>日本語</option>
+          <option value="en" ${if (loginUser.get.locale == "en") "selected=\"selected\""}>English</option>
+        </select>
+        #if (keyAndErrorMessages.hasErrors("locale"))
+          <div class="col-xs-12 has-error">
+          #for (error <- keyAndErrorMessages.getErrors("locale"))
+            <label class="control-label">${error}</label>
+          #end
+          </div>
+        #end
+      </div>
+    </div>
+    <div class="form-group form-actions">
+      ${unescape(s.csrfHiddenInputTag)}
+      <input class="btn btn-primary" name="commit" type="submit" value="${s.i18n.get("save")}">
+      <a class="btn btn-link" href="/users/${loginUser.get.userId}/edit">${s.i18n.get("cancel")}</a>
+    </div>
+  </div>
+</div>
+</form>
+
+#set(script)
+<script>
+$(function(){
+  $('#upload').on('change', function(e) {
+    e.preventDefault();
+    var target = e.target;
+    var file = target.files[0];
+    if (file && file.type.match(/image.*/)) {
+      var fileReader = new FileReader();
+      var image = new Image();
+      fileReader.onload = function() {
+        image.onload = function() {
+          var canvas = document.createElement('canvas');
+          var ctx = canvas.getContext('2d');
+          var w = 65, h = 65;
+          image.width = w;
+          image.height = h;
+          canvas.width = w;
+          canvas.height = h;
+          ctx.drawImage(image, 0, 0, w, h);
+          var dataUri = canvas.toDataURL();
+          $('#profile-image').attr('src', dataUri);
+          $('#imageUrl').val(dataUri);
+        };
+        image.src = fileReader.result;
+      };
+      fileReader.readAsDataURL(file);
+    }
+    return false;
+  });
+  $('#profile-image-link').on('click', function(e) {
+    e.preventDefault();
+    $('#upload').trigger('click');
+  });
+  $('#username').on('click', function() {
+    $(this).toggle();$('#username-input').toggle();
+  });
+});
+</script>
+#end

@@ -1,0 +1,118 @@
+#import(skinny.SkinnyConfig)
+#import(controller.Controllers)
+<%@val title: String %>
+<%@val body: String %>
+<%@val script: String %>
+<%@val s: skinny.Skinny %>
+<%@val loginUser: Option[model.User] %>
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="nofollow">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+${unescape(s.csrfMetaTags)}
+<link rel="shortcut icon" href="/assets/img/favicon.ico">
+<title>${title} | ${SkinnyConfig.stringConfigValue("site.title").getOrElse("Site Title")}</title>
+<meta name="description" content="">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="/assets/dist/style.5d2a886b49fade77c7d7.js"></script>
+</head>
+<body>
+#if (Controllers.trackingEnabled)
+  ${render("/layouts/_tracking.html.ssp")}
+#end
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+<header class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <div class="header-left">
+      <a class="navbar-brand" href="/">${SkinnyConfig.stringConfigValue("site.name").getOrElse("Site Name")}</a>
+    #if (loginUser.isDefined)
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navsearch">
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+      </button>
+    <form class="navbar-form navbar-left navbar-collapse collapse" id="navsearch" role="form" action="/search" method="get">
+      <div class="form-group">
+        <input type="text" placeholder="${s.i18n.get("search.description")}" class="form-control" name="q">
+      </div>
+      <button type="submit" class="btn btn-default btn-sm">${s.i18n.get("search.title")}</button>
+    </form>
+    </div>
+    <div class="header-right">
+      <ul class="nav navbar-right">
+      <li id="notification" class="notification">
+        <div class="notification-surface">
+          <div id="notification_count" class="notification-count">0</div>
+        </div>
+        <div class="dropdownWrapper">
+          <div class="notification-arrow"></div>
+          <div id="notification_contents" class="notification-contents">
+            <div class="notification-contents-header">
+              お知らせ
+            </div>
+            <ul id="notification-items" class="notification-contents-list">
+              <li id="notification-default">お知らせはありません。</li>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <li>
+        <a href="${s.url(Controllers.users.stocksUrl, "id" -> loginUser.get.userId)}" class="menulink" rel="nofollow">
+          <i class="glyphicon glyphicon-folder-close" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <img src="${loginUser.get.imageUrl}" title="${loginUser.get.name}"> <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a href="/users/${loginUser.get.userId}/edit">${s.i18n.get("settings")}</a></li>
+          <li class="divider"></li>
+          <li><a data-method="delete" data-confirm="${s.i18n.get("logout-confirm")}"
+                  href="${s.url(Controllers.login.logoutUrl)}" rel="nofollow" class="menulink">${s.i18n.get("logout")}</a>
+          </li>
+        </ul>
+      </li>
+      </ul>
+    </div>
+    #end
+    </div>
+  </div>
+</header>
+<div>
+${unescape(body)}
+</div>
+<hr />
+<div class="container">
+  <footer>
+    <p>&copy;2014- sharedocs</p>
+  </footer>
+</div>
+
+<script src="/assets/dist/script.5d2a886b49fade77c7d7.js"></script>
+<script type="text/javascript" src="${uri("/assets/js/skinny-framework.js")}"></script>
+#if (s.i18n.locale == java.util.Locale.JAPANESE)
+  <script src="/assets/dist/ja.5d2a886b49fade77c7d7.js"></script>
+#else
+  <script src="/assets/dist/en.5d2a886b49fade77c7d7.js"></script>
+#end
+<script>
+$(function(){
+  sharedocs.link_target();
+  sharedocs.auto_prettify();
+  sharedocs.auto_emojify();
+  #if (loginUser.isDefined)
+  notification();
+  setInterval("notification()", 1000*60*5);
+  #end
+});
+</script>
+${unescape(script)}
+</body>
+</html>

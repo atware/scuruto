@@ -1,0 +1,104 @@
+/* author */
+.authorInfo {
+    margin-top: 10px;
+    font-size: 12px;
+}
+.authorInfo_userIcon {
+    width: 40px;
+    height: 40px;
+    -webkit-box-shadow: 0 0 2px rgba(0,0,0,0.3);
+    -moz-box-shadow: 0 0 2px rgba(0,0,0,0.3);
+    box-shadow: 0 0 2px rgba(0,0,0,0.3);
+    background-color: white;
+    float: left;
+}
+.authorProfileStats {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: top;
+    margin-left: 45px;
+    position: relative;
+}
+.authorProfileStats_userName {
+    font-size: 16px;
+    line-height: 16px;
+    margin-bottom: 5px;
+    z-index: 100;
+    color: #117ec6;
+}
+.authorProfileStats_contribution {
+    color: #555;
+}
+.authorProfileStats_contribution .count {
+    font-size: 14px;
+    font-weight: bold;
+}
+ul.authorPopularItems_posts {
+    margin-left: 0;
+    list-style: none;
+    padding-left: 0;
+}
+.authorPopularItems_posts li:before {
+    display: inline-block;
+    content: '\002022';
+    color: #999;
+    margin-left: -10px;
+    margin-right: 5px;
+}
+
+/**/
+.user-header {
+    padding: 10px 0;
+    background-color: #EEEEEE;
+    margin-bottom: 10px;
+}
+
+/**/
+#home-user_info {
+    padding: 5px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    background-color: #eee;
+}
+#home-user_info .left, #home-user_info .right {
+    display: inline-block;
+    vertical-align: top;
+}
+#home-user_info img {
+    width: 48px;
+    height: 48px;
+}
+#home-user_info .url_name {
+    font-size: 18px;
+    padding-bottom: 5px;
+}
+#home-user_info .value {
+    font-size: 18px;
+    font-weight: 500;
+}
+#home-user_info .unit {
+    font-size: 14px;
+    color: #555;
+}
+
+/**/
+.user-header .item-title {
+    margin-top: 5px;
+    font-size: 28px;
+    font-weight: 600;
+}
+.user-header .count {
+    font-size: 18px;
+}
+.user-header .unit {
+    font-size: 14px;
+}
+.user-header .bio {
+    word-wrap: break-word;
+    word-break: break-all;
+    font-size: 13px;
+    margin-top: 10px;
+    padding-left: 10px;
+    color: #999;
+}

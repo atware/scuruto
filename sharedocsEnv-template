@@ -1,0 +1,33 @@
+#!/bin/bash
+
+export SITE_NAME=Sharedocs:local
+export SITE_TITLE=Sharedocs
+
+export DATABASE_HOST="localhost"
+export DATABASE_DBNAME="sharedocs"
+export DATABASE_USER="********"
+export DATABASE_PASSWORD="********"
+
+export GOOGLE_ANALYTICS_KEY="********"
+
+export LOGIN_PROVIDOR=google
+export LOGIN_PERMITTED_EMAIL_DOMAINS=example.com
+export SKINNY_OAUTH2_CLIENT_ID_GOOGLE="*************************"
+export SKINNY_OAUTH2_CLIENT_SECRET_GOOGLE="***********************"
+
+export UPLOAD_DESTINATION=s3
+
+export LOCAL_UPLOAD_BASE_DIR="/tmp"
+export LOCAL_UPLOAD_BASE_URL="/static/uploads"
+
+export AWS_ACCESS_KEY="********"
+export AWS_SECRET_KEY="********"
+export AWS_S3_BUCKET="xxxxxxxx"
+export AWS_S3_BASE_DIR="images/"
+export AWS_S3_BASE_URL="https://xxxxxxxx.s3.amazonaws.com/"
+
+export EXTERNAL_INTEGRATION_SERVICE=logger
+
+export OGP_ALLOW_UA_PREFIXES="UA prefix to allow to access"
+
+#export MARKDOWN_HELP_PAGE_ID=1

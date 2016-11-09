@@ -1,0 +1,55 @@
+.feed-item {
+  border-top: 1px solid #ccc;
+  margin: 0;
+  padding: 15px 0;
+  position: relative;
+}
+
+.feed-item:first-child {
+  border-top: 0;
+}
+
+.feed-item-inner-left {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 15px;
+  left: 0;
+}
+
+.feed-item-inner-main {
+  margin-left: 50px;
+}
+
+.feed-item-inner-main-header {
+  font-size: 12px;
+}
+
+.feed-item-inner-main-body {
+  margin-top: 3px;
+}
+
+.feed-item h1 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 10px 5px 0;
+  display: inline-block;
+}
+
+.feed-item-tags {
+  display: inline-block;
+  margin: 0;
+}
+
+.feed-item-inner-sub {
+  position: absolute;
+  top: 15px;
+  right: 0;
+}
+
+.more-button {
+  margin-top: 30px;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}

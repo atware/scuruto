@@ -1,0 +1,73 @@
+<%@val s: skinny.Skinny %>
+<%@val item: model.Article %>
+<%@val keyAndErrorMessages: skinny.KeyAndErrorMessages %>
+
+<div class="${if(keyAndErrorMessages.hasErrors("title")) "has-error" else ""}">
+  <input type="text" id="title" class="form-control font-large" name="title" value="${item.title}" placeholder="${s.i18n.get("title")}"
+          data-bind="value: title">
+  #if (keyAndErrorMessages.hasErrors("title"))
+    <div class="col-xs-12 has-error">
+    #for (error <- keyAndErrorMessages.getErrors("title"))
+      <label class="control-label">${error}</label>
+    #end
+    </div>
+  #end
+</div>
+<div class="row tag-input ${if(keyAndErrorMessages.hasErrors("tags")) "has-error" else ""}">
+<% val tagNames = item.tags.map{_.name} %>
+#for (i <- 0 to 4)
+  <%
+    var tagName = if (tagNames.size > i) tagNames(i)
+  %>
+  <div class="col-md-2">
+    <input type="text" id="tag${i+1}" class="form-control" name="tags" value="<%= tagName %>" placeholder="${s.i18n.get("tag")}${i+1}"
+            data-bind="jqAuto:{value: tags${i+1}, source: autocompleteTag}">
+  </div>
+#end
+#if (keyAndErrorMessages.hasErrors("tags"))
+  <div class="col-xs-12 has-error">
+  #for (error <- keyAndErrorMessages.getErrors("tags"))
+    <label class="control-label">${error}</label>
+  #end
+  </div>
+#end
+</div>
+<ul class="nav nav-tabs">
+<li class="active"><a href="#tab1" data-toggle="tab"><i class="glyphicon glyphicon-pencil"></i> Markdown</a></li>
+<li><a href="#tab2" data-toggle="tab" data-bind="click: doPreview"><i class="glyphicon glyphicon-eye-open"></i> ${s.i18n.get("preview")}</a></li>
+<li class="pull-right"><a href="#markdown-help" data-toggle="modal"><i class="glyphicon glyphicon-question-sign"></i></a></li>
+<li class="pull-right"><a href="http://www.emoji-cheat-sheet.com/"><i class="emoji emoji-smile"></i></a></li>
+</ul>
+
+<div class="tab-content">
+<div id="tab1" class="tab-pane fade in active">
+  <div class="${if(keyAndErrorMessages.hasErrors("body")) "has-error" else ""}">
+    <textarea id="body" class="form-control mono" name="body" rows="20" data-bind="value: body">${item.body}</textarea>
+    <div id="dropzone" class="position-relative">
+      <div class="article-image">
+        <input id="article-image" class="article-image-input" tabindex="-1" type="file" />
+        <i class="glyphicon glyphicon-picture"></i>${s.i18n.get("select-image")}
+      </div>
+    </div>
+    #if (keyAndErrorMessages.hasErrors("body"))
+      <div class="col-xs-12 has-error">
+      #for (error <- keyAndErrorMessages.getErrors("body"))
+        <label class="control-label">${error}</label>
+      #end
+      </div>
+    #end
+  </div>
+</div>
+<div id="tab2" class="tab-pane fade">
+    <div class="row">
+        <div class="col-md-9"><div class="markdown-content" data-bind="html: preview"></div></div>
+        <div class="col-md-3"></div>
+    </div>
+</div>
+</div>
+<div class="form-actions">
+${unescape(s.csrfHiddenInputTag)}
+<input type="button" class="btn btn-primary btn-lg" value="${s.i18n.get("submit")}" onclick="javascript:preSubmit();submit();" />
+</div>
+
+${include("_markdown_help.html.ssp")}

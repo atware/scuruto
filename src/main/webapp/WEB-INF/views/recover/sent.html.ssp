@@ -1,0 +1,22 @@
+#import(controller.Controllers)
+<%@val s: skinny.Skinny %>
+<%@val email: String %>
+<% attributes("title") = s.i18n.get("recover.sent.title").getOrElse("Reset password") %>
+
+<div class="container" style="min-height: 400px;">
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+      <h3></h3>
+      <p></span><span class="font-large">${s.i18n.get("recover.sent.header")}</span></p>
+      <div>
+        <p>${s.i18n.get("recover.sent.message", Seq(email))}</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+    </div>
+  </div>
+</div>
+#set(script)
+#end

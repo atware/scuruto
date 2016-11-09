@@ -1,0 +1,22 @@
+#import(controller.Controllers)
+<%@val s: skinny.Skinny %>
+<%@val email: String %>
+<% attributes("title") = s.i18n.get("signup.sent.title").getOrElse("Sign up") %>
+
+<div class="container" style="min-height: 400px;">
+  <div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-4">
+      <h3></h3>
+      <p><span class="glyphicon glyphicon-lock" style="margin-right: 6px;"></span><span class="font-large">${s.i18n.get("signup.sent.header")}</span></p>
+      <div>
+        <p>${s.i18n.get("signup.sent.message", Seq(email))}</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+    </div>
+  </div>
+</div>
+#set(script)
+#end

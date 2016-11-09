@@ -1,0 +1,101 @@
+#import(controller.Controllers)
+<%@val s: skinny.Skinny %>
+<%@val loginUser: Option[model.User] %>
+<%@val items: Seq[model.Article] %>
+<%@val sidebar: view_model.IndexSidebar %>
+<% attributes("title") = s.i18n.get("home").getOrElse("Home") %>
+
+<div class="container">
+<div class="row">
+<div class="col-md-9">
+<h3>${s.i18n.get("feed.copy")}</h3>
+<a href="${s.url(Controllers.articles.newUrl)}" class="btn btn-primary">${s.i18n.get("feed.post")}</a>
+<hr/>
+
+<div class="feed">
+    ${include("_items.html.ssp")}
+</div>
+#if (items.size > 0 && items.last.articleId.value > 1)
+<div id="tail">
+    <div class="more-button btn btn-block" tabindex="0">${s.i18n.get("show-more")}</div>
+</div>
+#end
+</div>
+<div class="col-md-3">
+    <div id="home-user_info">
+        <div class="left">
+            <img src="${loginUser.get.imageUrl}" title="${loginUser.get.name}">
+        </div>
+        <div class="right">
+            <div class="url_name">
+                <a href="/users/${loginUser.get.userId}">${loginUser.get.name}</a>
+            </div>
+            <div class="contribution">
+                <span class="value">${sidebar.contribution}</span>
+                <span class="unit">Contribution</span>
+            </div>
+        </div>
+    </div>
+    #if (sidebar.populars.size > 0)
+    <div class="popular-list">
+        <h4><i class="glyphicon glyphicon-folder-close"></i>${s.i18n.get("popular.list")}</h4>
+        #for (popular <- sidebar.populars)
+            <div class="popular-item">
+                <div class="count">
+                    <span><strong>${popular.stocksCount}</strong></span> ${s.i18n.get("stock")}
+                </div>
+                <h1 class="popular-item-title">
+                    <a href="${s.url(Controllers.articles.showUrl, "id" -> popular.articleId)}">${popular.title}</a>
+                </h1>
+                <ul class="list-unstyled list-inline tag-list">
+                #for (tag <- popular.tags)
+                    <li><a href="/tags/${tag.name}">${tag.name}</a></li>
+                #end
+                </ul>
+            </div>
+        #end
+    </div>
+    #end
+    #if (sidebar.contributors.size > 0)
+    <div class="top-contributors">
+        <h4><i class="glyphicon glyphicon-tower"></i>${s.i18n.get("popular.contributors")}</h4>
+        <div class="contributor-item">
+            #for (contributor <- sidebar.contributors)
+            <div class="row">
+                <div class="col-md-9 col-sm-4 col-xs-5">
+                    <a href="/users/${contributor.get("uid")}">
+                        <img src="${contributor.get("image")}"><span>${contributor.get("name")}</span>
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-2 col-xs-2">
+                    ${contributor.get("contribution")}
+                </div>
+            </div>
+            #end
+        </div>
+    </div>
+    #end
+</div>
+</div>
+
+#set(script)
+<script>
+$(function(){
+    $('.more-button').on('click', function() {
+        var href = $($('.feed-item').last().find('a').get(2)).attr('href');
+        var maxId = href.slice(href.lastIndexOf('/')+1);
+        console.log(maxId);
+        var csrfToken = $('meta[name=csrf-token]').attr("content");
+        $.ajax({
+            method: 'GET',
+            url: '/more/' + maxId,
+            data: {'csrf-token': csrfToken}
+        }).done(function(html){
+            $('.feed').last().append(html);
+        }).fail(function(xhr, status, error){
+            console.log("error during show more");
+        });
+    });
+});
+</script>
+#end

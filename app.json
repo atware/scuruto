@@ -1,0 +1,44 @@
+{
+  "buildpacks": [
+    {
+      "url": "https://github.com/roundrop/heroku-buildpack-skinny"
+    }
+  ],
+  "addons": [
+    "heroku-postgresql:hobby-dev",
+    "sendgrid:starter"
+  ],
+  "env" : {
+    "AWS_ACCESS_KEY"  : {
+      "description": "An access key for accessing AWS S3 to upload image file.",
+      "value": "__some_random_string__",
+      "required": false
+    },
+    "AWS_SECRET_KEY"  : {
+      "description": "A secret key for accessing AWS S3 to upload image file.",
+      "value": "__some_random_string__",
+      "required": false
+    },
+    "AWS_S3_BUCKET"   : {
+      "description": "The name of AWS S3 bucket to upload image file.",
+      "value": "__bucketname__",
+      "required": false
+    },
+    "AWS_S3_BASE_DIR" : {
+      "description": "The directory of AWS S3 bucket to upload image file.",
+      "value": "images/",
+      "required": false
+    },
+    "AWS_S3_BASE_URL" : {
+      "description": "AWS S3 base url.",
+      "value": "https://__bucketname__.s3.amazonaws.com/",
+      "required": false
+    },
+    "LOGIN_PERMITTED_EMAIL_DOMAINS": {
+      "description": "Email domain names of permitting login (comma-separated). Example: yourcompany.com"
+    }
+  },
+  "scripts": {
+    "postdeploy": "deployment/heroku/skinny db:migrate heroku"
+  }
+}

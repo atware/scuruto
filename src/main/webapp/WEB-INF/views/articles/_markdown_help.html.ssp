@@ -1,0 +1,37 @@
+<%@val s: skinny.Skinny %>
+<div class="modal fade" id="markdown-help" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4 class="modal-title markdownHelp_title" id="myModalLabel">${s.i18n.get("mdhelp.title")}</h4>
+      #if (sys.env.get("MARKDOWN_HELP_PAGE_ID").isDefined)
+      <span class="markdownHelp_link">(<a target="_blank" href="/articles/${sys.env.get("MARKDOWN_HELP_PAGE_ID")}">${s.i18n.get("mdhelp.for-more-details")}</a>)</span>
+      #end
+    </div>
+    <div class="modal-body markdownHelp_body">
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr><th>${s.i18n.get("mdhelp.result")}</th><th>Markdown</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><h4>${s.i18n.get("mdhelp.heading")}</h4></td><td># text, ## text, ### text...</td></tr>
+          <tr><td><b>${s.i18n.get("mdhelp.strong")}</b></td><td>**text**</td></tr>
+          <tr><td><i>${s.i18n.get("mdhelp.emphasis")}</i></td><td>*text*</td></tr>
+          <tr><td><li>${s.i18n.get("mdhelp.list")}</li></td><td>- item</td></tr>
+          <tr><td><li style="list-style-type: decimal;">${s.i18n.get("mdhelp.decimal-list")}</li></td><td>1. item</td></tr>
+          <tr><td><blockquote style="margin: 0;">${s.i18n.get("mdhelp.blockquotes")}</blockquote></td><td>&gt; text</td></tr>
+          <tr><td><a href="#">${s.i18n.get("mdhelp.link")}</a></td><td>[title](http://~)</td></tr>
+          <tr><td>${s.i18n.get("mdhelp.image")}</td><td>![alt](http://~)</td></tr>
+          <tr class="highlight"><td><code>${s.i18n.get("mdhelp.inline-code")}</code></td><td>`code`</td></tr>
+          <tr class="highlight"><td style="padding: 0 8px;"><div class="markdown-content"><pre><code><span class="nb">puts</span> <span class="s1">'code with syntax'</span></code></pre></div></td><td>```<br>code<br>```</td></tr>
+          <tr><td>${s.i18n.get("mdhelp.horizontal-rules")}</td><td>* * *</td></tr>
+          <tr><td><img class="jlatex" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD0AAAAdCAYAAAAZzmTfAAACWElEQVR42u1XT0SEQRT/rKyk2x7SIV2ykpVIh6xuSbJdIklWEisdkr1kDytJJJ2yumRlJdEhyUp06JAkiqRDl6RDh3RJkqzY3uO3jDHz/amvVds8fvab9759834zb96bz7KMGDFipEKljbBGyOJXfK4S3msm5ITxMiHjAa0uYoko4sgJ/63COCvYJr9DPk4oEjY19hThXViIAiFJCBOqgSP46CAEoeslXBFGPMTSSXgjfBDqJVs9bLzodd/d8T4EnNHYmeATYRCEVIuzBR9BSc+LMOMxnin4mpX0nHGrfqW5Hel2QhdhhbBDaCQMeyBtfTHQU+x2BOMA5q8tB+kkfqNI635Cj0vSpZpxIZxVHeS5wzhS1zhWKSy+VU7SLPeEUY0Pu50ehy2rsDUQ0rAHJNsM9Ox7ye8qriMdRUBxIE/Y/wJpp5phwRZR6M+EAlkW0klp3IpzFvoB0nxkYgr9PNL8UpEJvpPmCaaFcamAcAua8Il0QngOKgokF9EFIc3TP0mae+UhUqsJuhX03Rtg1AfS6zYxsZ9d4W5wjixrKUchs3ARSDj4cEP6gDAE8A6+2vhbxE6LPbrgZ5o7keY0H/CB9B6hG+eXK/qjxhcX0DmFPu1nmsdsSHMAz5reLMo2fNR4WNSsIqX58nOLa6wsAfTtgqbSuxJOnw044qDucJHPQX8CfVFTscdwsdjCwrwQjkFm3QXpYen+fwsfb5hb/lDZhI3feUCM8d/6NeemZZXaU8WIG9INDtX8z0nMgXQILTJRCWTtakapbuRRmIrICCNGjBgx8q/lE7BwwnJhyTsoAAAAAElFTkSuQmCC" alt="\LaTeX">${s.i18n.get("mdhelp.inline-math")}</td><td>$[x_i]$</td></tr>
+          <tr><td><img class="jlatex" style="display:block" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAD0AAAAdCAYAAAAZzmTfAAACWElEQVR42u1XT0SEQRT/rKyk2x7SIV2ykpVIh6xuSbJdIklWEisdkr1kDytJJJ2yumRlJdEhyUp06JAkiqRDl6RDh3RJkqzY3uO3jDHz/amvVds8fvab9759834zb96bz7KMGDFipEKljbBGyOJXfK4S3msm5ITxMiHjAa0uYoko4sgJ/63COCvYJr9DPk4oEjY19hThXViIAiFJCBOqgSP46CAEoeslXBFGPMTSSXgjfBDqJVs9bLzodd/d8T4EnNHYmeATYRCEVIuzBR9BSc+LMOMxnin4mpX0nHGrfqW5Hel2QhdhhbBDaCQMeyBtfTHQU+x2BOMA5q8tB+kkfqNI635Cj0vSpZpxIZxVHeS5wzhS1zhWKSy+VU7SLPeEUY0Pu50ehy2rsDUQ0rAHJNsM9Ox7ye8qriMdRUBxIE/Y/wJpp5phwRZR6M+EAlkW0klp3IpzFvoB0nxkYgr9PNL8UpEJvpPmCaaFcamAcAua8Il0QngOKgokF9EFIc3TP0mae+UhUqsJuhX03Rtg1AfS6zYxsZ9d4W5wjixrKUchs3ARSDj4cEP6gDAE8A6+2vhbxE6LPbrgZ5o7keY0H/CB9B6hG+eXK/qjxhcX0DmFPu1nmsdsSHMAz5reLMo2fNR4WNSsIqX58nOLa6wsAfTtgqbSuxJOnw044qDucJHPQX8CfVFTscdwsdjCwrwQjkFm3QXpYen+fwsfb5hb/lDZhI3feUCM8d/6NeemZZXaU8WIG9INDtX8z0nMgXQILTJRCWTtakapbuRRmIrICCNGjBgx8q/lE7BwwnJhyTsoAAAAAElFTkSuQmCC" alt="\LaTeX">${s.i18n.get("mdhelp.block-math")}</td><td>$$$<br>\sum_{i=1}^m f(x_i)<br>$$$</td></tr>
+          <tr><td>${s.i18n.get("mdhelp.escape-markdown")}</td><td>\</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</div>

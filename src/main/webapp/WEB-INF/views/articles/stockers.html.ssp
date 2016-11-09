@@ -1,0 +1,69 @@
+#import(org.joda.time.format.DateTimeFormat)
+#import(lib.Markdown)
+#import(controller.Controllers)
+#import(model._)
+<%@val s: skinny.Skinny %>
+<%@val keyAndErrorMessages: skinny.KeyAndErrorMessages %>
+<%@val loginUser: Option[User] %>
+<%@val item: model.Article %>
+<%@val stockers: Seq[User] %>
+<% attributes("title") = item.title %>
+
+<%val author: User = item.author.get %>
+<article id="item-page">
+  <header class="article-header">
+    <div class="container">
+      <div class="row">
+        <a class="col-md-1" href="/users/${author.userId}"><img src="${author.imageUrl}" width="65" /></a>
+        <div class="col-md-11">
+          <h1 class="item-title">${item.title}</h1>
+          <ul class="tag-list unstyled">
+          #for (tag <- item.tags)
+            <li><a href="/tags/${tag.name}">${tag.name}(${tag.taggingsCount})</a></li>
+          #end
+          </ul>
+          <ul class="item-status unstyled">
+            <li>
+              <time datetime="${item.createdAt}" itemprop="datePublished">
+                <%= item.createdAt.map{_.toString("yyyy/MM/dd HH:mm")} %>
+              </time> ${s.i18n.get("feed.do-post")}
+            </li>
+            #if (item.userId == loginUser.get.userId)
+            ・
+            <li>
+              <a href="${s.url(Controllers.articles.editUrl, "id" -> item.articleId)}">${s.i18n.get("edit")}</a>
+            </li>
+            #end
+          </ul>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <div class="row">
+      <ol class="breadcrumb">
+        <li><a href="/articles/${item.articleId}">${item.title}</a></li>
+        <li class="active">"Stockers"</li>
+      </ol>
+      <ol class="itemStockers clearfix">
+      #for (stocker <- stockers)
+        <li class="itemStocker">
+          <a href="/users/${stocker.userId}">
+            <img style="display: block; float: left; width: 95px; height: 95px;" src="${stocker.imageUrl}" />
+          </a>
+          <div style="margin-left: 105px;">
+            <h4 style="font-weight: normal; margin: 0 0 5px;">
+              <span style="display: inline-block; overflow: hidden; white-space: normal; vertical-align: top;">
+                <a href="/users/${stocker.userId}">${stocker.name}</a>
+              </span>
+            </h4>
+          </div>
+        </li>
+      #end
+      </ol>
+    </div>
+  </div>
+</article>
+
+#set(script)
+#end

@@ -1,0 +1,103 @@
+.markdown-content h1 {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 3px 10px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+  font-size: 24px;
+}
+
+.markdown-content h2 {
+  border-bottom: solid 1px #d4d4d4;
+  font-size: 22px;
+}
+
+.markdown-content h3 {
+  font-size: 18px;
+}
+
+.markdown-content h1 a {
+  color: #000000;
+}
+
+.markdown-content h2 a {
+  color: #000000;
+}
+
+.markdown-content h3 a {
+  color: #000000;
+}
+
+.markdown-content h4 a {
+  color: #000000;
+}
+
+.markdown-content h5 a {
+  color: #000000;
+}
+
+.markdown-content h6 a {
+  color: #000000;
+}
+
+.markdown-content p {
+  word-wrap: break-word;
+  margin: 1em 0;
+  font-size: 1em;
+  line-height: 1.7;
+}
+
+.markdown-content table {
+  margin: 1em 0;
+  border-top: solid 1px #d9d9d9;
+  border-left: solid 1px #d9d9d9;
+}
+
+.markdown-content thead td, .markdown-content th {
+  padding: 8px 10px;
+  font-weight: 900;
+  background-color: #fff;
+  border-right: solid 1px #ccc;
+  border-bottom: solid 1px #ccc;
+}
+
+.markdown-content tbody tr:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.markdown-content table td {
+  word-wrap: break-word;
+  padding: 8px 10px;
+  border-right: solid 1px #ccc;
+  border-bottom: solid 1px #ccc;
+}
+
+.markdown-content img {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  margin: 0;
+  max-width: 100%;
+}
+
+.markdownHelp_title {
+  display: inline-block;
+}
+
+.markdownHelp_link {
+  margin-left: 5px;
+  font-size: 13px;
+}
+
+.markdownHelp_body {
+  overflow-y: auto;
+  max-height: 500px;
+}
+
+.markdownHelp_body table {
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+}

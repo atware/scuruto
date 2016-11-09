@@ -1,0 +1,35 @@
+.popular-list {
+  margin-top: 50px;
+}
+
+.popular-list i {
+  font-size: 13px;
+  color: #CCC;
+  padding-right: 3px;
+}
+
+.popular-list h4 {
+  padding-bottom: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.popular-item {
+  margin-bottom: 20px;
+}
+
+.popular-item strong {
+  font-size: 1.2em;
+}
+
+.popular-item h1 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0 10px 5px 0;
+  display: inline-block;
+}
+
+.popular-item .count i {
+  font-size: 13px;
+  color: #CCC;
+  padding-right: 3px;
+}

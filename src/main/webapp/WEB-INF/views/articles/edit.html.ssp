@@ -1,0 +1,14 @@
+<%@val s: skinny.Skinny %>
+<%@val item: model.Article %>
+<% attributes("title") = item.title %>
+
+<div class="container">
+<h3>${s.i18n.get("company.edit")}</h3>
+<hr/>
+
+<form id="form" method="post" action="${s.url(Controllers.articles.updateUrl, "id" -> item.articleId)}" class="form">
+${include("_form.html.ssp")}
+</form>
+</div>
+
+${include("_edit_script.html.ssp")}

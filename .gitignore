@@ -1,0 +1,76 @@
+.settings
+.classpath
+.project
+*.iml
+*.ipr
+*.iws
+dist/
+lib_managed/
+project/boot/
+project/plugins/project/
+project/target/
+project/project/
+target/
+task/target/
+task/src/main/resources/
+build/target/
+standalone-build/
+
+*.ser
+*.class
+*~
+*.bak
+#*.off
+*.old
+
+# eclipse conf file
+.settings
+.classpath
+.project
+.manager
+.scala_dependencies
+
+# IntelliJ IDEA settings
+.idea
+*.iml
+
+# building
+target
+build
+null
+dist
+test-output
+build.log
+
+# other scm
+.svn
+.CVS
+.hg*
+
+# switch to regexp syntax.
+#  syntax: regexp
+#  ^\.pc/
+
+#SHITTY output not in target directory
+build.log
+.DS_Store
+derby.log
+*.db
+.lib
+logs
+
+# Skinny's default ivy.home
+ivy2
+
+node_modules
+npm-debug.log
+
+.java-version
+
+sharedocsEnv
+sharedocsEnv.bat
+!src/main/webapp/assets/dist
+
+terraform.tfvars
+*.tfstate
+*.tfstate.backup

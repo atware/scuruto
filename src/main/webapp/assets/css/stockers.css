@@ -1,0 +1,47 @@
+.itemsShowHeaderStock_stockUsers {
+  margin-left: 0;
+  margin-top: 10px
+}
+
+.itemsShowHeaderStock_stockUsers li {
+  display: inline-block;
+  margin-left: 0;
+  padding-left: 0
+}
+
+.itemsShowHeaderStock_stockUsers img {
+  width: 18px;
+  height: 18px;
+  -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  overflow: hidden;
+  display: inline-block
+}
+
+.breadcrumb {
+  padding: 8px 15px;
+  margin-bottom: 20px;
+  list-style: none;
+  background-color: #f5f5f5;
+  border-radius: 3px;
+}
+
+.breadcrumb > .active {
+  color: #999;
+}
+
+.itemStockers {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.itemStocker {
+  border-bottom: 1px solid #ccc;
+  float: left;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  padding-bottom: 20px;
+  width: 310px;
+}

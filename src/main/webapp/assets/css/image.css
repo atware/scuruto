@@ -1,0 +1,27 @@
+@media only screen and (min-height: 1200px) {
+  .featherlight-image {
+    max-height: 1100px;
+    width: auto;
+  }
+}
+
+@media only screen and (min-height: 1000px) {
+  .featherlight-image {
+    max-height: 900px;
+    width: auto;
+  }
+}
+
+@media only screen and (min-height: 700px) {
+  .featherlight-image {
+    max-height: 600px;
+    width: auto;
+  }
+}
+
+@media only screen and (max-height: 700px) {
+  .featherlight-image {
+    max-height: 400px;
+    width: auto;
+  }
+}

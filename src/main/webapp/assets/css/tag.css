@@ -1,0 +1,129 @@
+.tag-list {
+    display: inline-block;
+    margin: 0;
+    padding-left: 0;
+}
+.tag-list li {
+    -webkit-border-top-right-radius: 2px;
+    -moz-border-radius-topright: 2px;
+    border-top-right-radius: 2px;
+    -webkit-border-bottom-right-radius: 2px;
+    -moz-border-radius-bottomright: 2px;
+    border-bottom-right-radius: 2px;
+    display: inline-block;
+    position: relative;
+    background-color: #dfdfdf;
+    font-size: 85%;
+    line-height: 1.2em;
+    margin-left: .7em;
+    padding: 0 2px 0;
+    color: #555;
+}
+.tag-list li:after {
+    width: 0;
+    height: 0;
+    right: 100%;
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    border: solid transparent;
+    border-color: transparent;
+    border-right-color: #dfdfdf;
+    border-width: .6em;
+    top: 50%;
+    margin-top: -.6em;
+}
+.tag-list li a {
+    color: #555;
+    text-decoration: none;
+}
+
+.tag-input > div {
+    padding-right: 0 !important;
+}
+
+.tagsIndexTagsList_tag {
+    border-bottom-right-radius:2px;
+    border-top-right-radius:2px;
+    display:inline-block;
+    position:relative;
+    background-color:#dfdfdf;
+    font-size:85%;
+    line-height:1.2em;
+    margin-left:.7em;
+    padding:0 2px;
+    color:#555 !important;
+    font-size:18px
+}
+
+.tagsIndexTagsList_tag a {
+    display:inline-block;
+    margin-left:-2px;color:#555 !important
+}
+
+.tagsIndexTagsList_tag a:link {
+    color:#555;
+    text-decoration:none
+}
+
+.tagsIndexTagsList_tag a:hover {
+    color:#555;
+    text-decoration:none
+}
+
+.tagsIndexTagsList_tag a:active {
+    color:#555;
+    text-decoration:none
+}
+
+.tagsIndexTagsList_tag a:visited {
+    color:#555;!important
+text-decoration:none
+}
+
+.tagsIndexTagsList_tag:after {
+    width:0;
+    height:0;
+    right:100%;
+    content:'';
+    position:absolute;
+    pointer-events:none;
+    border:solid transparent;
+    border-color:transparent;
+    border-right-color:#dfdfdf;
+    border-width:.6em;
+    top:50%;
+    margin-top:-.6em
+}
+
+.tagsIndexTagsList_tag:hover {
+    background-color:#acacac
+}
+
+.tagsIndexTagsList_tag:hover a:link {
+    color:#fff;
+    text-decoration:none
+}
+
+.tagsIndexTagsList_tag:hover a:hover {
+    color:#fff;
+    text-decoration:none
+}
+
+.tagsIndexTagsList_tag:hover a:active {
+    color:#fff;
+    text-decoration:none
+}
+
+.tagsIndexTagsList_tag:hover a:visited {
+    color:#fff;
+    text-decoration:none
+}
+
+.tagsIndexTagsList_tag:hover:after {
+    border-right-color:#acacac
+}
+
+.tagsIndexTagsList_status {
+    margin: 10px;
+}

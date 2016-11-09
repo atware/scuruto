@@ -1,0 +1,14 @@
+<%@val item: model.Article %>
+<%@val s: skinny.Skinny %>
+<% attributes("title") = s.i18n.get("new").getOrElse("New") %>
+
+<div class="container">
+<h3>${s.i18n.get("new")}</h3>
+<hr/>
+
+<form id="form" action="/articles" method="post">
+${include("_form.html.ssp")}
+</form>
+</div>
+
+${include("_new_script.html.ssp")}
