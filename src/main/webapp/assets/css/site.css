@@ -83,3 +83,7 @@ ul.unstyled {
   text-shadow: none !important;
   color: #666 !important;
 }
+.footer {
+  text-align: center;
+  color: #999;
+}

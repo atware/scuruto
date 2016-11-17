@@ -19,7 +19,7 @@ ${unescape(s.csrfMetaTags)}
 <title>${title} | ${SkinnyConfig.stringConfigValue("site.title").getOrElse("Site Title")}</title>
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="/assets/dist/style.5d2a886b49fade77c7d7.js"></script>
+<script src="/assets/dist/style.32731e22a1629bb0bfa3.js"></script>
 </head>
 <body>
 #if (Controllers.trackingEnabled)
@@ -32,7 +32,9 @@ ${unescape(s.csrfMetaTags)}
   <div class="container">
     <div class="navbar-header">
       <div class="header-left">
-      <a class="navbar-brand" href="/">${SkinnyConfig.stringConfigValue("site.name").getOrElse("Site Name")}</a>
+      <a class="navbar-brand" href="/">
+        <img src="/assets/img/logo_s.png" alt="logo" title="sharedocs"> ${SkinnyConfig.stringConfigValue("site.name").getOrElse("Site Name")}
+      </a>
     #if (loginUser.isDefined)
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navsearch">
         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -91,16 +93,16 @@ ${unescape(body)}
 <hr />
 <div class="container">
   <footer>
-    <p>&copy;2014- sharedocs</p>
+    <p class="footer">Powered by <a href="#"><img src="/assets/img/logowtnd_s.png"></a></p>
   </footer>
 </div>
 
-<script src="/assets/dist/script.5d2a886b49fade77c7d7.js"></script>
+<script src="/assets/dist/script.32731e22a1629bb0bfa3.js"></script>
 <script type="text/javascript" src="${uri("/assets/js/skinny-framework.js")}"></script>
 #if (s.i18n.locale == java.util.Locale.JAPANESE)
-  <script src="/assets/dist/ja.5d2a886b49fade77c7d7.js"></script>
+  <script src="/assets/dist/ja.32731e22a1629bb0bfa3.js"></script>
 #else
-  <script src="/assets/dist/en.5d2a886b49fade77c7d7.js"></script>
+  <script src="/assets/dist/en.32731e22a1629bb0bfa3.js"></script>
 #end
 <script>
 $(function(){

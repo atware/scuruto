@@ -2,6 +2,9 @@
   text-shadow: none !important;
   color: #3397D3 !important;
 }
+.navbar-brand>img {
+  display: inline;
+}
 .navbar-default {
   background-color: #eee;
   border-color: #CACACA;
