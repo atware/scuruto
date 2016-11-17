@@ -131,4 +131,4 @@ CORS Configuration example:
 
 ## Lisence
 
-TODO
+MIT License
