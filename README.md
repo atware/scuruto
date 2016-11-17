@@ -2,6 +2,8 @@
 
 An internal knowledge sharing app.
 
+[![Heroku Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/atware/sharedocs/tree/master)
+
 ## Setup for Development Environment
 
 ### Setup PostgreSQL
