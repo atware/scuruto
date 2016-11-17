@@ -3,7 +3,7 @@
 export SITE_NAME=Sharedocs:local
 export SITE_TITLE=Sharedocs
 
-export DATABASE_HOST="localhost"
+export DATABASE_HOST="localhost:5432"
 export DATABASE_DBNAME="sharedocs"
 export DATABASE_USER="********"
 export DATABASE_PASSWORD="********"
