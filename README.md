@@ -44,18 +44,18 @@ Setup PostgreSQL server on your machine and create database.
 | DATABASE_USER | String | o | | database user | "user" |
 | DATABASE_PASSWORD | String | o | | database password | "password" |
 | GOOGLE_ANALYTICS_KEY | String | | | Google analytics key | "abcdefg" |
-| LOGIN_PROVIDOR | String | | "app" | login providor<br />"app" - Login with email/password<br />"google" - Login with Google+ account | "google" |
+| LOGIN_PROVIDOR | String | | "app" | login providor<br />`app` - Login with email/password<br />`google` - Login with Google+ account | "google" |
 | LOGIN_PERMITTED_EMAIL_DOMAINS | String | | | email domains to allow to login(comma-separeted)<br />**allow to login any email address if empty** | "yourcompany.co.jp" |
-| SKINNY_OAUTH2_CLIENT_ID_GOOGLE | String | o(if LOGIN_PROVIDOR==google) | | Google OAuth2 API Key | "abcdefgabcdefg" |
-| SKINNY_OAUTH2_CLIENT_SECRET_GOOGLE | String | o(if LOGIN_PROVIDOR==google) | | Google OAuth2 Secret Key | "abcdefgabcdefgabcdefg" |
-| UPLOAD_DESTINATION | String | | "local" | image file upload destination<br />"local" - upload to local disk<br />"s3" - upload to Amazon S3 | "s3" |
-| LOCAL_UPLOAD_BASE_DIR | String | o(if UPLOAD_DESTINATION==local) | | base directory to upload image file | "/tmp" |
-| LOCAL_UPLOAD_BASE_URL | String | o(if UPLOAD_DESTINATION==local) | | base url to access uploaded image file | "/static/uploads" |
-| AWS_ACCESS_KEY | String | o(if UPLOAD_DESTINATION==s3) | | AWS access key | "abcdefg" |
-| AWS_SECRET_KEY | String | o(if UPLOAD_DESTINATION==s3) | | AWS secret key | "abcdefgabcdefg" |
-| AWS_S3_BUCKET | String | o(if UPLOAD_DESTINATION==s3) | | S3 bucket name | "sharedocs-xx" |
-| AWS_S3_BASE_DIR | String | o(if UPLOAD_DESTINATION==s3) | | base pash to upload image file | "images/" |
-| AWS_S3_BASE_URL | String | o(if UPLOAD_DESTINATION==s3) | | base url to access uploaded image file | "https://xxxxxxxx.s3.amazonaws.com/" |
+| SKINNY_OAUTH2_CLIENT_ID_GOOGLE | String | o | | (if LOGIN_PROVIDOR==google)<br />Google OAuth2 API Key | "abcdefgabcdefg" |
+| SKINNY_OAUTH2_CLIENT_SECRET_GOOGLE | String | o | | (if LOGIN_PROVIDOR==google)<br />Google OAuth2 Secret Key | "abcdefgabcdefgabcdefg" |
+| UPLOAD_DESTINATION | String | | "local" | image file upload destination<br />`local` - upload to local disk<br />`s3` - upload to Amazon S3 | "s3" |
+| LOCAL_UPLOAD_BASE_DIR | String | o | | (if UPLOAD_DESTINATION==local)<br />base directory to upload image file | "/tmp" |
+| LOCAL_UPLOAD_BASE_URL | String | o | | (if UPLOAD_DESTINATION==local)<br />base url to access uploaded image file | "/static/uploads" |
+| AWS_ACCESS_KEY | String | o | | (if UPLOAD_DESTINATION==s3)<br />AWS access key | "abcdefg" |
+| AWS_SECRET_KEY | String | o | | (if UPLOAD_DESTINATION==s3)<br />AWS secret key | "abcdefgabcdefg" |
+| AWS_S3_BUCKET | String | o | | (if UPLOAD_DESTINATION==s3)<br />S3 bucket name | "sharedocs-xx" |
+| AWS_S3_BASE_DIR | String | o | | (if UPLOAD_DESTINATION==s3)<br />base pash to upload image file | "images/" |
+| AWS_S3_BASE_URL | String | o | | (if UPLOAD_DESTINATION==s3)<br />base url to access uploaded image file | "https://xxxxxxxx.s3.amazonaws.com/" |
 
 ### Run Application
 
