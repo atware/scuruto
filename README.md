@@ -13,6 +13,16 @@ Setup PostgreSQL server on your machine and create database.
     $ createuser -P sharedocs
     $ createdb -E UTF8 -T template0 --lc-collate=ja_JP.UTF-8 --lc-ctype=ja_JP.UTF-8 sharedocs
 
+### Prepare Tables
+
+#### mac/*nix
+
+    ./sharedocs db:migrate
+
+#### Windows
+
+    ./sharedocs.bat db:migrate
+
 ### Set Environment Variables to sharedocsEnv script
 
 #### mac/*nix
@@ -23,15 +33,29 @@ Setup PostgreSQL server on your machine and create database.
 
     cp sharedocsEnv-template.bat sharedocsEnv.bat
 
-### Prepare Tables
+##### Environment Variables
 
-#### mac/*nix
-
-    ./sharedocs db:migrate
-
-#### Windows
-
-    ./sharedocs.bat db:migrate
+| ENV name | Type | Requirement | Description | Example |
+|:----|:----|:----|:----|:----|:----|
+| SITE_NAME | String | | site name for page header | "Sharedocs:CompanyName" |
+| SITE_TITLE | String | | site title for `title` tag | "Sharedocs" |
+| DATABASE_HOST | String | o | datebase host | "localhost:5432" |
+| DATABASE_DBNAME | String | o | database name | "sharedocs" |
+| DATABASE_USER | String | o | database user | "user" |
+| DATABASE_PASSWORD | String | o | database password | "password" |
+| GOOGLE_ANALYTICS_KEY | String | | Google analytics key | "abcdefg" |
+| LOGIN_PROVIDOR | String | | login providor<br />`app` - Login with email/password<br />`google` - Login with Google+ account<br />*default is `app`* | "google" |
+| LOGIN_PERMITTED_EMAIL_DOMAINS | String | | email domains to allow to login(comma-separeted)<br />**allow to login any email address if empty** | "yourcompany.co.jp" |
+| SKINNY_OAUTH2_CLIENT_ID_GOOGLE | String | | (if LOGIN_PROVIDOR==google)<br />Google OAuth2 API Key | "abcdefgabcdefg" |
+| SKINNY_OAUTH2_CLIENT_SECRET_GOOGLE | String | | (if LOGIN_PROVIDOR==google)<br />Google OAuth2 Secret Key | "abcdefgabcdefgabcdefg" |
+| UPLOAD_DESTINATION | String | | image file upload destination<br />`local` - upload to local disk<br />`s3` - upload to Amazon S3<br />*default is `local`* | "s3" |
+| LOCAL_UPLOAD_BASE_DIR | String | | (if UPLOAD_DESTINATION==local)<br />base directory to upload image file | "/tmp" |
+| LOCAL_UPLOAD_BASE_URL | String | | (if UPLOAD_DESTINATION==local)<br />base url to access uploaded image file | "/static/uploads" |
+| AWS_ACCESS_KEY | String | | (if UPLOAD_DESTINATION==s3)<br />AWS access key | "abcdefg" |
+| AWS_SECRET_KEY | String | | (if UPLOAD_DESTINATION==s3)<br />AWS secret key | "abcdefgabcdefg" |
+| AWS_S3_BUCKET | String | | (if UPLOAD_DESTINATION==s3)<br />S3 bucket name | "sharedocs-xx" |
+| AWS_S3_BASE_DIR | String | | (if UPLOAD_DESTINATION==s3)<br />base pash to upload image file | "images/" |
+| AWS_S3_BASE_URL | String | | (if UPLOAD_DESTINATION==s3)<br />base url to access uploaded image file | "https://xxxxxxxx.s3.amazonaws.com/" |
 
 ### Run Application
 
