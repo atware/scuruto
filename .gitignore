@@ -69,7 +69,6 @@ npm-debug.log
 
 sharedocsEnv
 sharedocsEnv.bat
-!src/main/webapp/assets/dist
 
 terraform.tfvars
 *.tfstate

@@ -35,35 +35,15 @@ module.exports = {
     devtool: '#source-map',
     plugins: [
         new Clean([DIST]),
-        /* 全てjsファイル化した暁にはこれを有効化
-        new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery",
-            "window.jQuery": "jquery"
-        }),
-        */
-        // update js hash in layouts/default.ssp
+        // generate hash
         function() {
             this.plugin("done", function(statsData) {
                 var stats = statsData.toJson();
                 if (!stats.errors.length) {
-                    ['style', 'script', 'ja', 'en'].forEach(function(name) {
-                        var layoutFileName = 'src/main/webapp/WEB-INF/layouts/default.ssp';
-                        var layoutSource = FileSystem.readFileSync(Path.join(__dirname, layoutFileName), "utf8");
-
-                        var target = new RegExp("<script\\s+src=([\"'])(.+?)" + name + "\\..+?\\.js\\1", "i");
-                        var htmlOutput = layoutSource.replace(
-                            target,
-                            "<script src=$1$2" + name + "." + stats.hash + ".js" + "$1");
-                        target = new RegExp("<script\\s+src=([\"'])(.+?)" + name + "\\..+?\\.js\\.map\\1", "i");
-                        htmlOutput = htmlOutput.replace(
-                            target,
-                            "<script src=$1$2" + name + "." + stats.hash + ".js.map" + "$1");
-
-                        FileSystem.writeFileSync(
-                            Path.join(__dirname, layoutFileName),
-                            htmlOutput);
-                    });
+                    FileSystem.writeFileSync(
+                      Path.join(DIST, 'version.txt'),
+                      stats.hash
+                    );
                 }
             });
         },

@@ -3,4 +3,11 @@
 cd $(dirname $0)
 source ./sharedocsEnv
 
+command="$1"
+if [ "$command" == "run" -o "$command" == "s" -o "$command" == "server" -o "$command" == "debug" -o "$command" == "d" ]; then
+  if [ ! -e src/main/webapp/assets/dist/version.txt ]; then
+    npm run webpack
+  fi
+fi
+
 ./skinny $@

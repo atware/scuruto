@@ -1,5 +1,6 @@
 #import(skinny.SkinnyConfig)
 #import(controller.Controllers)
+<%val h = lib.AssetsHelper %>
 <%@val title: String %>
 <%@val body: String %>
 <%@val script: String %>
@@ -19,7 +20,7 @@ ${unescape(s.csrfMetaTags)}
 <title>${title} | ${SkinnyConfig.stringConfigValue("site.title").getOrElse("Site Title")}</title>
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="/assets/dist/style.32731e22a1629bb0bfa3.js"></script>
+<script src="/assets/dist/style.${h.hash}.js"></script>
 </head>
 <body>
 #if (Controllers.trackingEnabled)
@@ -97,12 +98,12 @@ ${unescape(body)}
   </footer>
 </div>
 
-<script src="/assets/dist/script.32731e22a1629bb0bfa3.js"></script>
+<script src="/assets/dist/script.${h.hash}.js"></script>
 <script type="text/javascript" src="${uri("/assets/js/skinny-framework.js")}"></script>
 #if (s.i18n.locale == java.util.Locale.JAPANESE)
-  <script src="/assets/dist/ja.32731e22a1629bb0bfa3.js"></script>
+  <script src="/assets/dist/ja.${h.hash}.js"></script>
 #else
-  <script src="/assets/dist/en.32731e22a1629bb0bfa3.js"></script>
+  <script src="/assets/dist/en.${h.hash}.js"></script>
 #end
 <script>
 $(function(){
