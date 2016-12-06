@@ -6,6 +6,10 @@ An internal knowledge sharing app.
 
 [![Heroku Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/atware/sharedocs/tree/master)
 
+## System Requirements
+- Scala 2.11 or 2.12
+- PostgreSQL 9.5.x or 9.6.x
+
 ## Setup for Development Environment
 
 ### Setup PostgreSQL
