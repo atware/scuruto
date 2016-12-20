@@ -22,21 +22,27 @@ class ArticlesController extends ApplicationController {
     loginUser.map { u =>
       val articleOperation: ArticleOperation = inject[ArticleOperation]
       val commentOperation: CommentOperation = inject[CommentOperation]
-      articleOperation.getWithTag(id).map { article =>
-        set("item", article)
-        set("comments", commentOperation.getAll(article.articleId))
-        set("reaction", articleOperation.getReaction(article, loginUser.get))
-        set("sidebar", articleOperation.getArticleSidebar(article))
-        render(s"/articles/show")
-      } getOrElse haltWithBody(404)
+      articleOperation.getWithTag(id) match {
+        case Some(article) => {
+          set("item", article)
+          set("comments", commentOperation.getAll(article.articleId))
+          set("reaction", articleOperation.getReaction(article, loginUser.get))
+          set("sidebar", articleOperation.getArticleSidebar(article))
+          render(s"/articles/show")
+        }
+        case _ => haltWithBody(404)
+      }
     } getOrElse {
       val isOgp = params.get("o").isDefined
       if (isOgp) {
         val ogpOperation = inject[OgpOperation]
-        ogpOperation.buildOgp(id).map { ogp =>
-          set("ogp", ogp)
-          render(s"/ogp/index")
-        } getOrElse redirect302("/?ref=" + URLEncoder.encode("/articles/" + id, "UTF-8"))
+        ogpOperation.buildOgp(id) match {
+          case Some(ogp) => {
+            set("ogp", ogp)
+            render(s"/ogp/index")
+          }
+          case _ => redirect302("/?ref=" + URLEncoder.encode("/articles/" + id, "UTF-8"))
+        }
       } else {
         redirect302("/?ref=" + getRef)
       }
@@ -171,10 +177,10 @@ class ArticlesController extends ApplicationController {
 
   // --------------
   private def getOwnArticle(id: ArticleId): Option[Article] = {
-    loginUser.map { u =>
+    loginUser.flatMap { u =>
       val articleOperation: ArticleOperation = inject[ArticleOperation]
       articleOperation.getWithTag(id).filter(a => a.userId == u.userId)
-    } getOrElse None
+    }
   }
 
 }

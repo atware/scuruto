@@ -15,33 +15,39 @@ class RootController extends ApplicationController {
   // GET /
   def index = {
     val articleOperation: ArticleOperation = inject[ArticleOperation]
-    loginUser.map { user =>
-      set("items", articleOperation.getPage())
-      set("sidebar", articleOperation.getIndexSidebar(user))
-      render(s"/articles/list")
-    } getOrElse {
-      val locale = request.getLocale
-      if (locale == null || locale != Locale.JAPANESE) {
-        setCurrentLocale("en")
+    loginUser match {
+      case Some(user) => {
+        set("items", articleOperation.getPage())
+        set("sidebar", articleOperation.getIndexSidebar(user))
+        render(s"/articles/list")
       }
-      set("ref", params.get("ref"))
-      render(s"/login")
+      case _ => {
+        val locale = request.getLocale
+        if (locale == null || locale != Locale.JAPANESE) {
+          setCurrentLocale("en")
+        }
+        set("ref", params.get("ref"))
+        render(s"/login")
+      }
     }
   }
 
   // --------------
   // GET /more/{maxId}
   def more(maxId: ArticleId) = {
-    loginUser.map { user =>
-      val articleOperation: ArticleOperation = inject[ArticleOperation]
-      set("items", articleOperation.getPage(maxId))
-      render(s"/articles/scroll")
-    } getOrElse {
-      val locale = request.getLocale.toString
-      if (locale != "ja") {
-        setCurrentLocale("en")
+    loginUser match {
+      case Some(user) => {
+        val articleOperation: ArticleOperation = inject[ArticleOperation]
+        set("items", articleOperation.getPage(maxId))
+        render(s"/articles/scroll")
       }
-      render(s"/login")
+      case _ => {
+        val locale = request.getLocale.toString
+        if (locale != "ja") {
+          setCurrentLocale("en")
+        }
+        render(s"/login")
+      }
     }
   }
 

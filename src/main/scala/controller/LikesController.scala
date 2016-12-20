@@ -11,9 +11,10 @@ class LikesController extends ApplicationController {
   // --------------
   // POST /likes
   def createParams: Params = {
-    loginUser.map { u =>
-      Params(params ++ Map("user_id" -> u.userId))
-    } getOrElse Params(params.filterKeys(key => key != "user_id"))
+    loginUser match {
+      case Some(u) => Params(params ++ Map("user_id" -> u.userId))
+      case _ => Params(params.filterKeys(key => key != "user_id"))
+    }
   }
   def createForm: MapValidator = validation(
     createParams,
@@ -29,18 +30,21 @@ class LikesController extends ApplicationController {
     if (createForm.validate()) {
       val articleId = ArticleId(params.getAs[Long]("article_id").get)
       val articleOperation: ArticleOperation = inject[ArticleOperation]
-      articleOperation.get(articleId).map { article =>
-        val likeOperation: LikeOperation = inject[LikeOperation]
-        val permittedParameters = createParams.permit(createFormStrongParameters: _*)
-        debugLoggingPermittedParameters(permittedParameters)
-        if (!likeOperation.exists(permittedParameters)) {
-          val counter = likeOperation.like(article, permittedParameters)
-          status = 200
-          counter
-        } else {
-          status = 400
+      articleOperation.get(articleId) match {
+        case Some(article) => {
+          val likeOperation: LikeOperation = inject[LikeOperation]
+          val permittedParameters = createParams.permit(createFormStrongParameters: _*)
+          debugLoggingPermittedParameters(permittedParameters)
+          if (!likeOperation.exists(permittedParameters)) {
+            val counter = likeOperation.like(article, permittedParameters)
+            status = 200
+            counter
+          } else {
+            status = 400
+          }
         }
-      } getOrElse (status = 400)
+        case _ => status = 400
+      }
     } else {
       status = 400
     }

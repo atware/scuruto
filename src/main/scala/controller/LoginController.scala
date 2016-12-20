@@ -31,10 +31,13 @@ abstract class LoginController extends ApplicationController with Routes {
   }
 
   protected def processHandleWhenLoginSucceeded(): Any = {
-    skinnySession.getAttribute(SessionAttribute.Ref.key).asInstanceOf[Option[String]].map { ref =>
-      skinnySession.removeAttribute(SessionAttribute.Ref.key)
-      redirect302(ref)
-    } getOrElse redirect302("/")
+    skinnySession.getAttribute(SessionAttribute.Ref.key).asInstanceOf[Option[String]] match {
+      case Some(ref) => {
+        skinnySession.removeAttribute(SessionAttribute.Ref.key)
+        redirect302(ref)
+      }
+      case _ => redirect302("/")
+    }
   }
 
   def logout(): Unit = skinnySession.invalidate()

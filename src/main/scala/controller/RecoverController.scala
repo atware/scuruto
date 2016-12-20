@@ -13,10 +13,9 @@ class RecoverController extends ApplicationController {
   // --------------
   // GET /recover
   def input = {
-    loginUser.map { user =>
-      redirect302("/")
-    } getOrElse {
-      render(s"/recover/input")
+    loginUser match {
+      case Some(user) => redirect302("/")
+      case _ => render(s"/recover/input")
     }
   }
 
@@ -29,32 +28,33 @@ class RecoverController extends ApplicationController {
   )
   class RecoverMailer extends SkinnyMailer
   def recover = {
-    loginUser.map { user =>
-      redirect302("/")
-    } getOrElse {
-      debugLoggingParameters(recoverForm)
-      if (recoverForm.validate()) {
-        val email = getRequiredParam[String]("email")
-        val domain = email.split("@")(1)
-        if (permittedEmailDomains.isEmpty || permittedEmailDomains.contains(domain)) {
-          val userOperation = inject[UserOperation]
-          val mailer = new RecoverMailer
-          userOperation.get(email).foreach { user =>
-            if (user.isActive) {
-              // send recover mail
-              val resettable = userOperation.updateToPasswordResettable(user)
-              mailer
-                .to(email)
-                .subject(recoverMailSubject)
-                .body(recoverMailBody(resettable))
-                .deliver()
+    loginUser match {
+      case Some(user) => redirect302("/")
+      case _ => {
+        debugLoggingParameters(recoverForm)
+        if (recoverForm.validate()) {
+          val email = getRequiredParam[String]("email")
+          val domain = email.split("@")(1)
+          if (permittedEmailDomains.isEmpty || permittedEmailDomains.contains(domain)) {
+            val userOperation = inject[UserOperation]
+            val mailer = new RecoverMailer
+            userOperation.get(email).foreach { user =>
+              if (user.isActive) {
+                // send recover mail
+                val resettable = userOperation.updateToPasswordResettable(user)
+                mailer
+                  .to(email)
+                  .subject(recoverMailSubject)
+                  .body(recoverMailBody(resettable))
+                  .deliver()
+              }
             }
           }
+          flash += ("email" -> email)
+          redirect302(url(Controllers.recover.recoverRedirectUrl))
+        } else {
+          render(s"/recover/input")
         }
-        flash += ("email" -> email)
-        redirect302(url(Controllers.recover.recoverRedirectUrl))
-      } else {
-        render(s"/recover/input")
       }
     }
   }
@@ -84,11 +84,12 @@ class RecoverController extends ApplicationController {
   def verify(token: String) = {
     val userOperation = inject[UserOperation]
     userOperation.getPasswordResettable(token).map { user =>
-      loginUser.map { user =>
-        redirect302("/")
-      } getOrElse {
-        skinnySession.setAttribute(SessionAttribute.ResetPasswordToken.key, token)
-        render(s"/recover/password")
+      loginUser match {
+        case Some(_) => redirect302("/")
+        case _ => {
+          skinnySession.setAttribute(SessionAttribute.ResetPasswordToken.key, token)
+          render(s"/recover/password")
+        }
       }
     } getOrElse {
       flash += ("warn" -> createI18n().getOrKey("recover.verify.invalidToken"))
@@ -106,18 +107,22 @@ class RecoverController extends ApplicationController {
   )
   def reset = {
     if (resetForm.validate()) {
-      skinnySession.getAttribute(SessionAttribute.ResetPasswordToken.key).map { token =>
-        val userOperation = inject[UserOperation]
-        userOperation.getPasswordResettable(token.asInstanceOf[String]).map { user =>
-          userOperation.resetPassword(user, getRequiredParam[String]("password"))
-          flash += ("warn" -> createI18n().getOrKey("recover.password.complete"))
-          redirect302("/")
-        } getOrElse {
-          flash += ("warn" -> createI18n().getOrKey("recover.verify.invalidToken"))
-          redirect302(url(Controllers.recover.inputUrl))
+      skinnySession.getAttribute(SessionAttribute.ResetPasswordToken.key) match {
+        case Some(token) => {
+          val userOperation = inject[UserOperation]
+          userOperation.getPasswordResettable(token.asInstanceOf[String]) match {
+            case Some(user) => {
+              userOperation.resetPassword(user, getRequiredParam[String]("password"))
+              flash += ("warn" -> createI18n().getOrKey("recover.password.complete"))
+              redirect302("/")
+            }
+            case _ => {
+              flash += ("warn" -> createI18n().getOrKey("recover.verify.invalidToken"))
+              redirect302(url(Controllers.recover.inputUrl))
+            }
+          }
         }
-      } getOrElse {
-        redirect302(url(Controllers.recover.inputUrl))
+        case _ => redirect302(url(Controllers.recover.inputUrl))
       }
     } else {
       render(s"/recover/password")

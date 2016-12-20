@@ -15,10 +15,9 @@ class SignupController extends ApplicationController {
   // --------------
   // GET /signup/new
   def input = {
-    loginUser.map { user =>
-      redirect302("/")
-    } getOrElse {
-      render(s"/signup/new")
+    loginUser match {
+      case Some(_) => redirect302("/")
+      case _ => render(s"/signup/new")
     }
   }
 
@@ -36,52 +35,53 @@ class SignupController extends ApplicationController {
   )
   class ConfirmationMailer extends SkinnyMailer
   def create = {
-    loginUser.map { user =>
-      redirect302("/")
-    } getOrElse {
-      debugLoggingParameters(createForm)
-      if (createForm.validate()) {
-        val email = getRequiredParam[String]("email")
-        val domain = email.split("@")(1)
-        if (permittedEmailDomains.isEmpty || permittedEmailDomains.contains(domain)) {
-          val userOperation = inject[UserOperation]
-          val mailer = new ConfirmationMailer
-          userOperation.get(email) match {
-            case Some(user) =>
-              if (user.isActive) {
-                // send already registered mail
-                mailer
-                  .to(email)
-                  .subject(alreadyRegisteredMailSubject)
-                  .body(alreadyRegisteredMailBody)
-                  .deliver()
-              } else {
-                // update to confirmable
+    loginUser match {
+      case Some(_) => redirect302("/")
+      case _ => {
+        debugLoggingParameters(createForm)
+        if (createForm.validate()) {
+          val email = getRequiredParam[String]("email")
+          val domain = email.split("@")(1)
+          if (permittedEmailDomains.isEmpty || permittedEmailDomains.contains(domain)) {
+            val userOperation = inject[UserOperation]
+            val mailer = new ConfirmationMailer
+            userOperation.get(email) match {
+              case Some(user) =>
+                if (user.isActive) {
+                  // send already registered mail
+                  mailer
+                    .to(email)
+                    .subject(alreadyRegisteredMailSubject)
+                    .body(alreadyRegisteredMailBody)
+                    .deliver()
+                } else {
+                  // update to confirmable
+                  val permittedParameters = createParams.permit(createFormStrongParameters: _*)
+                  val updated = userOperation.updateToConfirmable(user, permittedParameters, currentLocale.getOrElse(Locale.JAPANESE))
+                  // send confirmation mail
+                  mailer
+                    .to(email)
+                    .subject(confirmationMailSubject)
+                    .body(confirmationMailBody(updated))
+                    .deliver()
+                }
+              case _ =>
+                // register
                 val permittedParameters = createParams.permit(createFormStrongParameters: _*)
-                val updated = userOperation.updateToConfirmable(user, permittedParameters, currentLocale.getOrElse(Locale.JAPANESE))
+                val user = userOperation.register(permittedParameters, currentLocale.getOrElse(Locale.JAPANESE))
                 // send confirmation mail
                 mailer
                   .to(email)
                   .subject(confirmationMailSubject)
-                  .body(confirmationMailBody(updated))
+                  .body(confirmationMailBody(user))
                   .deliver()
-              }
-            case None =>
-              // register
-              val permittedParameters = createParams.permit(createFormStrongParameters: _*)
-              val user = userOperation.register(permittedParameters, currentLocale.getOrElse(Locale.JAPANESE))
-              // send confirmation mail
-              mailer
-                .to(email)
-                .subject(confirmationMailSubject)
-                .body(confirmationMailBody(user))
-                .deliver()
+            }
           }
+          flash += ("email" -> email)
+          redirect302(url(Controllers.signup.createRedirectUrl))
+        } else {
+          render(s"/signup/new")
         }
-        flash += ("email" -> email)
-        redirect302(url(Controllers.signup.createRedirectUrl))
-      } else {
-        render(s"/signup/new")
       }
     }
   }
@@ -118,13 +118,16 @@ class SignupController extends ApplicationController {
   // GET /signup/verify/{token}
   def verify(token: String) = {
     val userOperation = inject[UserOperation]
-    userOperation.getVerifyable(token).map { user =>
-      val activated = userOperation.activate(user.userId)
-      skinnySession.setAttribute(SessionAttribute.LoginUser.key, activated)
-      redirect302("/")
-    } getOrElse {
-      flash += ("warn" -> createI18n().getOrKey("signup.verify.invalidToken"))
-      redirect302(url(Controllers.signup.inputUrl))
+    userOperation.getVerifyable(token) match {
+      case Some(user) => {
+        val activated = userOperation.activate(user.userId)
+        skinnySession.setAttribute(SessionAttribute.LoginUser.key, activated)
+        redirect302("/")
+      }
+      case _ => {
+        flash += ("warn" -> createI18n().getOrKey("signup.verify.invalidToken"))
+        redirect302(url(Controllers.signup.inputUrl))
+      }
     }
   }
 

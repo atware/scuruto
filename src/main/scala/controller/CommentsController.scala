@@ -15,9 +15,10 @@ class CommentsController extends ApplicationController {
   // --------------
   // POST /comments
   def createParams: Params = {
-    loginUser.map { u =>
-      Params(params ++ Map("user_id" -> u.userId))
-    } getOrElse Params(params.filterKeys(key => key != "user_id"))
+    loginUser match {
+      case Some(user) => Params(params ++ Map("user_id" -> user.userId))
+      case _ => Params(params.filterKeys(key => key != "user_id"))
+    }
   }
 
   def createForm: MapValidator = validation(
@@ -70,21 +71,22 @@ class CommentsController extends ApplicationController {
   def update(id: CommentId) = {
     debugLoggingParameters(updateForm, Some(id.value))
     val commentOperation: CommentOperation = inject[CommentOperation]
-    getOwnComment(id).map { comment =>
-      if (updateForm.validate()) {
-        val permittedParameters = updateParams.permit(updateFormStrongParameters: _*)
-        debugLoggingPermittedParameters(permittedParameters, Some(id.value))
-        val updated = commentOperation.update(comment, permittedParameters)
-        toJSONString(Map(
-          "raw" -> updated.body,
-          "html" -> Markdown.toHtml(updated.body)
-        ))
-      } else {
-        status = 400
-        ""
+    getOwnComment(id) match {
+      case Some(comment) => {
+        if (updateForm.validate()) {
+          val permittedParameters = updateParams.permit(updateFormStrongParameters: _*)
+          debugLoggingPermittedParameters(permittedParameters, Some(id.value))
+          val updated = commentOperation.update(comment, permittedParameters)
+          toJSONString(Map(
+            "raw" -> updated.body,
+            "html" -> Markdown.toHtml(updated.body)
+          ))
+        } else {
+          status = 400
+          ""
+        }
       }
-    } getOrElse {
-      status = 403
+      case _ => status = 403
     }
   }
 
@@ -99,10 +101,10 @@ class CommentsController extends ApplicationController {
 
   // --------------
   private def getOwnComment(id: CommentId): Option[Comment] = {
-    loginUser.map { u =>
+    loginUser.flatMap { u =>
       val commentOperation = inject[CommentOperation]
       commentOperation.get(id).filter(c => c.userId == u.userId)
-    } getOrElse None
+    }
   }
 
 }

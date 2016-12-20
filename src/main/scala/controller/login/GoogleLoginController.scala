@@ -24,7 +24,7 @@ object GoogleLoginController extends LoginController with GoogleLoginFeature {
     if (permittedEmailDomains.nonEmpty && !permittedEmailDomains.contains(emailDomain)) {
       haltWithBody(403)
     } else {
-      val user: User = User.findActivatedByEmail(email).getOrElse {
+      val user = User.findActivatedByEmail(email).getOrElse {
         val userId = User.create(gUser)
         User.findById(userId).get
       }

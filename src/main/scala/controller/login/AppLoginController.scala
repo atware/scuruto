@@ -25,16 +25,22 @@ object AppLoginController extends LoginController {
       if (permittedEmailDomains.nonEmpty && !permittedEmailDomains.contains(emailDomain)) {
         haltWithBody(403)
       } else {
-        User.findActivatedByEmail(email).map { user =>
-          user.password.map { password =>
-            val inputPassword = getRequiredParam[String]("password")
-            if (inputPassword.isBcrypted(password)) {
-              setCurrentLocale(user.locale)
-              skinnySession.setAttribute(SessionAttribute.LoginUser.key, user)
-              processHandleWhenLoginSucceeded()
-            } else processHandleWhenLoginFailed()
-          } getOrElse processHandleWhenLoginFailed()
-        } getOrElse processHandleWhenLoginFailed()
+        User.findActivatedByEmail(email) match {
+          case Some(user) => {
+            user.password match {
+              case Some(password) => {
+                val inputPassword = getRequiredParam[String]("password")
+                if (inputPassword.isBcrypted(password)) {
+                  setCurrentLocale(user.locale)
+                  skinnySession.setAttribute(SessionAttribute.LoginUser.key, user)
+                  processHandleWhenLoginSucceeded()
+                } else processHandleWhenLoginFailed()
+              }
+              case _ => processHandleWhenLoginFailed()
+            }
+          }
+          case _ => processHandleWhenLoginFailed()
+        }
       }
     } else {
       set("ref", params.get("ref"))

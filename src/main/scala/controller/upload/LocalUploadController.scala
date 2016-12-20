@@ -67,7 +67,7 @@ object LocalUploadController extends UploadController {
                     } getOrElse logger.warn(s"failed to upload file. dir=$baseDir, file=${key.get.toString}")
                     skinnySession.removeAttribute(SessionAttribute.UploadPolicy.key)
                   }
-                  case None => throw new IllegalArgumentException
+                  case _ => throw new IllegalArgumentException
                 }
               } else {
                 haltWithBody(400)
@@ -76,10 +76,10 @@ object LocalUploadController extends UploadController {
               haltWithBody(403)
             }
           }
-          case None => haltWithBody(403)
+          case _ => haltWithBody(403)
         }
       }
-      case None => throw new IllegalArgumentException("file not found")
+      case _ => throw new IllegalArgumentException("file not found")
     }
   }
 

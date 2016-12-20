@@ -41,7 +41,7 @@ trait ControllerBase
   protected def getRequiredParam[T](name: String)(implicit ctx: SkinnyContext): T = {
     params.get(name) match {
       case Some(value) => value.asInstanceOf[T]
-      case None => throw new IllegalStateException(s"cannot get from params. param-name: '$name'")
+      case _ => throw new IllegalStateException(s"cannot get from params. param-name: '$name'")
     }
   }
 

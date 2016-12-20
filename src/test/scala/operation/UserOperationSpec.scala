@@ -47,7 +47,7 @@ class UserOperationSpec extends fixture.FunSpec with AutoRollback with Matchers 
     it("should return a user") { implicit session =>
       operation.get("hoge2@moge.jp") match {
         case Some(user) => user.email should equal("hoge2@moge.jp")
-        case None => fail()
+        case _ => fail()
       }
     }
 
@@ -198,7 +198,7 @@ class UserOperationSpec extends fixture.FunSpec with AutoRollback with Matchers 
           uws.contribution should equal(7L)
         //uws.stockedCount should equal(3)
         //uws.likedCount should equal(2)
-        case None => fail()
+        case _ => fail()
       }
     }
     it("should be none") { implicit session =>

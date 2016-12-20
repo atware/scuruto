@@ -14,7 +14,7 @@ trait UploadedBaseURL {
           url
         }
       }
-      case None => throw new RuntimeException(s"config: '$configKey' is required.")
+      case _ => throw new RuntimeException(s"config: '$configKey' is required.")
     }
   }
 }

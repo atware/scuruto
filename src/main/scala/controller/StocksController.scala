@@ -29,18 +29,21 @@ class StocksController extends ApplicationController {
     if (createForm.validate()) {
       val articleId = ArticleId(params.getAs[Long]("article_id").get)
       val articleOperation: ArticleOperation = inject[ArticleOperation]
-      articleOperation.get(articleId).map { article =>
-        val stockOperation: StockOperation = inject[StockOperation]
-        val permittedParameters = createParams.permit(createFormStrongParameters: _*)
-        debugLoggingPermittedParameters(permittedParameters)
-        if (!stockOperation.exists(permittedParameters)) {
-          val counter = stockOperation.stock(article, permittedParameters)
-          status = 200
-          counter
-        } else {
-          status = 400
+      articleOperation.get(articleId) match {
+        case Some(article) => {
+          val stockOperation: StockOperation = inject[StockOperation]
+          val permittedParameters = createParams.permit(createFormStrongParameters: _*)
+          debugLoggingPermittedParameters(permittedParameters)
+          if (!stockOperation.exists(permittedParameters)) {
+            val counter = stockOperation.stock(article, permittedParameters)
+            status = 200
+            counter
+          } else {
+            status = 400
+          }
         }
-      } getOrElse (status = 400)
+        case _ => status = 400
+      }
     } else {
       status = 400
     }

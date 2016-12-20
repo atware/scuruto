@@ -100,7 +100,7 @@ class ArticleOperationImpl extends ArticleOperation {
       val tagId = {
         Tag.findByName(tagName) match {
           case Some(tag) => tag.tagId
-          case None => Tag.createWithAttributes('name -> tagName, 'created_at -> DateTime.now)
+          case _ => Tag.createWithAttributes('name -> tagName, 'created_at -> DateTime.now)
         }
       }
       ArticlesTags.createWithAttributes('article_id -> id.value, 'tag_id -> tagId.value)
@@ -141,7 +141,7 @@ class ArticleOperationImpl extends ArticleOperation {
       val tagId = {
         Tag.findByName(tagName) match {
           case Some(tag) => tag.tagId
-          case None => Tag.createWithAttributes('name -> tagName, 'created_at -> DateTime.now)
+          case _ => Tag.createWithAttributes('name -> tagName, 'created_at -> DateTime.now)
         }
       }
       ArticlesTags.createWithAttributes('article_id -> id.value, 'tag_id -> tagId.value)
