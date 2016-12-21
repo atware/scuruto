@@ -1,7 +1,7 @@
 {
   "buildpacks": [
     {
-      "url": "https://github.com/roundrop/heroku-buildpack-skinny"
+      "url": "https://github.com/atware/heroku-buildpack-sharedocs"
     }
   ],
   "addons": [
