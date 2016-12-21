@@ -21,8 +21,8 @@ $ terraform apply
 
 ### Install heroku-buildpack-skinny
 
-You can easily deploy Siita app to Heroku platform with it.
-[jkutner/heroku\-buildpack\-skinny](https://github.com/jkutner/heroku-buildpack-skinny)
+You can easily deploy Sharedocs app to Heroku platform with it.
+[atware/heroku\-buildpack\-sharedocs](https://github.com/atware/heroku-buildpack-sharedocs)
 
 ```shell
 $ heroku buildpacks:set https://github.com/jkutner/heroku-buildpack-skinny
@@ -75,6 +75,6 @@ $ heroku repo:purge_cache -a appname
 
 ```shell
 $ heroku config:add TZ=Asia/Tokyo
-Setting TZ and restarting ⬢ siita-test... done, v20
+Setting TZ and restarting ⬢ sharedocs-test... done, v20
 TZ: Asia/Tokyo
 ```
