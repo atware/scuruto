@@ -11,3 +11,7 @@ require('expose?store!store');
 require('expose?ko!knockout');
 require("imports?define=>false!knockout-jqAutocomplete/js/knockout-jqAutocomplete.js");
 require("featherlight/src/featherlight.js");
+require("expose?_!underscore");
+require("expose?Raphael!raphael");
+require("js-sequence-diagrams/sequence-diagram-min.js");
+require("flowchart.js");

@@ -2,6 +2,12 @@ var sharedocs = {
   'link_target': function link_target(){
     $("a[href^='http']:not([href*='" + location.hostname + "'])").attr('target', '_blank');
   },
+  'sequence_diagram': function sequence_diagram(){
+    $('.sequence').sequenceDiagram({theme: 'simple'}).unwrap().children().unwrap();
+  },
+  'flowchart': function flowchart(){
+    $('.flow').flowChart().unwrap().children().unwrap();
+  },
   'auto_prettify': function auto_prettify(){
     $('pre code').addClass('prettyprint');
     prettyPrint();
@@ -23,6 +29,13 @@ var sharedocs = {
         $a.featherlight(this.src);
       }
     });
+  },
+  'articlify': function articlify(){
+    sharedocs.link_target();
+    sharedocs.sequence_diagram();
+    sharedocs.flowchart();
+    sharedocs.auto_prettify();
+    sharedocs.auto_emojify();
   }
 };
 module.exports = sharedocs;

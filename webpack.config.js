@@ -9,6 +9,9 @@ var FileSystem = require("fs");
 var DIST = Path.join(__dirname, 'src/main/webapp/assets/dist/');
 
 module.exports = {
+    node: {
+        fs: "empty"
+    },
     entry: {
         style: Path.join(__dirname, 'src/main/webapp/WEB-INF/assets/style.js'),
         script: Path.join(__dirname, 'src/main/webapp/WEB-INF/assets/script.js'),

@@ -107,9 +107,7 @@ ${unescape(body)}
 #end
 <script>
 $(function(){
-  sharedocs.link_target();
-  sharedocs.auto_prettify();
-  sharedocs.auto_emojify();
+  sharedocs.articlify();
   #if (loginUser.isDefined)
   notification();
   setInterval("notification()", 1000*60*5);

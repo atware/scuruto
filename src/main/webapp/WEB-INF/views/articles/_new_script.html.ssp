@@ -61,9 +61,7 @@ $(function(){
       }).done(function(data) {
         var json = $.parseJSON(data);
         viewModel.preview(json.html);
-        sharedocs.link_target();
-        sharedocs.auto_prettify();
-        sharedocs.auto_emojify();
+        sharedocs.articlify();
         sharedocs.lightboxfy();
       });
     };
