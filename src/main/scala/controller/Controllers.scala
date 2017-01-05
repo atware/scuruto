@@ -1,7 +1,7 @@
 package controller
 
 import lib.UploadedBaseURL
-import model.typebinder.{ ArticleId, CommentId, UserId }
+import model.typebinder._
 import skinny._
 import skinny.controller.AssetsController
 
@@ -25,6 +25,9 @@ object Controllers {
     if (login.providor.isApp) {
       signup.mount(ctx)
       recover.mount(ctx)
+    }
+    if (upload.destination.isLocal) {
+      uploadAssets.mount(ctx)
     }
   }
 
@@ -200,6 +203,10 @@ object Controllers {
   // uploads
   def upload = UploadControllerFactory.create
   val uploadedFileBaseUrl: UploadedBaseURL = upload.uploadedFileBaseUrl
+
+  object uploadAssets extends _root_.controller.upload.LocalUploadAssetsController with Routes {
+    val fileUrl = get(s"${uploadedFileBaseUrl.value}*")(file).as('file)
+  }
 
   object search extends SearchController with Routes {
 

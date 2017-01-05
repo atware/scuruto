@@ -13,6 +13,8 @@ import scala.util.Try
 
 object LocalUploadController extends UploadController {
 
+  override def destination: UploadDestination = UploadDestination("local")
+
   // --------------
   // sign
   override def sign: String = {

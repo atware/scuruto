@@ -1,12 +1,14 @@
 package controller
 
-import lib.UploadedBaseURL
+import lib._
 import skinny._
 import skinny.controller.feature.FileUploadFeature
 import skinny.routing.Routes
 import skinny.validator._
 
 abstract class UploadController extends SkinnyServlet with FileUploadFeature with ControllerBase with Routes {
+
+  def destination: UploadDestination
 
   // --------------
   // policies

@@ -14,6 +14,8 @@ import skinny._
 
 object S3UploadController extends UploadController {
 
+  override def destination: UploadDestination = UploadDestination("s3")
+
   // --------------
   // sign
   val AWS_ACCESS_KEY = "AWS_ACCESS_KEY"
