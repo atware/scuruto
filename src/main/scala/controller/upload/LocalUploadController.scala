@@ -60,7 +60,7 @@ object LocalUploadController extends UploadController {
               val key = policyDocument.conditions.get("key")
               val contentType = policyDocument.conditions.get("Content-Type")
               if (params.get("key") == key && params.get("Content-Type") == contentType) {
-                SkinnyConfig.stringConfigValue("upload.local.dirBase") match {
+                SkinnyConfig.stringConfigValue("upload.local.baseDir") match {
                   case Some(baseDir) => {
                     Try {
                       file.write(new File(baseDir, key.get.toString))
