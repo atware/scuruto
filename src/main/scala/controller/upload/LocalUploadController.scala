@@ -3,9 +3,10 @@ package controller.upload
 import java.io.File
 
 import controller.UploadController
-import lib.{ SessionAttribute, Sha1Digest, UploadedBaseURL }
+import lib._
 import model.Upload
-import org.joda.time.{ DateTime, LocalDateTime }
+import model.typebinder.UserId
+import org.joda.time._
 import skinny.SkinnyConfig
 
 import scala.util.Try
@@ -15,10 +16,10 @@ object LocalUploadController extends UploadController {
   // --------------
   // sign
   override def sign: String = {
-    val userId = policiesParams.getAs[Long]("user_id").get
+    val userId = policiesParams.getAs[UserId]("user_id").get
     val filename = params("filename")
     val ext = filename.split('.').last
-    val seed = userId + "_" + DateTime.now().toString + "_" + filename
+    val seed = userId.value + "_" + DateTime.now().toString + "_" + filename
     val key = new Sha1Digest(seed).digestString + "." + ext
 
     val policyDocument = new PolicyDocument(
@@ -29,7 +30,7 @@ object LocalUploadController extends UploadController {
 
     // add to uploads table
     Upload.createWithAttributes(
-      'user_id -> userId,
+      'user_id -> userId.value,
       'original_filename -> filename,
       'filename -> key
     )

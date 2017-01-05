@@ -4,11 +4,12 @@ import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 import _root_.controller.UploadController
-import lib.{ Sha1Digest, UploadedBaseURL }
+import lib._
 import model.Upload
+import model.typebinder.UserId
 import org.apache.commons.codec.binary.Base64
 import org.joda.time.format.DateTimeFormat
-import org.joda.time.{ DateTime, DateTimeZone }
+import org.joda.time._
 import skinny._
 
 object S3UploadController extends UploadController {
@@ -18,10 +19,10 @@ object S3UploadController extends UploadController {
   val AWS_ACCESS_KEY = "AWS_ACCESS_KEY"
   val AWS_SECRET_KEY = "AWS_SECRET_KEY"
   def sign: String = {
-    val userId: Option[Long] = policiesParams.getAs[Long]("user_id")
+    val userId = policiesParams.getAs[UserId]("user_id").get
     val filename = params("filename")
     val ext = filename.split('.').last
-    val seed = userId + "_" + DateTime.now().toString + "_" + filename
+    val seed = userId.value + "_" + DateTime.now().toString + "_" + filename
     val baseDir = SkinnyConfig.stringConfigValue("upload.s3.baseDir").getOrElse("")
     val path = baseDir + new Sha1Digest(seed).digestString + "." + ext
 
@@ -42,7 +43,7 @@ object S3UploadController extends UploadController {
 
     // add to uploads table
     Upload.createWithAttributes(
-      'user_id -> userId,
+      'user_id -> userId.value,
       'original_filename -> filename,
       'filename -> path
     )
