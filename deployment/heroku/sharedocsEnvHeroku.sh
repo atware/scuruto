@@ -15,6 +15,8 @@ export SITE_TITLE=Sharedocs
 
 export LOGIN_PROVIDOR=app
 
-export UPLOAD_DESTINATION=s3
+export UPLOAD_DESTINATION=local
+export LOCAL_UPLOAD_BASE_DIR="/tmp"
+export LOCAL_UPLOAD_BASE_URL="/upload/file"
 
 export SKINNY_ENV=heroku
