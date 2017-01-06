@@ -6,8 +6,8 @@ An internal knowledge sharing app.
 
 :cloud: [Sharedocs Demo Site](https://sharedocs-demo.herokuapp.com/)
 
-- :bust_in_silhouette: `demo1@sharedocs.in` / `demo1`
-- :bust_in_silhouette: `demo2@sharedocs.in` / `demo2`
+- :bust_in_silhouette: `demo1@example.com` / `demo1`
+- :bust_in_silhouette: `demo2@example.com` / `demo2`
 
 or
 
