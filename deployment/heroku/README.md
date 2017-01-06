@@ -2,7 +2,7 @@
 
 ## Instant Run
 
-[![Heroku Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/atware/sharedocs/tree/master)
+[![Heroku Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 ----
 
@@ -19,13 +19,13 @@ $ terraform plan
 $ terraform apply
 ```
 
-### Install heroku-buildpack-skinny
+### Install heroku-buildpack-sharedocs
 
 You can easily deploy Sharedocs app to Heroku platform with it.
 [atware/heroku\-buildpack\-sharedocs](https://github.com/atware/heroku-buildpack-sharedocs)
 
 ```shell
-$ heroku buildpacks:set https://github.com/jkutner/heroku-buildpack-skinny
+$ heroku buildpacks:set https://github.com/atware/heroku-buildpack-sharedocs
 ```
 
 Next,
@@ -36,12 +36,7 @@ git push to heroku, then run build Sharedocs application.
 You must set the environment variables to heroku,
 
 ```shell
-$ heroku config:set AWS_ACCESS_KEY=__some_random_string__
-$ heroku config:set AWS_SECRET_KEY=__some_random_string__
-$ heroku config:set AWS_S3_BUCKET=bucketname
-$ heroku config:set AWS_S3_BASE_DIR=images/
-$ heroku config:set AWS_S3_BASE_URL=https://[bucketname].s3.amazonaws.com/
-$ heroku config:set LOGIN_PERMITTED_EMAIL_DOMAINS=yyyy.com,z.yyyy.com(comma-separated)
+$ heroku config:set LOGIN_PERMITTED_EMAIL_DOMAINS=your-team.com
 
 ```
 
