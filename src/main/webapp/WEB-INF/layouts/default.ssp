@@ -94,7 +94,7 @@ ${unescape(body)}
 <hr />
 <div class="container">
   <footer>
-    <p class="footer">Powered by <a href="#"><img src="/assets/img/logowtnd_s.png"></a></p>
+    <p class="footer">Powered by <a href="https://github.com/atware/sharedocs"><img src="/assets/img/logowtnd_s.png"></a></p>
   </footer>
 </div>
 
