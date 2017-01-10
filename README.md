@@ -1,5 +1,7 @@
 <img src="https://github.com/atware/sharedocs/blob/master/src/main/webapp/assets/img/logowtnd.png?raw=true" alt="Sharedocs" height="100">
 
+<img src="https://github.com/atware/sharedocs/raw/master/misc/responsive.png?raw=true" alt="Responsive">
+
 # Sharedocs
 
 An internal knowledge sharing app.
