@@ -1,0 +1,16 @@
+language: scala
+sudo: false
+scala:
+- 2.12.1
+jdk:
+- oraclejdk8
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/boot/scala-$TRAVIS_SCALA_VERSION
+script: 
+  - cp sharedocsEnv-template sharedocsEnv
+  - sed -i 's/\*\*\*\*\*\*\*\*/sharedocs/g' sharedocsEnv
+  - ./sharedocs test
+  - find $HOME/.sbt -name "*.lock" | xargs rm -f
+  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm -f
