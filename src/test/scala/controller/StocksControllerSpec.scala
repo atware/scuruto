@@ -45,7 +45,23 @@ class StocksControllerSpec extends FunSpec with ControllerSpec with TestDBSettin
       val loginUser = FactoryGirl(User).withVariables('userId -> 1).create()
       prepareSessionValue(SessionAttribute.LoginUser.key, loginUser)
       FactoryGirl(Article).withVariables('articleId -> 1).create()
-      FactoryGirl(Stock).withVariables('stockId -> 1, 'userId -> 1, 'articleId -> 1)
+      FactoryGirl(Stock).withVariables('stockId -> 1, 'userId -> 1, 'articleId -> 1).create()
+
+      controller.prepareParams("article_id" -> "1")
+      controller.unstock
+
+      Stock.findById(1) shouldBe None
+      controller.status should equal(200)
+    }
+  }
+
+  describe("unstock ignore") {
+    it("should ignore unstock when not stocked") {
+      implicit val controller = createMockController
+
+      val loginUser = FactoryGirl(User).withVariables('userId -> 1).create()
+      prepareSessionValue(SessionAttribute.LoginUser.key, loginUser)
+      FactoryGirl(Article).withVariables('articleId -> 1).create()
 
       controller.prepareParams("article_id" -> "1")
       controller.unstock
