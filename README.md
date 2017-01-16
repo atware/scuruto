@@ -2,7 +2,7 @@
 
 <img src="https://github.com/atware/sharedocs/raw/master/misc/responsive.png?raw=true" alt="Responsive">
 
-# Sharedocs
+# Sharedocs [![Build Status](https://travis-ci.org/atware/sharedocs.svg?branch=master)](https://travis-ci.org/atware/sharedocs)
 
 An internal knowledge sharing app.
 
