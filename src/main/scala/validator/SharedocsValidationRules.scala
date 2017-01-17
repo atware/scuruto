@@ -6,7 +6,7 @@ import scala.language.reflectiveCalls
 
 object validChar extends ValidationRule {
   def name = "validChar"
-  override def isValid(v: Any): Boolean = isEmpty(v) || !v.toString.toCharArray.exists(_.isSurrogate)
+  override def isValid(v: Any): Boolean = isEmpty(v) || !v.toString.exists(_.isSurrogate)
 }
 
 object validChars extends ValidationRule {
@@ -15,7 +15,7 @@ object validChars extends ValidationRule {
     s match {
       case seq: Seq[Any] =>
         seq.forall { v =>
-          isEmpty(v) || !v.toString.toCharArray.exists(_.isSurrogate)
+          isEmpty(v) || !v.toString.exists(_.isSurrogate)
         }
       case _ =>
         false
