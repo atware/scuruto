@@ -4,7 +4,6 @@ import com.github.roundrop.scalikejdbcext.sqlsyntax._
 import model.typebinder.TagId
 import org.joda.time._
 import scalikejdbc._
-import skinny.Pagination
 import skinny.orm._
 import skinny.orm.feature._
 

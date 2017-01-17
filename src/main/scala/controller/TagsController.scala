@@ -1,7 +1,5 @@
 package controller
 
-import model.typebinder.TagId
-import model.{ Article, Tag }
 import operation._
 
 class TagsController extends ApplicationController {
