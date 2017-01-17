@@ -13,7 +13,7 @@ val appOrganization = "jp.co.atware"
 val appName = "sharedocs"
 val appVersion = "1.0.0-SNAPSHOT"
 
-val skinnyVersion = "2.3.1"
+val skinnyVersion = "2.3.3"
 val theScalaVersion = "2.11.8" // 2.12.0 is available if you don't mind if `skinny console` doesn't work ;(
 val jettyVersion = "9.3.14.v20161028"
 
@@ -34,7 +34,7 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.skinny-framework"    %% "skinny-framework"     % skinnyVersion,
     "org.skinny-framework"    %% "skinny-assets"        % skinnyVersion,
     "org.skinny-framework"    %% "skinny-task"          % skinnyVersion,
-    "org.skinny-framework"    %  "skinny-logback"       % "1.0.9",
+    "org.skinny-framework"    %  "skinny-logback"       % "1.0.10",
     "org.skinny-framework"    %% "skinny-oauth2-controller" % skinnyVersion,
     "org.skinny-framework"    %% "skinny-scaldi"        % skinnyVersion,
     "com.h2database"          %  "h2"                   % "1.4.193",
@@ -45,8 +45,8 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.eclipse.jetty"       %  "jetty-plus"           % jettyVersion    % "container",
     "javax.servlet"           %  "javax.servlet-api"    % "3.1.0"         % "container;provided;test",
     "org.pegdown"             %  "pegdown"              % "1.6.0",
-    "org.scilab.forge"        %  "jlatexmath"           % "1.0.3",
-    "com.github.t3hnar"       %% "scala-bcrypt"         % "2.6",
+    "org.scilab.forge"        %  "jlatexmath"           % "1.0.4",
+    "com.github.t3hnar"       %% "scala-bcrypt"         % "3.0",
     "com.github.roundrop"     %% "scalikejdbc-sqlsyntax-ext" % "1.1.0"
   ),
   // ------------------------------
