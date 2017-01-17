@@ -22,7 +22,7 @@ class Markdown private (val source: String) {
   def raw: String = source
 
   def html: String = {
-    val processor = new PegDownProcessor(Extensions.ALL, PegDownPlugins.builder().withPlugin(classOf[TexParser]).build())
+    val processor = new PegDownProcessor(Extensions.ALL | Extensions.SUPPRESS_HTML_BLOCKS, PegDownPlugins.builder().withPlugin(classOf[TexParser]).build())
     val serializer = new ToHtmlSerializer(new LinkRenderer(), Array[ToHtmlSerializerPlugin](new TexSerializer()).toList)
 
     serializer.toHtml(processor.parseMarkdown(source.toCharArray))
