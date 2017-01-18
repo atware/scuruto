@@ -10,7 +10,7 @@ class StockSpec extends fixture.FunSpec with AutoRollback with Matchers with Tes
   var uid1, uid2, uid3, authorId: UserId = _
   var aid1, aid2, aid3, aid4: ArticleId = _
 
-  override def fixture(implicit session: DBSession) {
+  override def fixture(implicit session: DBSession): Unit = {
     val u = User.column
     uid1 = User.createWithNamedValues(u.name -> "hoge1", u.email -> "hoge1@moge.jp", u.locale -> "hg", u.isActive -> true)
     uid2 = User.createWithNamedValues(u.name -> "hoge2", u.email -> "hoge2@moge.jp", u.locale -> "mg", u.isActive -> true)

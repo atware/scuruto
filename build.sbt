@@ -72,7 +72,7 @@ DBSettings.initialize()
   logBuffered in Test := false,
   javaOptions in Test ++= Seq("-Dskinny.env=test"),
   fork in Test := true,
-  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
+  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfuture"),
   ideaExcludeFolders := Seq(".idea", ".idea_modules", "db", "target", "task/target", "build", "standalone-build", "node_modules")
 ) ++ scalariformSettings // If you don't prefer auto code formatter, remove this line and sbt-scalariform
 

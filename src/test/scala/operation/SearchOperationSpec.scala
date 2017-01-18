@@ -8,7 +8,7 @@ import scalikejdbc.scalatest.AutoRollback
 class SearchOperationSpec extends fixture.FunSpec with AutoRollback with Matchers with TestDBSettings {
   val operation = new SearchOperationImpl
 
-  override def fixture(implicit session: DBSession) {
+  override def fixture(implicit session: DBSession): Unit = {
     val u = User.column
     val uid1 = User.createWithNamedValues(u.name -> "苗字 名前1", u.email -> "hoge1@moge.jp", u.locale -> "ja", u.isActive -> true)
 

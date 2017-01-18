@@ -12,7 +12,7 @@ class NotificationOperationSpec extends fixture.FunSpec with AutoRollback with M
   val operation = new NotificationOperationImpl
 
   var uid1, uid2: UserId = _
-  override def fixture(implicit session: DBSession) {
+  override def fixture(implicit session: DBSession): Unit = {
     val u = User.column
     uid1 = User.createWithNamedValues(u.name -> "name1", u.email -> "hoge1@moge.jp", u.locale -> "ja")
     uid2 = User.createWithNamedValues(u.name -> "name2", u.email -> "hoge2@moge.jp", u.locale -> "ja", u.imageUrl -> "http://example.com/a.png")
