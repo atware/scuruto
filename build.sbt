@@ -15,7 +15,7 @@ val appVersion = "1.0.0-SNAPSHOT"
 
 val skinnyVersion = "2.3.3"
 val theScalaVersion = "2.11.8" // 2.12.0 is available if you don't mind if `skinny console` doesn't work ;(
-val jettyVersion = "9.3.14.v20161028"
+val jettyVersion = "9.3.15.v20161220"
 
 lazy val baseSettings = servletSettings ++ Seq(
   organization := appOrganization,
@@ -38,7 +38,7 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.skinny-framework"    %% "skinny-oauth2-controller" % skinnyVersion,
     "org.skinny-framework"    %% "skinny-scaldi"        % skinnyVersion,
     "com.h2database"          %  "h2"                   % "1.4.193",
-    "org.postgresql"          %  "postgresql"           % "9.4-1206-jdbc42",
+    "org.postgresql"          %  "postgresql"           % "9.4.1212",
     "org.skinny-framework"    %% "skinny-factory-girl"  % skinnyVersion   % "test",
     "org.skinny-framework"    %% "skinny-test"          % skinnyVersion   % "test",
     "org.eclipse.jetty"       %  "jetty-webapp"         % jettyVersion    % "container",
@@ -47,7 +47,7 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.pegdown"             %  "pegdown"              % "1.6.0",
     "org.scilab.forge"        %  "jlatexmath"           % "1.0.4",
     "com.github.t3hnar"       %% "scala-bcrypt"         % "3.0",
-    "com.github.roundrop"     %% "scalikejdbc-sqlsyntax-ext" % "1.1.0"
+    "com.github.roundrop"     %% "scalikejdbc-sqlsyntax-ext" % "1.1.1"
   ),
   // ------------------------------
   // for ./skinnny console
