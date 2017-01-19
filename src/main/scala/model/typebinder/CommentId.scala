@@ -7,6 +7,5 @@ case class CommentId(value: Long) {
 }
 
 object CommentId {
-  implicit val longTypeBinder: TypeBinder[CommentId] = TypeBinder.long.map(CommentId.apply)
   implicit val converter: Binders[CommentId] = Binders.long.xmap(CommentId.apply, _.value)
 }

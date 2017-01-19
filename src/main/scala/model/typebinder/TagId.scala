@@ -7,6 +7,5 @@ case class TagId(value: Long) {
 }
 
 object TagId {
-  implicit val longTypeBinder: TypeBinder[TagId] = TypeBinder.long.map(TagId.apply)
   implicit val converter: Binders[TagId] = Binders.long.xmap(TagId.apply, _.value)
 }
