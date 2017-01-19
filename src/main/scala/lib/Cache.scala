@@ -119,7 +119,7 @@ class Cache[K, V](
   /**
    * Remove all keys and values from the cache
    */
-  def clear() {
+  def clear(): Unit = {
     cache.clear()
   }
 

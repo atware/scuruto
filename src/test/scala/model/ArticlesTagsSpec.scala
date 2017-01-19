@@ -10,7 +10,7 @@ class ArticlesTagsSpec extends fixture.FunSpec with AutoRollback with Matchers w
   var aid2: ArticleId = _
   var tid3: TagId = _
 
-  override def fixture(implicit session: DBSession) {
+  override def fixture(implicit session: DBSession): Unit = {
     val u = User.column
     val uid1 = User.createWithNamedValues(u.name -> "苗字 名前1", u.email -> "hoge1@moge.jp", u.locale -> "ja", u.isActive -> true)
     val a = Article.column

@@ -16,7 +16,7 @@ class CommentOperationSpec extends fixture.FunSpec with AutoRollback with Matche
   var uid1, uid2, uid3: UserId = _
   var aid1, aid2: ArticleId = _
   var cid3: CommentId = _
-  override def fixture(implicit session: DBSession) {
+  override def fixture(implicit session: DBSession): Unit = {
     val u = User.column
     uid1 = User.createWithNamedValues(u.name -> "苗字 名前1", u.email -> "hoge1@moge.jp", u.locale -> "ja", u.isActive -> true)
     uid2 = User.createWithNamedValues(u.name -> "苗字 名前2", u.email -> "hoge2@moge.jp", u.locale -> "ja", u.isActive -> true)
