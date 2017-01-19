@@ -1,0 +1,37 @@
+version: '3'
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile-db
+    volumes:
+      - sharedocs-db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: sharedocs
+      POSTGRES_PASSWORD: sharedocs
+      POSTGRES_DB: sharedocs
+      POSTGRES_INITDB_ARGS: "-E UTF8 -T template0 --lc-collate=ja_JP.UTF-8 --lc-ctype=ja_JP.UTF-8"
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile-app
+    ports:
+      - 8080:8080
+    links:
+      - db
+    volumes:
+      - sharedocs-app-upload:/var/sharedocs/upload
+    environment:
+      DATABASE_HOST: db:5432
+      DATABASE_DBNAME: sharedocs
+      DATABASE_USER: sharedocs
+      DATABASE_PASSWORD: sharedocs
+      SITE_NAME: Sharedocs:local
+      SITE_TITLE: Sharedocs
+      LOGIN_PROVIDOR: app
+      UPLOAD_DESTINATION: local
+      LOCAL_UPLOAD_BASE_DIR: /var/sharedocs/upload
+      LOCAL_UPLOAD_BASE_URL: /static/uploads
+volumes:
+  sharedocs-db-data:
+  sharedocs-app-upload:
