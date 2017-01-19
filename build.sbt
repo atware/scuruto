@@ -11,7 +11,7 @@ import scala.language.postfixOps
 
 val appOrganization = "jp.co.atware"
 val appName = "sharedocs"
-val appVersion = "1.0.0-SNAPSHOT"
+val appVersion = "1.0.1-SNAPSHOT"
 
 val skinnyVersion = "2.3.3"
 val theScalaVersion = "2.11.8" // 2.12.0 is available if you don't mind if `skinny console` doesn't work ;(
