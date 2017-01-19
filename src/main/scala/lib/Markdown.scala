@@ -14,7 +14,7 @@ import org.pegdown.ast.{ AbstractNode, Node, Visitor }
 import org.pegdown.plugins.{ BlockPluginParser, InlinePluginParser, PegDownPlugins, ToHtmlSerializerPlugin }
 import org.scilab.forge.jlatexmath.{ ParseException, TeXConstants, TeXFormula }
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import scala.util.Try
 
 class Markdown private (val source: String) {
@@ -23,7 +23,7 @@ class Markdown private (val source: String) {
 
   def html: String = {
     val processor = new PegDownProcessor(Extensions.ALL | Extensions.SUPPRESS_HTML_BLOCKS, PegDownPlugins.builder().withPlugin(classOf[TexParser]).build())
-    val serializer = new ToHtmlSerializer(new LinkRenderer(), Array[ToHtmlSerializerPlugin](new TexSerializer()).toList)
+    val serializer = new ToHtmlSerializer(new LinkRenderer(), List[ToHtmlSerializerPlugin](new TexSerializer()).asJava)
 
     serializer.toHtml(processor.parseMarkdown(source.toCharArray))
   }
