@@ -1,17 +1,8 @@
 <img src="https://github.com/atware/sharedocs/blob/master/src/main/webapp/assets/img/logowtnd.png?raw=true" alt="Sharedocs" height="100">
 
-<img src="https://github.com/atware/sharedocs/raw/master/misc/responsive.png?raw=true" alt="Responsive">
-
 # Sharedocs [![Build Status](https://travis-ci.org/atware/sharedocs.svg?branch=master)](https://travis-ci.org/atware/sharedocs)
 
 An internal knowledge sharing app.
-
-:cloud: [Sharedocs Demo Site](https://sharedocs-demo.herokuapp.com/)
-
-- :bust_in_silhouette: `demo1@example.com` / `demo1`
-- :bust_in_silhouette: `demo2@example.com` / `demo2`
-
-or
 
 [![Heroku Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
@@ -176,7 +167,7 @@ CORS Configuration example:
 ```
 
 ### Customize SharedocsEnv on docker environment
-If you want customize SharedocsEnv. You can customize environment valiables in docker-compose.yml .
+If you want customize SharedocsEnv, you can customize environment valiables in docker-compose.yml .
 
 #### Example
 * customize docker-compose.yml
