@@ -15,6 +15,14 @@ or
 
 [![Heroku Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
+or
+
+[<img src="https://www.docker.com/sites/default/files/legal/small_h-dark.png" height="40" />](https://www.docker.com/)
+
+1. Install [<img src="https://www.docker.com/sites/default/files/legal/small_h-dark.png" height="40" />](https://www.docker.com/)
+1. Run ```docker-compose up```
+1. access [http://localhost:8080/](http://localhost:8080/)
+
 ## System Requirements
 - Scala 2.11 or 2.12
 - PostgreSQL 9.5.x or 9.6.x
@@ -167,6 +175,17 @@ CORS Configuration example:
 </CORSConfiguration>
 ```
 
+### Customize SharedocsEnv on docker environment
+If you want customize SharedocsEnv. You can customize environment valiables in docker-compose.yml .
+
+#### Example
+* customize docker-compose.yml
+```
+app:
+  ...
+  environment:
+    LOGIN_PERMITTED_EMAIL_DOMAINS: "yourcompany.co.jp"
+```
 
 ## Lisence
 
