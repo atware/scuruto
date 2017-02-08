@@ -1,5 +1,6 @@
 package model
 
+import lib.ldap.LDAPUser
 import model.typebinder._
 import org.joda.time._
 import scalikejdbc._
@@ -146,4 +147,16 @@ object User extends SkinnyCRUDMapperWithId[UserId, User] with TimestampsFeatureW
   def idToRawValue(id: UserId) = id.value
   def rawValueToId(value: Any) = UserId(value.toString.toLong)
   override def extract(rs: WrappedResultSet, u: ResultName[User]): User = autoConstruct(rs, u, "articles")
+
+  /* for LDAP login feature */
+
+  def createFromLdap(ldapUser: LDAPUser)(implicit s: DBSession = autoSession): UserId = {
+    User.createWithAttributes(
+      'name -> ldapUser.name,
+      'email -> ldapUser.email,
+      'image_url -> ldapUser.imageUrl,
+      'locale -> "ja"
+    )
+  }
+
 }

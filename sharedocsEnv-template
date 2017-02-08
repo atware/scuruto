@@ -14,6 +14,14 @@ export LOGIN_PROVIDOR=google
 export LOGIN_PERMITTED_EMAIL_DOMAINS=example.com
 export SKINNY_OAUTH2_CLIENT_ID_GOOGLE="*************************"
 export SKINNY_OAUTH2_CLIENT_SECRET_GOOGLE="***********************"
+export LDAP_HOST="***"
+export LDAP_PORT=389
+export LDAP_BASE_DN="***"
+export LDAP_BIND_DN="***"
+export LDAP_BIND_PASSWORD="***"
+export LDAP_USER_NAME_ATTRIBUTE=uid
+export LDAP_MAIL_ADDRESS_ATTRIBUTE=mail
+
 
 export UPLOAD_DESTINATION=s3
 

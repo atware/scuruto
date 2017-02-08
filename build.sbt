@@ -47,7 +47,9 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.pegdown"             %  "pegdown"              % "1.6.0",
     "org.scilab.forge"        %  "jlatexmath"           % "1.0.4",
     "com.github.t3hnar"       %% "scala-bcrypt"         % "3.0",
-    "com.github.roundrop"     %% "scalikejdbc-sqlsyntax-ext" % "1.1.1"
+    "com.github.roundrop"     %% "scalikejdbc-sqlsyntax-ext" % "1.1.1",
+    "com.unboundid"           %  "unboundid-ldapsdk"    % "2.3.8", // for LDAP
+    "org.zapodot"             %  "embedded-ldap-junit"  % "0.5.2"         % "test" // for LDAP TEST
   ),
   // ------------------------------
   // for ./skinnny console
