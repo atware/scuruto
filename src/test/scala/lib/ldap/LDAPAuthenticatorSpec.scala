@@ -12,11 +12,11 @@ class LDAPAuthenticatorSpec extends FunSpec with Matchers {
 
   private def embeddedLdapRule() = EmbeddedLdapRuleBuilder.newInstance()
     .bindingToAddress("127.0.0.1")
-    .bindingToPort(389)
+    .bindingToPort(3890)
     .importingLdifs("lib/ldap/ldap_test.ldif").build()
 
   private def mkSetting(bindPassword: String): LDAPSetting = {
-    LDAPSetting("127.0.0.1", 389, Plain, "dc=example,dc=com", "cn=admin,ou=Users,dc=example,dc=com", bindPassword, "uid", "mail")
+    LDAPSetting("127.0.0.1", 3890, Plain, "dc=example,dc=com", "cn=admin,ou=Users,dc=example,dc=com", bindPassword, "uid", "mail")
   }
   // trick for using junit4 rule
   def withRule[T <: TestRule](rule: T)(testCode: T => Any): Unit = {
