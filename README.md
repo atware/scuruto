@@ -62,6 +62,7 @@ Setup PostgreSQL server on your machine and create database.
 | LOGIN_PERMITTED_EMAIL_DOMAINS | email domains to allow to login(comma-separeted)<br />**allow to login any email address if empty** | "yourcompany.co.jp" |
 | SKINNY_OAUTH2_CLIENT_ID_GOOGLE | (if LOGIN_PROVIDOR==google)<br />Google OAuth2 API Key | "abcdefgabcdefg" |
 | SKINNY_OAUTH2_CLIENT_SECRET_GOOGLE | (if LOGIN_PROVIDOR==google)<br />Google OAuth2 Secret Key | "abcdefgabcdefgabcdefg" |
+| LDAP_TYPE | (if LOGIN_PROVIDOR==ldap)<br /> `plain` - use LDAP <br/> `ssl` - use LDAPS <br/> `tls` use STARTTLS  | "plain" |
 | LDAP_HOST | (if LOGIN_PROVIDOR==ldap)<br />LDAP host name | "xxx.xx.xxx.xxx" |
 | LDAP_PORT | (if LOGIN_PROVIDOR==ldap)<br />LDAP port | 389 |
 | LDAP_BASE_DN | (if LOGIN_PROVIDOR==ldap)<br />Top level DN of your LDAP directory tree (used for user search)| "dc=example,dc=com" |
@@ -69,6 +70,7 @@ Setup PostgreSQL server on your machine and create database.
 | LDAP_BIND_PASSWORD | (if LOGIN_PROVIDOR==ldap)<br />Password for Bind DN account | "password" |
 | LDAP_USER_NAME_ATTRIBUTE | (if LOGIN_PROVIDOR==ldap)<br />User name attribute of LDAP. This is used as username in this application. | "uid" or "sAMAccountName"|
 | LDAP_MAIL_ADDRESS_ATTRIBUTE | (if LOGIN_PROVIDOR==ldap)<br />Mail address attribute of LDAP. This is used as email in this application. | "mail" or "userPrincipalName" |
+| LDAP_KEY_STORE | (if LOGIN_PROVIDOR==ldap)<br /> Path to the Java keystore. if empty, use JVM default. In generally, this needs when TLS uses.| "/var/xx/cacerts" |
 | UPLOAD_DESTINATION | image file upload destination<br />`local` - upload to local disk<br />`s3` - upload to Amazon S3<br />*default is `local`* | "s3" |
 | LOCAL_UPLOAD_BASE_DIR | (if UPLOAD_DESTINATION==local)<br />base directory to upload image file | "/tmp" |
 | LOCAL_UPLOAD_BASE_URL | (if UPLOAD_DESTINATION==local)<br />base url to access uploaded image file | "/static/uploads" |

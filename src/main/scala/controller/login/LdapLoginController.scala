@@ -26,7 +26,8 @@ object LdapLoginController extends LoginController with LoggerProvider {
     bindPassword = SkinnyConfig.stringConfigValue("login.ldap.bindPassword").get,
     baseDN = SkinnyConfig.stringConfigValue("login.ldap.baseDN").get,
     userNameAttribute = SkinnyConfig.stringConfigValue("login.ldap.userNameAttribute").get,
-    mailAddressAttribute = SkinnyConfig.stringConfigValue("login.ldap.mailAddressAttribute").get
+    mailAddressAttribute = SkinnyConfig.stringConfigValue("login.ldap.mailAddressAttribute").get,
+    keyStore = SkinnyConfig.stringConfigValue("login.ldap.keyStore").filter(v => v.trim().length > 0)
   )
 
   override protected def processLogin(): Any = {
