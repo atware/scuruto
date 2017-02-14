@@ -1,0 +1,36 @@
+#import(controller.Controllers)
+<%@val s: skinny.Skinny %>
+<%@val keyAndErrorMessages: skinny.KeyAndErrorMessages %>
+<%@val ref: Option[String] %>
+<p><span class="glyphicon glyphicon-lock" style="margin-right: 6px;"></span><span class="font-large">${s.i18n.get("login.header")}</span></p>
+#for (w <- s.flash.warn)
+  <p class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> ${w}</p>
+#end
+<div>
+  <form action="${s.url(Controllers.login.loginUrl, 'ref -> ref)}" method="post">
+    ${unescape(s.csrfHiddenInputTag)}
+    <div class="form-group">
+      <input type="text" name="username" value="${s.params.getAs[String]("username")}" class="form-control
+        input-lg" placeholder="${s.i18n.get("login.password.label.username")}">
+      #if (keyAndErrorMessages.hasErrors("email"))
+        <div class="col-xs-12 has-error">
+        #for (error <- keyAndErrorMessages.getErrors("username"))
+          <label class="control-label">${error}</label>
+        #end
+        </div>
+      #end
+    </div>
+    <div class="form-group">
+      <input type="password" name="password" class="form-control input-lg" id="password" placeholder="${s.i18n.get("login.password.label.password")}">
+      #if (keyAndErrorMessages.hasErrors("password"))
+        <div class="col-xs-12 has-error">
+        #for (error <- keyAndErrorMessages.getErrors("password"))
+          <label class="control-label">${error}</label>
+        #end
+        </div>
+      #end
+    </div>
+    <button type="submit" class="btn-lg btn-primary center-block">${s.i18n.get("login.ldap.title")}</button>
+  </form>
+  <hr />
+</div>
