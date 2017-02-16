@@ -1,10 +1,19 @@
 package lib
 
+import skinny.SkinnyEnv
+
 import scala.io.Source
 
 object AssetsHelper {
-  val basePath = "src/main/webapp/assets/dist"
   val fileName = "version.txt"
 
-  val hash = Source.fromFile(s"${basePath}/${fileName}").mkString
+  val hash = {
+    if (SkinnyEnv.isDevelopment() || SkinnyEnv.isTest()) {
+      val basePath = "src/main/webapp/assets/dist"
+      Source.fromFile(s"${basePath}/${fileName}").mkString
+    } else {
+      val basePath = "assets/dist"
+      Source.fromInputStream(getClass.getClassLoader.getResourceAsStream(s"${basePath}/${fileName}")).mkString
+    }
+  }
 }
