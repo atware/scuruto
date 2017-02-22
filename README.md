@@ -20,32 +20,44 @@ or
 
 ## Setup for Development Environment
 
-### Setup PostgreSQL
+### Setup in one go
+
+#### mac/*unix
+
+    $ ./sharedocs setup
+
+#### Windows
+
+*Currently not supported*
+
+### Setup in steps
+
+#### Setup PostgreSQL
 
 Setup PostgreSQL server on your machine and create database.
 
     $ createuser -P sharedocs
     $ createdb -E UTF8 -T template0 --lc-collate=ja_JP.UTF-8 --lc-ctype=ja_JP.UTF-8 sharedocs
 
-### Prepare Tables
+#### Prepare Tables
 
-#### mac/*nix
+##### mac/*nix
 
     ./sharedocs db:migrate
 
-#### Windows
+##### Windows
 
-    ./sharedocs.bat db:migrate
+    sharedocs.bat db:migrate
 
-### Set Environment Variables to sharedocsEnv script
+#### Set Environment Variables to sharedocsEnv script
 
-#### mac/*nix
+##### mac/*nix
 
     cp sharedocsEnv-template sharedocsEnv
 
-#### Windows
+##### Windows
 
-    cp sharedocsEnv-template.bat sharedocsEnv.bat
+    copy sharedocsEnv-template.bat sharedocsEnv.bat
 
 ##### Environment Variables
 
@@ -80,15 +92,15 @@ Setup PostgreSQL server on your machine and create database.
 | AWS_S3_BASE_DIR | (if UPLOAD_DESTINATION==s3)<br />base pash to upload image file | "images/" |
 | AWS_S3_BASE_URL | (if UPLOAD_DESTINATION==s3)<br />base url to access uploaded image file | "https://xxxxxxxx.s3.amazonaws.com/" |
 
-### Run Application
+#### Run Application
 
-#### mac/*nix
+##### mac/*nix
 
     ./sharedocs run
 
-#### Windows
+##### Windows
 
-    ./sharedocs.bat run
+    sharedocs.bat run
 
 
 ## Additional setup for Development Environment
