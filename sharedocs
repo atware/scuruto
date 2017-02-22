@@ -7,6 +7,7 @@ DEFAULT_DATABASE_HOST=localhost:5432
 DEFAULT_DATABASE_USER=sharedocs
 DEFAULT_DATABASE_PASSWORD=sharedocs
 DEFAULT_DATABASE_DBNAME=sharedocs
+SBT=${MYDIR}/sbt
 
 usage() {
   cat <<EOT >&2
@@ -14,6 +15,8 @@ Usage:
   $0 help:             Show help of sharedocs commands
   $0 help-skinny:      Show help of skinny commands
   $0 setup:            Setup to build
+  $0 package:docker:   Build docker image
+  $0 publish:docker:   Publish docker image
   $0 <skinny command>: Run skinny command (for more details, run $0 help-skinny)
 EOT
 
@@ -127,8 +130,15 @@ migrate_db() {
     ok "Migrating database succeeded"
   else
     ng "Migrating database failed"
-    exit 16
+    exit 15
   fi
+}
+
+setup_standalone_docker_build() {
+  rm -rf standalone-docker-build
+  mkdir standalone-docker-build
+  cp -pr src standalone-docker-build/src
+  cp -p sharedocs_standalone_docker.sbt standalone-docker-build/
 }
 
 setup() {
@@ -169,6 +179,33 @@ setup() {
   info ""
 }
 
+package_docker() {
+  npm_install
+	npm_run_webpack
+
+	info "Building sharedocs-standalone docker image"
+	setup_standalone_docker_build
+	${SBT} standaloneDockerBuild/docker
+	if [ $? -eq 0 ]; then
+		ok "Building sharedocs-standalone docker image succeeded"
+  else
+		ng "Building sharedocs-standalone docker image failed"
+    exit 16
+  fi
+}
+
+publish_docker() {
+	info "Pushing sharedocs-standalone docker image"
+	${SBT} standaloneDockerBuild/dockerPush
+	if [ $? -eq 0 ]; then
+		ok "Pushing sharedocs-standalone docker image succeeded"
+  else
+		ng "Pushing sharedocs-standalone docker image failed"
+    exit 17
+  fi
+}
+
+
 cd ${MYDIR}
 
 command="$1"
@@ -181,6 +218,12 @@ case "$command" in
     ;;
   help-skinny)
     ./skinny help
+    ;;
+  package:docker)
+    package_docker
+    ;;
+  publish:docker)
+    publish_docker
     ;;
   *)
     if [ $# -eq 0 ]; then
