@@ -1,9 +1,11 @@
 language: scala
-sudo: false
+sudo: required
+services:
+  - docker
 scala:
-- 2.12.1
+  - 2.12.1
 jdk:
-- oraclejdk8
+  - oraclejdk8
 cache:
   directories:
     - $HOME/.ivy2/cache
@@ -13,3 +15,7 @@ script:
   - ./sharedocs test
   - find $HOME/.sbt -name "*.lock" | xargs rm -f
   - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm -f
+after_success:
+  - echo $TRAVIS_PULL_REQUEST
+  - echo $TRAVIS_BRANCH
+  - ./deployment/docker/deploy.sh
