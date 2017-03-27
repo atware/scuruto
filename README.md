@@ -50,7 +50,7 @@ Setup PostgreSQL server on your machine and create database.
 ##### Environment Variables
 
 | ENV name (*required) | Description | Example |
-|:----|:----|:----|:----|
+|:----|:----|:----|
 | SITE_NAME | site name for page header | "Sharedocs:CompanyName" |
 | SITE_TITLE | site title for `title` tag | "Sharedocs" |
 | DATABASE_HOST * | datebase host | "localhost:5432" |
