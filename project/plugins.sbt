@@ -39,3 +39,7 @@ addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.0")
 
 // check the latest version of dependencies
 // addSbtPlugin("com.timushev.sbt" % "sbt-updates" % "0.1.10")
+
+// --------
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.0")
+addSbtPlugin("se.marcuslonnberg" % "sbt-docker" % "1.4.0")

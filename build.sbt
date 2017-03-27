@@ -146,3 +146,12 @@ lazy val standaloneBuild = (project in file("standalone-build")).settings(packag
   ideaIgnoreModule := true,
   ivyXML := <dependencies><exclude org="org.eclipse.jetty.orbit" /></dependencies>
 )
+lazy val standaloneDockerBuild = (project in file("standalone-docker-build"))
+  .enablePlugins(DockerPlugin)
+  .settings(packagingBaseSettings)
+  .settings(
+    name := appName + "-standalone",
+    libraryDependencies += "org.skinny-framework" %% "skinny-standalone" % skinnyVersion,
+    ideaIgnoreModule := true,
+    ivyXML := <dependencies><exclude org="org.eclipse.jetty.orbit" /></dependencies>
+)

@@ -1,4 +1,8 @@
-#!/bin/bash
+### -------------------------------------------------------------------------------------
+### Sharedocs configuration variables
+###
+### For more details, see: https://github.com/atware/sharedocs/blob/master/README.md
+### -------------------------------------------------------------------------------------
 
 export SITE_NAME=Sharedocs:local
 export SITE_TITLE=Sharedocs
@@ -10,10 +14,12 @@ export DATABASE_PASSWORD="********"
 
 export GOOGLE_ANALYTICS_KEY="********"
 
-export LOGIN_PROVIDOR=google
+export LOGIN_PROVIDOR=app
 export LOGIN_PERMITTED_EMAIL_DOMAINS=example.com
+
 export SKINNY_OAUTH2_CLIENT_ID_GOOGLE="*************************"
 export SKINNY_OAUTH2_CLIENT_SECRET_GOOGLE="***********************"
+
 export LDAP_TYPE="plain"
 export LDAP_HOST="***"
 export LDAP_PORT=389
@@ -24,8 +30,7 @@ export LDAP_USER_NAME_ATTRIBUTE=uid
 export LDAP_MAIL_ADDRESS_ATTRIBUTE=mail
 export LDAP_KEY_STORE=
 
-export UPLOAD_DESTINATION=s3
-
+export UPLOAD_DESTINATION=local
 export LOCAL_UPLOAD_BASE_DIR="/tmp"
 export LOCAL_UPLOAD_BASE_URL="/static/uploads"
 

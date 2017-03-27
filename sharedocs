@@ -1,13 +1,236 @@
 #!/usr/bin/env bash
 
-cd $(dirname $0)
-source ./sharedocsEnv
+MYDIR=$(dirname "$0")
+ENV_FILE=${MYDIR}/sharedocsEnv
+ENV_FILE_TEMPLATE=${MYDIR}/sharedocsEnv-template
+DEFAULT_DATABASE_HOST=localhost:5432
+DEFAULT_DATABASE_USER=sharedocs
+DEFAULT_DATABASE_PASSWORD=sharedocs
+DEFAULT_DATABASE_DBNAME=sharedocs
+SBT=${MYDIR}/sbt
+
+usage() {
+  cat <<EOT >&2
+Usage:
+  $0 help:             Show help of sharedocs commands
+  $0 help-skinny:      Show help of skinny commands
+  $0 setup:            Setup to build
+  $0 package:docker:   Build docker image
+  $0 publish:docker:   Publish docker image
+  $0 <skinny command>: Run skinny command (for more details, run $0 help-skinny)
+EOT
+
+  exit 9
+}
+
+info() {
+  echo -e "\e[1m[INFO]\e[0m $*" >&2
+}
+
+warn() {
+  echo -e "\e[1m[\e[33mWARN\e[39m]\e[0m $*" >&2
+}
+
+
+ok() {
+  echo -e "\e[1m[\e[32m OK \e[39m]\e[0m $*" >&2
+}
+
+ng() {
+  echo -e "\e[1m[\e[31m NG \e[39m]\e[0m $*" >&2
+}
+
+npm_install() {
+  npm install
+  if [ $? -eq 0 ]; then
+    ok "npm install succeeded"
+  else
+    ng "npm install failed"
+    exit 11
+  fi
+}
+
+npm_run_webpack() {
+  npm run webpack
+  if [ $? -eq 0 ]; then
+    ok "npm run webpack succeeded"
+  else
+    ng "npm run webpack failed"
+    exit 12
+  fi
+}
+
+create_db_user() {
+  info "Creating db user for Sharedocs."
+
+  read -p "Database Host (default=$DEFAULT_DATABASE_HOST): " DATABASE_HOST
+  if [ -z "$DATABASE_HOST" ]; then
+    DATABASE_HOST=$DEFAULT_DATABASE_HOST
+  fi
+  export DATABASE_HOST
+
+  read -p "Username (default=$DEFAULT_DATABASE_USER): " DATABASE_USER
+  if [ -z "$DATABASE_USER" ]; then
+    DATABASE_USER=$DEFAULT_DATABASE_USER
+  fi
+  export DATABASE_USER
+
+  read -p "Password (default=$DEFAULT_DATABASE_PASSWORD): " DATABASE_PASSWORD
+  if [ -z "$DATABASE_PASSWORD" ]; then
+    DATABASE_PASSWORD=$DEFAULT_DATABASE_PASSWORD
+  fi
+  export DATABASE_PASSWORD
+
+  info "Checking db user \`${DATABASE_USER}' exists"
+  result=$(psql postgres -tAc "SELECT 1 FROM pg_roles WHERE rolname='${DATABASE_USER}'")
+  if [ "$result" = "1" ]; then
+    ok "DB user \`${DATABASE_USER}' already exists."
+    return 0
+  fi
+
+  info "Creating db user \`${DATABASE_USER}'"
+  psql postgres -tAc "create user ${DATABASE_USER} with password '${DATABASE_PASSWORD}';"
+  if [ $? -eq 0 ]; then
+    ok "Creating user \`${DATABASE_USER}' succeeded"
+  else
+    ng "Creating user \`${DATABASE_USER}' failed"
+    exit 13
+  fi
+}
+
+create_db() {
+  info "Creating database for Sharedocs."
+  read -p "Database Name (default=$DEFAULT_DATABASE_DBNAME): " DATABASE_DBNAME
+  if [ -z "$DATABASE_DBNAME" ]; then
+    DATABASE_DBNAME=$DEFAULT_DATABASE_DBNAME
+  fi
+  export DATABASE_DBNAME
+
+  info "Checking db \`${DATABASE_DBNAME}' exists"
+  result=$(psql postgres -tAc "SELECT 1 FROM pg_database WHERE datname='${DATABASE_DBNAME}'")
+  if [ "$result" = "1" ]; then
+    ok "Database \`${DATABASE_DBNAME}' already exists."
+    return 0
+  fi
+
+  info "Creating database \`${DATABASE_DBNAME}'"
+  createdb -E UTF8 -T template0 -O ${DATABASE_USER} --lc-collate=ja_JP.UTF-8 --lc-ctype=ja_JP.UTF-8 ${DATABASE_DBNAME}
+  if [ $? -eq 0 ]; then
+    ok "Creating database \`${DATABASE_DBNAME}' succeeded"
+  else
+    ng "Creating user \`${DATABASE_DBNAME}' failed"
+    exit 14
+  fi
+}
+
+migrate_db() {
+  info "Migrating database"
+  ./skinny db:migrate
+  if [ $? -eq 0 ]; then
+    ok "Migrating database succeeded"
+  else
+    ng "Migrating database failed"
+    exit 15
+  fi
+}
+
+setup_standalone_docker_build() {
+  rm -rf standalone-docker-build
+  mkdir standalone-docker-build
+  cp -pr src standalone-docker-build/src
+  cp -p sharedocs_standalone_docker.sbt standalone-docker-build/
+}
+
+setup() {
+  npm_install
+  npm_run_webpack
+  create_db_user
+  create_db
+  migrate_db
+
+  if [ ! -f "${ENV_FILE}" ]; then
+    warn "${ENV_FILE} does not exist."
+    warn "Copying from ${ENV_FILE_TEMPLATE} to ${ENV_FILE}."
+		cp -p ${ENV_FILE_TEMPLATE} ${ENV_FILE}
+  fi
+
+  sed -e 's/\(DATABASE_HOST="\).*\("\)/\1'"${DATABASE_HOST}"'\2/' -i '' ${ENV_FILE}
+  sed -e 's/\(DATABASE_DBNAME="\).*\("\)/\1'"${DATABASE_DBNAME}"'\2/' -i '' ${ENV_FILE}
+  sed -e 's/\(DATABASE_USER="\).*\("\)/\1'"${DATABASE_USER}"'\2/' -i '' ${ENV_FILE}
+  sed -e 's/\(DATABASE_PASSWORD="\).*\("\)/\1'"${DATABASE_PASSWORD}"'\2/' -i '' ${ENV_FILE}
+
+  # TODO: This is workaround to allow any domains
+  sed -e 's/^\(export LOGIN_PERMITTED_EMAIL_DOMAINS\)/#\1/' -i '' ${ENV_FILE}
+
+  info ""
+  info "***** Getting Started to Run Sharedocs *****"
+  info ""
+  info "To run Sharedocs, at least the following variables must be configured in ${ENV_FILE}."
+  info "  DATABASE_HOST"
+  info "  DATABASE_DBNAME"
+  info "  DATABASE_USER"
+  info "  DATABASE_PASSWORD"
+  info "  LOGIN_PERMITTED_EMAIL_DOMAINS"
+  info ""
+  info "If you have configured variables, you're now ready to run Sharedocs!"
+  info "Run the following command:"
+  info ""
+  info "  ./sharedocs run"
+  info ""
+}
+
+package_docker() {
+  npm_install
+	npm_run_webpack
+
+	info "Building sharedocs-standalone docker image"
+	setup_standalone_docker_build
+	${SBT} standaloneDockerBuild/docker
+	if [ $? -eq 0 ]; then
+		ok "Building sharedocs-standalone docker image succeeded"
+  else
+		ng "Building sharedocs-standalone docker image failed"
+    exit 16
+  fi
+}
+
+publish_docker() {
+	info "Pushing sharedocs-standalone docker image"
+	${SBT} standaloneDockerBuild/dockerPush
+	if [ $? -eq 0 ]; then
+		ok "Pushing sharedocs-standalone docker image succeeded"
+  else
+		ng "Pushing sharedocs-standalone docker image failed"
+    exit 17
+  fi
+}
+
+
+cd ${MYDIR}
 
 command="$1"
-if [ "$command" == "run" -o "$command" == "s" -o "$command" == "server" -o "$command" == "debug" -o "$command" == "d" ]; then
-  if [ ! -e src/main/webapp/assets/dist/version.txt ]; then
-    npm run webpack
-  fi
-fi
+case "$command" in
+  setup)
+    setup
+    ;;
+  help|--help|-h)
+    usage
+    ;;
+  help-skinny)
+    ./skinny help
+    ;;
+  package:docker)
+    package_docker
+    ;;
+  publish:docker)
+    publish_docker
+    ;;
+  *)
+    if [ $# -eq 0 ]; then
+      usage
+    fi
+    [ -f ${ENV_FILE} ] && . ${ENV_FILE}
+    ./skinny $@
+    ;;
+esac
 
-./skinny $@

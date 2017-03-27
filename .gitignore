@@ -15,6 +15,7 @@ task/target/
 task/src/main/resources/
 build/target/
 standalone-build/
+standalone-docker-build/
 
 *.ser
 *.class
