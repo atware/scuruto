@@ -9,6 +9,7 @@
     "sendgrid:starter"
   ],
   "env" : {
+    "NODEJS_VERSION": "8.9.3",
     "LOGIN_PERMITTED_EMAIL_DOMAINS": {
       "description": "Email domain names of permitting login (comma-separated). Example: yourcompany.com"
     }
