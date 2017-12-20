@@ -24,15 +24,15 @@ module.exports = {
         publicPath: '/assets/dist/'
     },
     resolve: {
-        modulesDirectories: ['node_modules', 'dl_modules']
+        modules: ['node_modules', 'dl_modules']
     },
     module: {
-        loaders: [
-            { test: /\.(jpg|png)$/, loader: "file" },
-            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file" },
-            { test: /\.(woff|woff2)$/, loader:"url?prefix=font/&limit=5000" },
-            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
-            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml" }
+        rules: [
+            { test: /\.(jpg|png)$/, loader: "file-loader" },
+            { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loader: "file-loader" },
+            { test: /\.(woff|woff2)$/, loader:"url-loader?prefix=font/&limit=5000" },
+            { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=application/octet-stream" },
+            { test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url-loader?limit=10000&mimetype=image/svg+xml" }
         ]
     },
     devtool: '#source-map',
