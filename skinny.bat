@@ -153,6 +153,7 @@ IF "%is_generator%"=="true" (
     RMDIR task\target /S /q
     MKDIR task\src\main\resources
     XCOPY src\main\resources task\src\main\resources /E /D /q
+    DEL task\src\main\resources\logback.xml /Q
     sbt "task/run generate:%generator_params%"
   )
   GOTO script_eof
@@ -162,6 +163,7 @@ IF "%command%"=="task:clean" (
   RMDIR task\src\main\resources /S /q
   MKDIR task\src\main\resources
   XCOPY src\main\resources task\src\main\resources /E /D /q
+  DEL task\src\main\resources\logback.xml /Q
   sbt "task/clean"
   GOTO script_eof
 )
@@ -182,6 +184,7 @@ IF "%is_task_run%"=="true" (
   RMDIR task\src\main\resources /S /q
   MKDIR task\src\main\resources
   XCOPY src\main\resources task\src\main\resources /E /D /q
+  DEL task\src\main\resources\logback.xml /Q
   sbt "task/run %task_run_params%"
   GOTO script_eof
 )
@@ -191,6 +194,7 @@ IF "%command%"=="routes" (
   RMDIR task\target /S /q
   MKDIR task\src\main\resources
   XCOPY src\main\resources task\src\main\resources /E /D /q
+  DEL task\src\main\resources\logback.xml /Q
   sbt "task/run routes"
   GOTO script_eof
 )
@@ -200,6 +204,7 @@ IF "%command%"=="db:migrate" (
   RMDIR task\target /S /q
   MKDIR task\src\main\resources
   XCOPY src\main\resources task\src\main\resources /E /D /q
+  DEL task\src\main\resources\logback.xml /Q
   sbt "task/run db:migrate %2"
   GOTO script_eof
 )
@@ -209,13 +214,14 @@ IF "%command%"=="db:repair" (
   RMDIR task\target /S /q
   MKDIR task\src\main\resources
   XCOPY src\main\resources task\src\main\resources /E /D /q
+  DEL task\src\main\resources\logback.xml /Q
   sbt "task/run db:repair %2"
   GOTO script_eof
 )
 
 IF %command%==eclipse (
   IF NOT EXIST "project\_skinny_eclipse.sbt" (
-    ECHO addSbtPlugin^(^"com.typesafe.sbteclipse^" %% ^"sbteclipse-plugin^" %% ^"4.0.0^"^) > "project\_skinny_eclipse.sbt"
+    ECHO addSbtPlugin^(^"com.typesafe.sbteclipse^" %% ^"sbteclipse-plugin^" %% ^"5.2.4^"^) > "project\_skinny_eclipse.sbt"
   )
   sbt eclipse
   GOTO script_eof
@@ -237,24 +243,26 @@ IF %command%==package (
   RMDIR task\target /S /q
   MKDIR task\src\main\resources
   XCOPY src\main\resources task\src\main\resources /E /D /q
+  DEL task\src\main\resources\logback.xml /Q
   sbt "task/run assets:precompile" "build/package"
   GOTO script_eof
 )
 
 IF "%command%"=="package:standalone" (
   IF NOT EXIST "project\_skinny_assembly.sbt" (
-    ECHO addSbtPlugin^(^"com.eed3si9n^" %% ^"sbt-assembly^" %% ^"0.14.0^"^) > "project\_skinny_assembly.sbt"
+    ECHO addSbtPlugin^(^"com.eed3si9n^" %% ^"sbt-assembly^" %% ^"0.14.6^"^) > "project\_skinny_assembly.sbt"
     (
       ECHO mainClass in assembly := Some^(^"skinny.standalone.JettyLauncher^"^)
       ECHO _root_.sbt.Keys.test in assembly := {}
-      ECHO.resourceGenerators in Compile ^<+= ^(resourceManaged, baseDirectory^) ^map { ^(managedBase, base^) =^>
+      ECHO.resourceGenerators in Compile += ^(Def.task {
+      ECHO.  val ^(managedBase, base^) = ^(resourceManaged.value, baseDirectory.value^)
       ECHO.  val webappBase = base / "src" / "main" / "webapp"
       ECHO.  for ^( ^(from, to^) ^<- ^webappBase ** "*" `pair` rebase(webappBase, managedBase / "main/"^) ^)
-      ECHO.  yield {
-      ECHO.    Sync.copy^(from, to^)
-      ECHO.    to
-      ECHO.  }
-      ECHO.}
+      ECHO.    yield {
+      ECHO.      Sync.copy^(from, to^)
+      ECHO.      to
+      ECHO.    }
+      ECHO.}^).taskValue
     )> "_skinny_assembly_settings.sbt"
   )
   RMDIR standalone-build /S /q
@@ -265,6 +273,7 @@ IF "%command%"=="package:standalone" (
   RMDIR task\target /S /q
   MKDIR task\src\main\resources
   XCOPY src\main\resources task\src\main\resources /E /D /q
+  DEL task\src\main\resources\logback.xml /Q
   sbt "task/run assets:precompile" "standaloneBuild/assembly"
   GOTO script_eof
 )
@@ -277,6 +286,7 @@ IF %command%==publish (
   RMDIR task\target /S /q
   MKDIR task\src\main\resources
   XCOPY src\main\resources task\src\main\resources /E /D /q
+  DEL task\src\main\resources\logback.xml /Q
   sbt "task/run assets:precompile" "build/publish"
   GOTO script_eof
 )
@@ -374,19 +384,19 @@ GOTO script_eof
 :scalajs_task
 IF NOT EXIST "project\_skinny_scalajs.sbt" (
   ECHO resolvers += "scala-js-release" at "http://dl.bintray.com/scala-js/scala-js-releases" > "project\_skinny_scalajs.sbt"
-  ECHO addSbtPlugin^("org.scala-js" %% "sbt-scalajs" %% "0.6.10"^) >> "project\_skinny_scalajs.sbt"
+  ECHO addSbtPlugin^("org.scala-js" %% "sbt-scalajs" %% "0.6.21"^) >> "project\_skinny_scalajs.sbt"
 
   ECHO lazy val scalajs = ^(project in file^("src/main/webapp/WEB-INF/assets"^)^).settings^( > "_skinny_scalajs_settings.sbt"
   ECHO   name := "application", // JavaScript file name  >> "_skinny_scalajs_settings.sbt"
-  ECHO   scalaVersion := "2.11.8", >> "_skinny_scalajs_settings.sbt"
-  ECHO   unmanagedSourceDirectories in Compile ^<+= baseDirectory^(_ / "scala"^), >> "_skinny_scalajs_settings.sbt"
+  ECHO   scalaVersion := "2.12.4", >> "_skinny_scalajs_settings.sbt"
+  ECHO   unmanagedSourceDirectories in Compile ^<= baseDirectory^(_ / "scala"^).value, >> "_skinny_scalajs_settings.sbt"
   ECHO   fullResolvers ~= { _.filterNot^(_.name == "jcenter"^) }, >> "_skinny_scalajs_settings.sbt"
   ECHO   libraryDependencies ++= Seq^(                   >> "_skinny_scalajs_settings.sbt"
-  ECHO     "org.scala-js" %%%%%% "scalajs-dom"     %% "0.9.1", >> "_skinny_scalajs_settings.sbt"
-  ECHO     "be.doeraene"  %%%%%% "scalajs-jquery"  %% "0.9.0", >> "_skinny_scalajs_settings.sbt"
-  ECHO     "io.monix"     %%%%  "minitest"        %% "0.22" %% "test" >> "_skinny_scalajs_settings.sbt"
+  ECHO     "org.scala-js" %%%%%% "scalajs-dom"     %% "0.9.3", >> "_skinny_scalajs_settings.sbt"
+  ECHO     "be.doeraene"  %%%%%% "scalajs-jquery"  %% "0.9.2", >> "_skinny_scalajs_settings.sbt"
+  ECHO     "io.monix"     %%%%  "minitest"        %% "1.1.1" %% "test" >> "_skinny_scalajs_settings.sbt"
   ECHO   ^), >> "_skinny_scalajs_settings.sbt"
-  ECHO   crossTarget in Compile ^<^<= baseDirectory^(_ / ".." / ".." / "assets" / "js"^) >> "_skinny_scalajs_settings.sbt"
+  ECHO   crossTarget in Compile := baseDirectory^(_ / ".." / ".." / "assets" / "js"^).value >> "_skinny_scalajs_settings.sbt"
   ECHO ^).enablePlugins^(ScalaJSPlugin^) >> "_skinny_scalajs_settings.sbt"
 )
 sbt "project scalajs" %SUB_COMMAND%
@@ -394,5 +404,3 @@ GOTO script_eof
 
 
 :script_eof
-
-

@@ -1,5 +1,5 @@
 import sbt._, Keys._
-import skinny.scalate.ScalatePlugin._, ScalateKeys._
+import org.fusesource.scalate.ScalatePlugin._, ScalateKeys._
 import skinny.servlet._, ServletPlugin._, ServletKeys._
 import org.sbtidea.SbtIdeaPlugin._
 
@@ -11,11 +11,11 @@ import scala.language.postfixOps
 
 val appOrganization = "jp.co.atware"
 val appName = "sharedocs"
-val appVersion = "1.0.1-SNAPSHOT"
+val appVersion = "1.1.1-SNAPSHOT"
 
-val skinnyVersion = "2.3.3"
-val theScalaVersion = "2.11.8" // 2.12.0 is available if you don't mind if `skinny console` doesn't work ;(
-val jettyVersion = "9.3.15.v20161220"
+val skinnyVersion = "2.5.2"
+val theScalaVersion = "2.12.4"
+val jettyVersion = "9.3.22.v20171030"
 
 lazy val baseSettings = servletSettings ++ Seq(
   organization := appOrganization,
@@ -27,37 +27,39 @@ lazy val baseSettings = servletSettings ++ Seq(
     "org.scala-lang"         %  "scala-reflect"            % scalaVersion.value,
     "org.scala-lang"         %  "scala-compiler"           % scalaVersion.value,
     "org.scala-lang.modules" %% "scala-xml"                % "1.0.6",
-    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.4",
-    "org.slf4j"              %  "slf4j-api"                % "1.7.21"
+    "org.scala-lang.modules" %% "scala-parser-combinators" % "1.0.6",
+    "org.slf4j"              %  "slf4j-api"                % "1.7.25"
   ),
   libraryDependencies ++= Seq(
     "org.skinny-framework"    %% "skinny-framework"     % skinnyVersion,
     "org.skinny-framework"    %% "skinny-assets"        % skinnyVersion,
     "org.skinny-framework"    %% "skinny-task"          % skinnyVersion,
-    "org.skinny-framework"    %  "skinny-logback"       % "1.0.10",
+    "org.skinny-framework"    %  "skinny-logback"       % "1.0.14",
     "org.skinny-framework"    %% "skinny-oauth2-controller" % skinnyVersion,
     "org.skinny-framework"    %% "skinny-scaldi"        % skinnyVersion,
-    "com.h2database"          %  "h2"                   % "1.4.193",
-    "org.postgresql"          %  "postgresql"           % "9.4.1212",
+    "com.h2database"          %  "h2"                   % "1.4.196",
+    "org.postgresql"          %  "postgresql"           % "42.1.4",
     "org.skinny-framework"    %% "skinny-factory-girl"  % skinnyVersion   % "test",
     "org.skinny-framework"    %% "skinny-test"          % skinnyVersion   % "test",
     "org.eclipse.jetty"       %  "jetty-webapp"         % jettyVersion    % "container",
     "org.eclipse.jetty"       %  "jetty-plus"           % jettyVersion    % "container",
     "javax.servlet"           %  "javax.servlet-api"    % "3.1.0"         % "container;provided;test",
     "org.pegdown"             %  "pegdown"              % "1.6.0",
-    "org.scilab.forge"        %  "jlatexmath"           % "1.0.4",
-    "com.github.t3hnar"       %% "scala-bcrypt"         % "3.0",
-    "com.github.roundrop"     %% "scalikejdbc-sqlsyntax-ext" % "1.1.1",
+    "org.scilab.forge"        %  "jlatexmath"           % "1.0.6",
+    "com.github.t3hnar"       %% "scala-bcrypt"         % "3.1",
+    "com.github.roundrop"     %% "scalikejdbc-sqlsyntax-ext" % "1.1.2",
     "com.unboundid"           %  "unboundid-ldapsdk"    % "2.3.8", // for LDAP
     "org.zapodot"             %  "embedded-ldap-junit"  % "0.5.2"         % "test" // for LDAP TEST
   ),
   // ------------------------------
   // for ./skinnny console
   initialCommands := """
-import skinny._
-import _root_.controller._, model._
-import org.joda.time._
-import scalikejdbc._, config._
+import _root_.skinny._
+import _root_.controller._
+import _root_.model._
+import _root_.org.joda.time._
+import _root_.scalikejdbc._
+import _root_.scalikejdbc.config._
 DBSettings.initialize()
 """,
   resolvers ++= Seq(
@@ -74,18 +76,35 @@ DBSettings.initialize()
   logBuffered in Test := false,
   javaOptions in Test ++= Seq("-Dskinny.env=test"),
   fork in Test := true,
-  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature", "-Xfuture"),
-  ideaExcludeFolders := Seq(".idea", ".idea_modules", "db", "target", "task/target", "build", "standalone-build", "node_modules")
-) ++ scalariformSettings // If you don't prefer auto code formatter, remove this line and sbt-scalariform
+  suppressSbtShellNotification := true,
+  scalacOptions ++= Seq("-unchecked", "-deprecation", "-feature"),
+  ideaExcludeFolders := Seq(".idea",
+    ".idea_modules",
+    "db",
+    "target",
+    "task/target",
+    "build",
+    "standalone-build",
+    "node_modules")
+)
 
 lazy val scalatePrecompileSettings = scalateSettings ++ Seq(
   scalateTemplateConfig in Compile := {
     val base = (sourceDirectory in Compile).value
-    Seq( TemplateConfig(file(".") / "src" / "main" / "webapp" / "WEB-INF",
-      // These imports should be same as src/main/scala/templates/ScalatePackage.scala
-      Seq("import controller._", "import model._"),
-      Seq(Binding("context", "_root_.skinny.micro.contrib.scalate.SkinnyScalateRenderContext", importMembers = true, isImplicit = true)),
-      Some("templates")))
+    Seq(
+      TemplateConfig(
+        file(".") / "src" / "main" / "webapp" / "WEB-INF",
+        // These imports should be same as src/main/scala/templates/ScalatePackage.scala
+        Seq("import controller._", "import model._"),
+        Seq(
+          Binding("context",
+            "_root_.skinny.micro.contrib.scalate.SkinnyScalateRenderContext",
+            importMembers = true,
+            isImplicit = true)
+        ),
+        Some("templates")
+      )
+    )
   }
 )
 
@@ -99,10 +118,12 @@ lazy val devBaseSettings = baseSettings ++ Seq(
   parallelExecution in Test := false,
   port in container.Configuration := 8080
 )
-lazy val dev = (project in file(".")).settings(devBaseSettings).settings(
-  name := appName + "-dev",
-  target := baseDirectory.value / "target" / "dev"
-)
+lazy val dev = (project in file("."))
+  .settings(devBaseSettings)
+  .settings(
+    name := appName + "-dev",
+    target := baseDirectory.value / "target" / "dev"
+  )
 
 // --------------------------------------------------------
 // Enable this sub project when you'd like to use --precompile option
@@ -118,11 +139,13 @@ lazy val precompileDev = (project in file(".")).settings(devBaseSettings, scalat
 // Task Runner
 // -------------------------------------------------------
 
-lazy val task = (project in file("task")).settings(baseSettings).settings(
-  mainClass := Some("TaskRunner"),
-  name := appName + "-task",
-  libraryDependencies += "javax.servlet" % "javax.servlet-api" % "3.1.0"
-) dependsOn(dev)
+lazy val task = (project in file("task"))
+  .settings(baseSettings)
+  .settings(
+    mainClass := Some("TaskRunner"),
+    name := appName + "-task",
+    libraryDependencies += "javax.servlet" % "javax.servlet-api" % "3.1.0"
+  ) dependsOn (dev)
 
 // -------------------------------------------------------
 // Packaging
@@ -136,13 +159,17 @@ lazy val packagingBaseSettings = baseSettings ++ scalatePrecompileSettings ++ Se
     else Some("releases" at base + "service/local/staging/deploy/maven2")
   }
 )
-lazy val build = (project in file("build")).settings(packagingBaseSettings).settings(
-  name := appName,
-  ideaIgnoreModule := true
-)
-lazy val standaloneBuild = (project in file("standalone-build")).settings(packagingBaseSettings).settings(
-  name := appName + "-standalone",
-  libraryDependencies += "org.skinny-framework" %% "skinny-standalone" % skinnyVersion,
-  ideaIgnoreModule := true,
-  ivyXML := <dependencies><exclude org="org.eclipse.jetty.orbit" /></dependencies>
-)
+lazy val build = (project in file("build"))
+  .settings(packagingBaseSettings)
+  .settings(
+    name := appName,
+    ideaIgnoreModule := true
+  )
+lazy val standaloneBuild = (project in file("standalone-build"))
+  .settings(packagingBaseSettings)
+  .settings(
+    name := appName + "-standalone",
+    libraryDependencies += "org.skinny-framework" %% "skinny-standalone" % skinnyVersion,
+    ideaIgnoreModule := true,
+    ivyXML := <dependencies><exclude org="org.eclipse.jetty.orbit" /></dependencies>
+  )
