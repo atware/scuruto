@@ -1,1 +1,1 @@
-require('expose?notification!../../assets/js/notification.js');
+require('expose-loader?notification!../../assets/js/notification.js');

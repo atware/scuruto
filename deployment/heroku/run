@@ -7,5 +7,5 @@ setup_db_env_vars
 . $(dirname $0)/sharedocsEnvHeroku.sh
 
 # Run the standalone jar
-java -jar -Dskinny.port=$PORT -Dskinny.env=heroku standalone-build/target/scala-2.11/sharedocs-standalone-assembly-*.jar
+java -jar -Dskinny.port=$PORT -Dskinny.env=heroku standalone-build/target/scala-2.12/sharedocs-standalone-assembly-*.jar
 
