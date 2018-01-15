@@ -1,5 +1,11 @@
 @ECHO OFF
 
+rem -------------------------------------------------------------------------------------
+rem Sharedocs configuration variables
+rem
+rem For more details, see: https://github.com/atware/sharedocs/blob/master/README.md
+rem -------------------------------------------------------------------------------------
+
 SET SITE_NAME=Sharedocs:local
 SET SITE_TITLE=Sharedocs
 
@@ -10,10 +16,12 @@ SET DATABASE_PASSWORD=********
 
 SET GOOGLE_ANALYTICS_KEY=********
 
-SET LOGIN_PROVIDOR=google
+SET LOGIN_PROVIDOR=app
 SET LOGIN_PERMITTED_EMAIL_DOMAINS=example.com
+
 SET SKINNY_OAUTH2_CLIENT_ID_GOOGLE=*************************
 SET SKINNY_OAUTH2_CLIENT_SECRET_GOOGLE=***********************
+
 SET LDAP_TYPE=plain
 SET LDAP_HOST=***
 SET LDAP_PORT=389
