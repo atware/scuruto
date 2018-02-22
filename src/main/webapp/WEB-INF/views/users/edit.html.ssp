@@ -32,7 +32,7 @@
   </div>
 </header>
 
-<div class="container">
+<div class="container container-edit">
   <div class="form-group">
     <label for="user_bio">${s.i18n.get("user.bio")}</label>
     <div class="row">
@@ -68,7 +68,7 @@
     <div class="form-group form-actions">
       ${unescape(s.csrfHiddenInputTag)}
       <input class="btn btn-primary" name="commit" type="submit" value="${s.i18n.get("save")}">
-      <a class="btn btn-link" href="/users/${loginUser.get.userId}/edit">${s.i18n.get("cancel")}</a>
+        <a class="btn btn-link" href="/users/${loginUser.get.userId}/edit">${s.i18n.get("cancel")}</a>
     </div>
   </div>
 </div>

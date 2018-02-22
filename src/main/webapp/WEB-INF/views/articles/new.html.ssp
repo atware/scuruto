@@ -2,7 +2,7 @@
 <%@val s: skinny.Skinny %>
 <% attributes("title") = s.i18n.get("new").getOrElse("New") %>
 
-<div class="container">
+<div class="container container-edit">
 <h3>${s.i18n.get("new")}</h3>
 <hr/>
 

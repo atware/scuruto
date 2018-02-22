@@ -2,8 +2,8 @@
 <%@val item: model.Article %>
 <% attributes("title") = item.title %>
 
-<div class="container">
-<h3>${s.i18n.get("company.edit")}</h3>
+<div class="container container-edit">
+<h3>${s.i18n.get("edit")}</h3>
 <hr/>
 
 <form id="form" method="post" action="${s.url(Controllers.articles.updateUrl, "id" -> item.articleId)}" class="form">

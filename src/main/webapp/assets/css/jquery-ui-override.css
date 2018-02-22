@@ -1,0 +1,17 @@
+.ui-menu {
+    list-style-type: none;
+}
+.ui-autocomplete {
+    padding-left: 0;
+}
+.ui-widget-content {
+    border: 1px solid #666 !important;
+    background: #ffffff !important;
+    color: #3c3f41 !important;
+}
+.ui-state-active {
+    border: 1px solid #86badd !important;
+    background: #90c8ed !important;
+    font-weight: bold!important;
+    color: #ffffff;
+}

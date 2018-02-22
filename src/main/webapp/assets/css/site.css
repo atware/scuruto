@@ -1,6 +1,9 @@
 body {
-  padding-top: 50px;
   padding-bottom: 20px;
+}
+
+.container-edit {
+  padding: 0 10px 0 10px;
 }
 
 .mono {
@@ -47,7 +50,13 @@ ul.unstyled {
   padding: 15px;
 }
 
-.navbar-right img {
+.navbar-fixed-left {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+.dropdown.header-element img {
   width: 22px;
   height: 22px;
   -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
@@ -67,21 +76,27 @@ ul.unstyled {
   font-weight: 300;
 }
 
-.header-left {
-  float: left;
-  position: relative;
+nav>ul {
+  display: flex;
+  align-items: center;
+  margin-left: -40px;
+  list-style-type: none;
 }
-.header-right {
-  float: right;
-  position: relative;
+.header-element {
+  width: 64px;
+  height: 64px;
 }
-.header-right > ul > li {
-  float: left;
+.flex-center {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.header-right li a {
-  padding-top: 13px;
-  text-shadow: none !important;
-  color: #666 !important;
+.header-element a:hover, .notification-surface:hover {
+  background-color: #7b7b7b;
+}
+.header-element .glyphicon {
+  position: inherit;
 }
 .footer {
   text-align: center;

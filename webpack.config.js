@@ -24,7 +24,11 @@ module.exports = {
         publicPath: '/assets/dist/'
     },
     resolve: {
-        modules: ['node_modules', 'dl_modules']
+        modules: ['node_modules', 'dl_modules'],
+        alias: {
+            'jquery-ui': 'jquery-ui/ui/widgets',
+            'jquery-ui-css': 'jquery-ui/../../themes/base'
+        }
     },
     module: {
         rules: [

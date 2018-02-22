@@ -42,7 +42,8 @@ var notification = function(){
       animation:'none'
     });
     if (json.count != 0) {
-      $('#notification_count').addClass('unchecked').on('click', function(){
+      $('#notification_count').addClass('unchecked');
+      $('.notification-surface').on('click', function(){
         $.ajax({
           method: 'POST',
           url: '/notifications',
@@ -58,7 +59,7 @@ var notification = function(){
       favicon.reset();
     }
     $(document).on('click', function(){$('.dropdownWrapper').css('display', 'none')});
-    $('#notification_count').on('click', function(e){e.stopPropagation();$('.dropdownWrapper').toggle()});
+    $('.notification-surface').on('click', function(e){e.stopPropagation();$('.dropdownWrapper').toggle()});
   }).fail(function(xhr, status, error){
     console.log("error during get notifications");
   });

@@ -1,4 +1,4 @@
-require('style-loader!css-loader!jquery-ui.custom/css/jquery-ui.css');
+require('style-loader!css-loader!jquery-ui-css/autocomplete.css');
 require('style-loader!css-loader!bootstrap/dist/css/bootstrap.css');
 require('style-loader!css-loader!bootstrap/dist/css/bootstrap-theme.css');
 require('style-loader!css-loader!../../assets/css/bootstrap-override.css');
@@ -19,6 +19,7 @@ require('style-loader!css-loader!../../assets/css/tag.css');
 require('style-loader!css-loader!../../assets/css/user.css');
 require('style-loader!css-loader!../../assets/css/responsive.css');
 require('style-loader!css-loader!../../assets/css/jquery.textcomplete.css');
+require('style-loader!css-loader!../../assets/css/jquery-ui-override.css');
 require('style-loader!css-loader!emojify.js/dist/css/basic/emojify.css');
 require('style-loader!css-loader!emojify.js/dist/css/data-uri/emojify.css');
 require('style-loader!css-loader!featherlight/src/featherlight.css');

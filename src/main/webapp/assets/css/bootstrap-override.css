@@ -24,8 +24,15 @@
 }
 
 .container {
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: 0;
+  padding-top: 32px;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.row {
+  margin-left: 0;
+  margin-right: 0;
 }
 
 code {
@@ -67,7 +74,17 @@ blockquote {
   border-left: 5px solid #eee;
 }
 
+.dropdown {
+  position: inherit;
+}
+.dropdown-menu {
+  position: absolute;
+  top: auto;
+  left: auto;
+}
 .dropdown-menu li {
+  position: relative;
+  top: 0;
   border-top: initial !important;
   padding: initial !important;
 }

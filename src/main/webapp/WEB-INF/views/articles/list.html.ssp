@@ -8,10 +8,8 @@
 <div class="container">
 <div class="row">
 <div class="col-md-9">
-<h3>${s.i18n.get("feed.copy")}</h3>
-<a href="${s.url(Controllers.articles.newUrl)}" class="btn btn-primary">${s.i18n.get("feed.post")}</a>
+  <h3>${s.i18n.get("feed.copy")}</h3>
 <hr/>
-
 <div class="feed">
     ${include("_items.html.ssp")}
 </div>
@@ -36,6 +34,15 @@
             </div>
         </div>
     </div>
+    <div>
+        <form class="form-inline " role="form" action="/search" method="get">
+          <div class="form-group">
+            <input type="text" placeholder="${s.i18n.get("search.description")}" class="form-control" name="q">
+            <button type="submit" class="btn btn-default btn-sm">${s.i18n.get("search.title")}</button>
+          </div>
+        </form>
+    </div>
+
     #if (sidebar.populars.size > 0)
     <div class="popular-list">
         <h4><i class="glyphicon glyphicon-folder-close"></i>${s.i18n.get("popular.list")}</h4>

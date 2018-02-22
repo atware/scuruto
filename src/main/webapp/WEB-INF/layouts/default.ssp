@@ -29,72 +29,62 @@ ${unescape(s.csrfMetaTags)}
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
-<header class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <div class="header-left">
-      <a class="navbar-brand" href="/">
-        <img src="/assets/img/logo_s.png" alt="logo" title="sharedocs"> ${SkinnyConfig.stringConfigValue("site.name").getOrElse("Site Name")}
+<nav class="navbar navbar-inverse navbar-fixed-left" role="navigation">
+  <ul>
+    <li class="header-element">
+      <a class="flex-center" href="/">
+        <img src="/assets/img/logo_s.png" alt="logo" title="sharedocs">
       </a>
+    </li>
     #if (loginUser.isDefined)
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navsearch">
-        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-      </button>
-    <form class="navbar-form navbar-left navbar-collapse collapse" id="navsearch" role="form" action="/search" method="get">
-      <div class="form-group">
-        <input type="text" placeholder="${s.i18n.get("search.description")}" class="form-control" name="q">
+    <li class="header-element">
+      <a class="flex-center" href="/articles/new">
+        <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li id="notification" class="notification header-element">
+      <div class="notification-surface flex-center">
+        <div id="notification_count" class="notification-count">0</div>
       </div>
-      <button type="submit" class="btn btn-default btn-sm">${s.i18n.get("search.title")}</button>
-    </form>
-    </div>
-    <div class="header-right">
-      <ul class="nav navbar-right">
-      <li id="notification" class="notification">
-        <div class="notification-surface">
-          <div id="notification_count" class="notification-count">0</div>
-        </div>
-        <div class="dropdownWrapper">
-          <div class="notification-arrow"></div>
-          <div id="notification_contents" class="notification-contents">
-            <div class="notification-contents-header">
-              お知らせ
-            </div>
-            <ul id="notification-items" class="notification-contents-list">
-              <li id="notification-default">お知らせはありません。</li>
-            </ul>
+      <div class="dropdownWrapper">
+        <div class="notification-arrow"></div>
+        <div id="notification_contents" class="notification-contents">
+          <div class="notification-contents-header">
+            お知らせ
           </div>
+          <ul id="notification-items" class="notification-contents-list">
+            <li id="notification-default">お知らせはありません。</li>
+          </ul>
         </div>
-      </li>
-      <li>
-        <a href="${s.url(Controllers.users.stocksUrl, "id" -> loginUser.get.userId)}" class="menulink" rel="nofollow">
-          <i class="glyphicon glyphicon-folder-close" aria-hidden="true"></i>
-        </a>
-      </li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <img src="${loginUser.get.imageUrl}" title="${loginUser.get.name}"> <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu">
-          <li><a href="/users/${loginUser.get.userId}/edit">${s.i18n.get("settings")}</a></li>
-          <li class="divider"></li>
-          <li><a data-method="delete" data-confirm="${s.i18n.get("logout-confirm")}"
-                  href="${s.url(Controllers.login.logoutUrl)}" rel="nofollow" class="menulink">${s.i18n.get("logout")}</a>
-          </li>
-        </ul>
-      </li>
-      </ul>
-    </div>
+      </div>
+    </li>
+    <li class="header-element">
+      <a href="${s.url(Controllers.users.stocksUrl, "id" -> loginUser.get.userId)}" class="menulink flex-center" rel="nofollow">
+        <i class="glyphicon glyphicon-folder-close" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="header-element">
+      <a href="/users/${loginUser.get.userId}/edit" class="menulink flex-center" rel="nofollow">
+        <i class="glyphicon glyphicon-cog" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li class="header-element">
+      <a data-method="delete" data-confirm="${s.i18n.get("logout-confirm")}"
+          href="${s.url(Controllers.login.logoutUrl)}" class="menulink flex-center" rel="nofollow">
+        <i class="glyphicon glyphicon-log-out" aria-hidden="true"></i>
+      </a>
+    </li>
     #end
-    </div>
-  </div>
-</header>
-<div>
+  </ul>
+</nav>
+<div class="container">
 ${unescape(body)}
 </div>
 <hr />
 <div class="container">
   <footer>
-    <p class="footer">Powered by <a href="https://github.com/atware/sharedocs"><img src="/assets/img/logowtnd_s.png"></a></p>
+    <p class="footer">Powered by <a href="https://github.com/atware/sharedocs">sharedocs</a>
+    </p>
   </footer>
 </div>
 
