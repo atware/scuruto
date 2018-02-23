@@ -8,8 +8,8 @@ cache:
   directories:
     - $HOME/.ivy2/cache
 script: 
-  - cp sharedocsEnv-template sharedocsEnv
-  - sed -i 's/\*\*\*\*\*\*\*\*/sharedocs/g' sharedocsEnv
-  - ./sharedocs test
+  - cp scurutoEnv-template scurutoEnv
+  - sed -i 's/\*\*\*\*\*\*\*\*/scuruto/g' scurutoEnv
+  - ./scuruto test
   - find $HOME/.sbt -name "*.lock" | xargs rm -f
   - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm -f

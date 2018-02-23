@@ -33,7 +33,7 @@ ${unescape(s.csrfMetaTags)}
   <ul>
     <li class="header-element">
       <a class="flex-center" href="/">
-        <img src="/assets/img/logo_s.png" alt="logo" title="sharedocs">
+        <img src="/assets/img/logo_s.png" alt="logo" title="scuruto">
       </a>
     </li>
     #if (loginUser.isDefined)
@@ -83,7 +83,7 @@ ${unescape(body)}
 <hr />
 <div class="container">
   <footer>
-    <p class="footer">Powered by <a href="https://github.com/atware/sharedocs">sharedocs</a>
+    <p class="footer">Powered by <a href="https://github.com/atware/scuruto">scuruto</a>
     </p>
   </footer>
 </div>
@@ -97,7 +97,7 @@ ${unescape(body)}
 #end
 <script>
 $(function(){
-  sharedocs.articlify();
+  scuruto.articlify();
   #if (loginUser.isDefined)
   notification();
   setInterval("notification()", 1000*60*5);

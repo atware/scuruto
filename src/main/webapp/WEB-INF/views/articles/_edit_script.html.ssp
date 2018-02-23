@@ -34,8 +34,8 @@ $(function(){
       }).done(function(data) {
         var json = $.parseJSON(data);
         viewModel.preview(json.html);
-        sharedocs.articlify();
-        sharedocs.lightboxfy();
+        scuruto.articlify();
+        scuruto.lightboxfy();
       });
     };
   }

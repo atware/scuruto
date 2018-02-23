@@ -1,7 +1,7 @@
 @ECHO OFF
 
-SET SITE_NAME=Sharedocs:local
-SET SITE_TITLE=Sharedocs
+SET SITE_NAME=Scuruto:local
+SET SITE_TITLE=Scuruto
 
 SET DATABASE_HOST=********
 SET DATABASE_DBNAME=********

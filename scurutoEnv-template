@@ -1,10 +1,10 @@
 #!/bin/bash
 
-export SITE_NAME=Sharedocs:local
-export SITE_TITLE=Sharedocs
+export SITE_NAME=Scuruto:local
+export SITE_TITLE=Scuruto
 
 export DATABASE_HOST="localhost:5432"
-export DATABASE_DBNAME="sharedocs"
+export DATABASE_DBNAME="scuruto"
 export DATABASE_USER="********"
 export DATABASE_PASSWORD="********"
 

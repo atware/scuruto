@@ -7,7 +7,7 @@ provider "heroku" {
 }
 
 resource "heroku_app" "default" {
-  name = "sharedocs-test"
+  name = "scuruto-test"
   region = "us"
 }
 

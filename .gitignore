@@ -67,8 +67,8 @@ npm-debug.log
 
 .java-version
 
-sharedocsEnv
-sharedocsEnv.bat
+scurutoEnv
+scurutoEnv.bat
 
 terraform.tfvars
 *.tfstate

@@ -1,7 +1,7 @@
 {
   "buildpacks": [
     {
-      "url": "https://github.com/atware/heroku-buildpack-sharedocs"
+      "url": "https://github.com/atware/heroku-buildpack-scuruto"
     }
   ],
   "addons": [

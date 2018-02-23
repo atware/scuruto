@@ -3,7 +3,7 @@ require('bootstrap');
 require('google-code-prettify/src/prettify.js');
 require('expose-loader?Favico!favico/js/favico-0.3.5.min.js');
 require('expose-loader?emojify!emojify.js');
-require('expose-loader?sharedocs!../../assets/js/main.js');
+require('expose-loader?scuruto!../../assets/js/main.js');
 require('jquery-textcomplete');
 require('expose-loader?emoji!../../assets/js/emoji.js');
 require('expose-loader?store!store');

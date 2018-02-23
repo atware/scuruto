@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 cd $(dirname $0)
-source ./sharedocsEnv
+source ./scurutoEnv
 
 command="$1"
 if [ "$command" == "run" -o "$command" == "s" -o "$command" == "server" -o "$command" == "debug" -o "$command" == "d" ]; then

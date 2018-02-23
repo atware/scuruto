@@ -5,14 +5,14 @@ RUN apt-get install -y scala
 RUN apt-get install -y curl
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - && apt-get install -y nodejs
 RUN apt-get install -y  build-essential
-ADD . /opt/sharedocs/
+ADD . /opt/scuruto/
 
-RUN touch /opt/sharedocs/sharedocsEnv
+RUN touch /opt/scuruto/scurutoEnv
 
-RUN cd /opt/sharedocs && npm install
+RUN cd /opt/scuruto && npm install
 
-RUN mkdir -p /var/sharedocs/upload
-VOLUME /var/sharedocs/upload
+RUN mkdir -p /var/scuruto/upload
+VOLUME /var/scuruto/upload
 
 EXPOSE 8080
-CMD ["/opt/sharedocs/sharedocs", "run"]
+CMD ["/opt/scuruto/scuruto", "run"]

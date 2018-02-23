@@ -1,6 +1,6 @@
-<img src="https://github.com/atware/sharedocs/blob/master/src/main/webapp/assets/img/logowtnd.png?raw=true" alt="Sharedocs" height="100">
+<img src="https://github.com/atware/scuruto/blob/master/src/main/webapp/assets/img/logowtnd.png?raw=true" alt="Scuruto" height="100">
 
-# Sharedocs [![Build Status](https://travis-ci.org/atware/sharedocs.svg?branch=master)](https://travis-ci.org/atware/sharedocs)
+# Scuruto [![Build Status](https://travis-ci.org/atware/scuruto.svg?branch=master)](https://travis-ci.org/atware/scuruto)
 
 An internal knowledge sharing app.
 
@@ -24,37 +24,37 @@ or
 
 Setup PostgreSQL server on your machine and create database.
 
-    $ createuser -P sharedocs
-    $ createdb -E UTF8 -T template0 --lc-collate=ja_JP.UTF-8 --lc-ctype=ja_JP.UTF-8 sharedocs
+    $ createuser -P scuruto
+    $ createdb -E UTF8 -T template0 --lc-collate=ja_JP.UTF-8 --lc-ctype=ja_JP.UTF-8 scuruto
 
 ### Prepare Tables
 
 #### mac/*nix
 
-    ./sharedocs db:migrate
+    ./scuruto db:migrate
 
 #### Windows
 
-    ./sharedocs.bat db:migrate
+    ./scuruto.bat db:migrate
 
-### Set Environment Variables to sharedocsEnv script
+### Set Environment Variables to scurutoEnv script
 
 #### mac/*nix
 
-    cp sharedocsEnv-template sharedocsEnv
+    cp scurutoEnv-template scurutoEnv
 
 #### Windows
 
-    cp sharedocsEnv-template.bat sharedocsEnv.bat
+    cp scurutoEnv-template.bat scurutoEnv.bat
 
 ##### Environment Variables
 
 | ENV name (*required) | Description | Example |
 |:----|:----|:----|
-| SITE_NAME | site name for page header | "Sharedocs:CompanyName" |
-| SITE_TITLE | site title for `title` tag | "Sharedocs" |
+| SITE_NAME | site name for page header | "Scuruto:CompanyName" |
+| SITE_TITLE | site title for `title` tag | "Scuruto" |
 | DATABASE_HOST * | datebase host | "localhost:5432" |
-| DATABASE_DBNAME * | database name | "sharedocs" |
+| DATABASE_DBNAME * | database name | "scuruto" |
 | DATABASE_USER * | database user | "user" |
 | DATABASE_PASSWORD * | database password | "password" |
 | GOOGLE_ANALYTICS_KEY | Google analytics key | "abcdefg" |
@@ -76,7 +76,7 @@ Setup PostgreSQL server on your machine and create database.
 | LOCAL_UPLOAD_BASE_URL | (if UPLOAD_DESTINATION==local)<br />base url to access uploaded image file | "/static/uploads" |
 | AWS_ACCESS_KEY | (if UPLOAD_DESTINATION==s3)<br />AWS access key | "abcdefg" |
 | AWS_SECRET_KEY | (if UPLOAD_DESTINATION==s3)<br />AWS secret key | "abcdefgabcdefg" |
-| AWS_S3_BUCKET | (if UPLOAD_DESTINATION==s3)<br />S3 bucket name | "sharedocs-xx" |
+| AWS_S3_BUCKET | (if UPLOAD_DESTINATION==s3)<br />S3 bucket name | "scuruto-xx" |
 | AWS_S3_BASE_DIR | (if UPLOAD_DESTINATION==s3)<br />base pash to upload image file | "images/" |
 | AWS_S3_BASE_URL | (if UPLOAD_DESTINATION==s3)<br />base url to access uploaded image file | "https://xxxxxxxx.s3.amazonaws.com/" |
 
@@ -84,21 +84,21 @@ Setup PostgreSQL server on your machine and create database.
 
 #### mac/*nix
 
-    ./sharedocs run
+    ./scuruto run
 
 #### Windows
 
-    ./sharedocs.bat run
+    ./scuruto.bat run
 
 
 ## Additional setup for Development Environment
 
 Setup npm command on your machine and install npm packages.
 
-    cd /path/to/sharedocs/dir
+    cd /path/to/scuruto/dir
     npm install
 
-sharedocs uses webpack. You must execute the command when static resources are changed.
+scuruto uses webpack. You must execute the command when static resources are changed.
 
     npm run webpack
 
@@ -175,8 +175,8 @@ CORS Configuration example:
 </CORSConfiguration>
 ```
 
-### Customize SharedocsEnv on docker environment
-If you want customize SharedocsEnv, you can customize environment valiables in docker-compose.yml .
+### Customize ScurutoEnv on docker environment
+If you want customize ScurutoEnv, you can customize environment valiables in docker-compose.yml .
 
 #### Example
 * customize docker-compose.yml

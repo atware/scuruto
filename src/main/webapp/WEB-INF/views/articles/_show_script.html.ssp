@@ -3,7 +3,7 @@
 #set(script)
 <script>
 $(function(){
-sharedocs.lightboxfy();
+scuruto.lightboxfy();
 function ViewModel() {
   var self = this;
   this.stocks_count = ko.observable($('#stocks_count').text());
@@ -63,8 +63,8 @@ function ViewModel() {
     }).done(function(data){
       var json = $.parseJSON(data);
       viewModel.preview(json.html);
-      sharedocs.articlify();
-      sharedocs.lightboxfy();
+      scuruto.articlify();
+      scuruto.lightboxfy();
     });
   };
   self.showEditPreview = function(){
@@ -75,8 +75,8 @@ function ViewModel() {
     }).done(function(data){
       var json = $.parseJSON(data);
       viewModel.editPreview(json.html);
-      sharedocs.articlify();
-      sharedocs.lightboxfy();
+      scuruto.articlify();
+      scuruto.lightboxfy();
     });
   };
   self.startEditComment = function(commentId){
@@ -110,8 +110,8 @@ function ViewModel() {
       $editForm.hide();
       $updatedComment.show();
       $updatedComment.parent().find('.comment-content-raw').text(data.raw);
-      sharedocs.articlify();
-      sharedocs.lightboxfy();
+      scuruto.articlify();
+      scuruto.lightboxfy();
     });
   };
   self.deleteComment = function(commentId){

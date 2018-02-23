@@ -5,8 +5,8 @@
 # heroku config:set LOGIN_PERMITTED_EMAIL_DOMAINS=your-team.com
 #
 
-export SITE_NAME=Sharedocs:HEROKU
-export SITE_TITLE=Sharedocs
+export SITE_NAME=Scuruto:HEROKU
+export SITE_TITLE=Scuruto
 
 export LOGIN_PROVIDOR=app
 

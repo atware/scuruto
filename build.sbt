@@ -10,7 +10,7 @@ import scala.language.postfixOps
 // -------------------------------------------------------
 
 val appOrganization = "jp.co.atware"
-val appName = "sharedocs"
+val appName = "scuruto"
 val appVersion = "1.1.1-SNAPSHOT"
 
 val skinnyVersion = "2.5.2"

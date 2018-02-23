@@ -1,4 +1,4 @@
-var sharedocs = {
+var scuruto = {
   'link_target': function link_target(){
     $("a[href^='http']:not([href*='" + location.hostname + "'])").attr('target', '_blank');
   },
@@ -31,11 +31,11 @@ var sharedocs = {
     });
   },
   'articlify': function articlify(){
-    sharedocs.link_target();
-    sharedocs.sequence_diagram();
-    sharedocs.flowchart();
-    sharedocs.auto_prettify();
-    sharedocs.auto_emojify();
+    scuruto.link_target();
+    scuruto.sequence_diagram();
+    scuruto.flowchart();
+    scuruto.auto_prettify();
+    scuruto.auto_emojify();
   }
 };
-module.exports = sharedocs;
+module.exports = scuruto;

@@ -2,7 +2,7 @@
 #set(script)
 <script>
 var timer;
-var SAVE_LOCAL_KEY = 'sharedocs-article-new';
+var SAVE_LOCAL_KEY = 'scuruto-article-new';
 $(function(){
   var saveLocal = function() {
     var data = {
@@ -61,8 +61,8 @@ $(function(){
       }).done(function(data) {
         var json = $.parseJSON(data);
         viewModel.preview(json.html);
-        sharedocs.articlify();
-        sharedocs.lightboxfy();
+        scuruto.articlify();
+        scuruto.lightboxfy();
       });
     };
   }
