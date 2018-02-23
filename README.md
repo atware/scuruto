@@ -1,5 +1,3 @@
-<img src="https://github.com/atware/scuruto/blob/master/src/main/webapp/assets/img/logowtnd.png?raw=true" alt="Scuruto" height="100">
-
 # Scuruto [![Build Status](https://travis-ci.org/atware/scuruto.svg?branch=master)](https://travis-ci.org/atware/scuruto)
 
 An internal knowledge sharing app.
