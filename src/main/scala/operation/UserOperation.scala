@@ -5,7 +5,6 @@ import java.util.Locale
 import com.github.t3hnar.bcrypt._
 import lib.Sha1Digest
 import model.User
-import model.User._
 import model.typebinder.UserId
 import org.joda.time.DateTime
 import scalikejdbc.DBSession
@@ -17,29 +16,29 @@ import view_model._
  */
 sealed trait UserOperation extends OperationBase {
 
-  def get(email: String)(implicit s: DBSession = autoSession): Option[User]
-  def register(permittedAttributes: PermittedStrongParameters, locale: Locale)(implicit s: DBSession = autoSession): User
-  def updateToConfirmable(user: User, permittedAttributes: PermittedStrongParameters, locale: Locale)(implicit s: DBSession = autoSession): User
-  def getVerifyable(token: String)(implicit s: DBSession = autoSession): Option[User]
-  def activate(userId: UserId)(implicit s: DBSession = autoSession): User
+  def get(email: String)(implicit s: DBSession = User.autoSession): Option[User]
+  def register(permittedAttributes: PermittedStrongParameters, locale: Locale)(implicit s: DBSession = User.autoSession): User
+  def updateToConfirmable(user: User, permittedAttributes: PermittedStrongParameters, locale: Locale)(implicit s: DBSession = User.autoSession): User
+  def getVerifyable(token: String)(implicit s: DBSession = User.autoSession): Option[User]
+  def activate(userId: UserId)(implicit s: DBSession = User.autoSession): User
 
-  def updateToPasswordResettable(user: User)(implicit s: DBSession = autoSession): User
-  def getPasswordResettable(token: String)(implicit s: DBSession = autoSession): Option[User]
-  def resetPassword(user: User, password: String)(implicit s: DBSession = autoSession): User
+  def updateToPasswordResettable(user: User)(implicit s: DBSession = User.autoSession): User
+  def getPasswordResettable(token: String)(implicit s: DBSession = User.autoSession): Option[User]
+  def resetPassword(user: User, password: String)(implicit s: DBSession = User.autoSession): User
 
-  def getWithStats(userId: UserId)(implicit s: DBSession = autoSession): Option[UserWithStats]
+  def getWithStats(userId: UserId)(implicit s: DBSession = User.autoSession): Option[UserWithStats]
 
-  def update(id: UserId, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = autoSession): User
+  def update(id: UserId, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = User.autoSession): User
 
 }
 
 class UserOperationImpl extends UserOperation {
 
-  override def get(email: String)(implicit s: DBSession = autoSession): Option[User] = {
+  override def get(email: String)(implicit s: DBSession = User.autoSession): Option[User] = {
     User.findByEmail(email)
   }
 
-  override def register(permittedAttributes: PermittedStrongParameters, locale: Locale)(implicit s: DBSession = autoSession): User = {
+  override def register(permittedAttributes: PermittedStrongParameters, locale: Locale)(implicit s: DBSession = User.autoSession): User = {
     val u = User.column
     val email = getParameterAsString("email", permittedAttributes)
     val token: String = new Sha1Digest(email + "_" + DateTime.now().toString).digestString
@@ -56,7 +55,7 @@ class UserOperationImpl extends UserOperation {
     User.findById(id).get
   }
 
-  override def updateToConfirmable(user: User, permittedAttributes: PermittedStrongParameters, locale: Locale)(implicit s: DBSession = autoSession): User = {
+  override def updateToConfirmable(user: User, permittedAttributes: PermittedStrongParameters, locale: Locale)(implicit s: DBSession = User.autoSession): User = {
     val u = User.column
     val token: String = new Sha1Digest(user.email + "_" + DateTime.now().toString).digestString
     User.updateById(user.userId).withNamedValues(
@@ -69,7 +68,7 @@ class UserOperationImpl extends UserOperation {
     User.findById(user.userId).get
   }
 
-  override def getVerifyable(token: String)(implicit s: DBSession = autoSession): Option[User] = {
+  override def getVerifyable(token: String)(implicit s: DBSession = User.autoSession): Option[User] = {
     User.findByConfirmationToken(token).filter { user =>
       user.confirmationSentAt.exists { sentAt =>
         val expiredAt = sentAt.plusDays(1)
@@ -78,7 +77,7 @@ class UserOperationImpl extends UserOperation {
     }
   }
 
-  override def activate(userId: UserId)(implicit s: DBSession = autoSession): User = {
+  override def activate(userId: UserId)(implicit s: DBSession = User.autoSession): User = {
     val u = User.column
     User.updateById(userId).withNamedValues(
       u.confirmationToken -> null,
@@ -88,7 +87,7 @@ class UserOperationImpl extends UserOperation {
     User.findById(userId).get
   }
 
-  override def updateToPasswordResettable(user: User)(implicit s: DBSession = autoSession): User = {
+  override def updateToPasswordResettable(user: User)(implicit s: DBSession = User.autoSession): User = {
     val u = User.column
     val token: String = new Sha1Digest(user.email + "_" + DateTime.now().toString).digestString
     User.updateById(user.userId).withNamedValues(
@@ -98,7 +97,7 @@ class UserOperationImpl extends UserOperation {
     User.findById(user.userId).get
   }
 
-  override def getPasswordResettable(token: String)(implicit s: DBSession = autoSession): Option[User] = {
+  override def getPasswordResettable(token: String)(implicit s: DBSession = User.autoSession): Option[User] = {
     User.findByResetPasswordToken(token).filter { user =>
       user.resetPasswordSentAt.exists { sentAt =>
         val expiredAt = sentAt.plusDays(1)
@@ -115,7 +114,7 @@ class UserOperationImpl extends UserOperation {
     User.findById(user.userId).get
   }
 
-  override def getWithStats(userId: UserId)(implicit s: DBSession = autoSession): Option[UserWithStats] = {
+  override def getWithStats(userId: UserId)(implicit s: DBSession = User.autoSession): Option[UserWithStats] = {
     User.findById(userId).map { user =>
       val contribution = User.calcContribution(user.userId)
       val reactions = User.calcReactions(user.userId)
@@ -123,7 +122,7 @@ class UserOperationImpl extends UserOperation {
     } orElse None
   }
 
-  override def update(id: UserId, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = autoSession): User = {
+  override def update(id: UserId, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = User.autoSession): User = {
     User.updateById(id).withPermittedAttributes(permittedAttributes)
     User.findById(id).get
   }

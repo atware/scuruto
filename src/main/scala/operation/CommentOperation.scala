@@ -1,7 +1,6 @@
 package operation
 
 import lib.NotificationType
-import model.User._
 import model._
 import model.typebinder.{ ArticleId, CommentId }
 import org.joda.time.DateTime
@@ -13,26 +12,26 @@ import skinny.PermittedStrongParameters
  */
 sealed trait CommentOperation extends OperationBase {
 
-  def getAll(articleId: ArticleId)(implicit s: DBSession = autoSession): Seq[Comment]
+  def getAll(articleId: ArticleId)(implicit s: DBSession = Comment.autoSession): Seq[Comment]
 
-  def get(commentId: CommentId)(implicit s: DBSession = autoSession): Option[Comment]
-  def create(article: Article, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = autoSession): Comment
-  def update(origin: Comment, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = autoSession): Comment
-  def delete(user: User, commentId: CommentId)(implicit s: DBSession = autoSession): Long //returns comments_count
+  def get(commentId: CommentId)(implicit s: DBSession = Comment.autoSession): Option[Comment]
+  def create(article: Article, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = Comment.autoSession): Comment
+  def update(origin: Comment, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = Comment.autoSession): Comment
+  def delete(user: User, commentId: CommentId)(implicit s: DBSession = Comment.autoSession): Long //returns comments_count
 
 }
 
 class CommentOperationImpl extends CommentOperation {
 
-  override def getAll(articleId: ArticleId)(implicit s: DBSession = autoSession): Seq[Comment] = {
+  override def getAll(articleId: ArticleId)(implicit s: DBSession = Comment.autoSession): Seq[Comment] = {
     Comment.findAllByArticleId(articleId)
   }
 
-  override def get(commentId: CommentId)(implicit s: DBSession = autoSession): Option[Comment] = {
+  override def get(commentId: CommentId)(implicit s: DBSession = Comment.autoSession): Option[Comment] = {
     Comment.findById(commentId)
   }
 
-  override def create(article: Article, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = autoSession): Comment = {
+  override def create(article: Article, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = Comment.autoSession): Comment = {
     // commnet
     val commentId = Comment.createWithPermittedAttributes(permittedAttributes)
 
@@ -77,7 +76,7 @@ class CommentOperationImpl extends CommentOperation {
     Comment.findById(commentId).get
   }
 
-  override def update(origin: Comment, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = autoSession): Comment = {
+  override def update(origin: Comment, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = Comment.autoSession): Comment = {
     val commentId = origin.commentId
 
     Comment.updateById(commentId).withPermittedAttributes(permittedAttributes)
@@ -92,7 +91,7 @@ class CommentOperationImpl extends CommentOperation {
     get(commentId).get
   }
 
-  override def delete(user: User, commentId: CommentId)(implicit s: DBSession = autoSession): Long = {
+  override def delete(user: User, commentId: CommentId)(implicit s: DBSession = Comment.autoSession): Long = {
     Comment.findById(commentId).map { comment =>
       val deletedCount = Comment.delete(user.userId, commentId)
 

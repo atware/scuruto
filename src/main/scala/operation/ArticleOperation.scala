@@ -1,6 +1,5 @@
 package operation
 
-import model.User._
 import model._
 import model.typebinder.ArticleId
 import org.joda.time.DateTime
@@ -16,36 +15,36 @@ sealed trait ArticleOperation extends OperationBase {
   val POPULARS_MAX: Int = 5
   val RANKING_MAX: Int = 10
 
-  def get(id: ArticleId)(implicit s: DBSession = autoSession): Option[Article]
-  def getPage(maxId: ArticleId = ArticleId(Long.MaxValue), pageSize: Int = PAGE_SIZE)(implicit s: DBSession = autoSession): Seq[Article]
-  def getWithTag(id: ArticleId)(implicit s: DBSession = autoSession): Option[Article]
-  def getReaction(article: Article, user: User)(implicit s: DBSession = autoSession): ArticleReaction
-  def getIndexSidebar(user: User)(implicit s: DBSession = autoSession): IndexSidebar
-  def getArticleSidebar(article: Article)(implicit s: DBSession = autoSession): ArticleSidebar
+  def get(id: ArticleId)(implicit s: DBSession = Article.autoSession): Option[Article]
+  def getPage(maxId: ArticleId = ArticleId(Long.MaxValue), pageSize: Int = PAGE_SIZE)(implicit s: DBSession = Article.autoSession): Seq[Article]
+  def getWithTag(id: ArticleId)(implicit s: DBSession = Article.autoSession): Option[Article]
+  def getReaction(article: Article, user: User)(implicit s: DBSession = Article.autoSession): ArticleReaction
+  def getIndexSidebar(user: User)(implicit s: DBSession = Article.autoSession): IndexSidebar
+  def getArticleSidebar(article: Article)(implicit s: DBSession = Article.autoSession): ArticleSidebar
 
-  def getPageByTag(tag: Tag, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = autoSession): Pagination[Article]
-  def getPageByUser(user: User, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = autoSession): Pagination[Article]
-  def getPageByUserStocked(user: User, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = autoSession): Pagination[Article]
+  def getPageByTag(tag: Tag, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = Article.autoSession): Pagination[Article]
+  def getPageByUser(user: User, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = Article.autoSession): Pagination[Article]
+  def getPageByUserStocked(user: User, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = Article.autoSession): Pagination[Article]
 
-  def create(permittedAttributes: PermittedStrongParameters, tagNames: Seq[String])(implicit s: DBSession = autoSession): Article
-  def update(origin: Article, permittedAttributes: PermittedStrongParameters, tagNames: Seq[String])(implicit s: DBSession = autoSession): Article
+  def create(permittedAttributes: PermittedStrongParameters, tagNames: Seq[String])(implicit s: DBSession = Article.autoSession): Article
+  def update(origin: Article, permittedAttributes: PermittedStrongParameters, tagNames: Seq[String])(implicit s: DBSession = Article.autoSession): Article
 }
 
 class ArticleOperationImpl extends ArticleOperation {
 
-  override def get(id: ArticleId)(implicit s: DBSession = autoSession): Option[Article] = {
+  override def get(id: ArticleId)(implicit s: DBSession = Article.autoSession): Option[Article] = {
     Article.findById(id)
   }
 
-  override def getPage(maxId: ArticleId = ArticleId(Long.MaxValue), pageSize: Int = PAGE_SIZE)(implicit s: DBSession = autoSession): Seq[Article] = {
+  override def getPage(maxId: ArticleId = ArticleId(Long.MaxValue), pageSize: Int = PAGE_SIZE)(implicit s: DBSession = Article.autoSession): Seq[Article] = {
     Article.findPageOrderByDesc(maxId, pageSize)
   }
 
-  override def getWithTag(id: ArticleId)(implicit s: DBSession = autoSession): Option[Article] = {
+  override def getWithTag(id: ArticleId)(implicit s: DBSession = Article.autoSession): Option[Article] = {
     Article.joins(Article.tagsRef).findById(id.value)
   }
 
-  override def getReaction(article: Article, user: User)(implicit s: DBSession = autoSession): ArticleReaction = {
+  override def getReaction(article: Article, user: User)(implicit s: DBSession = Article.autoSession): ArticleReaction = {
     ArticleReaction(
       !Stock.exists(user.userId, article.articleId),
       !Like.exists(user.userId, article.articleId),
@@ -53,7 +52,7 @@ class ArticleOperationImpl extends ArticleOperation {
     )
   }
 
-  override def getIndexSidebar(user: User)(implicit s: DBSession = autoSession): IndexSidebar = {
+  override def getIndexSidebar(user: User)(implicit s: DBSession = Article.autoSession): IndexSidebar = {
     IndexSidebar(
       User.calcContribution(user.userId),
       Article.findPopulars(POPULARS_MAX),
@@ -61,13 +60,13 @@ class ArticleOperationImpl extends ArticleOperation {
     )
   }
 
-  override def getArticleSidebar(article: Article)(implicit s: DBSession = autoSession): ArticleSidebar = {
+  override def getArticleSidebar(article: Article)(implicit s: DBSession = Article.autoSession): ArticleSidebar = {
     ArticleSidebar(
       User.calcContribution(article.author.get.userId)
     )
   }
 
-  override def getPageByTag(tag: Tag, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = autoSession): Pagination[Article] = {
+  override def getPageByTag(tag: Tag, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = Article.autoSession): Pagination[Article] = {
     val totalCount = ArticlesTags.countByTagId(tag.tagId)
     val totalPages = (totalCount / pageSize).toInt + (if (totalCount % pageSize == 0) 0 else 1)
     val articleIds = ArticlesTags.findAllByTagWithPaginationOrderByDesc(tag.tagId, pageNo, pageSize).map { _.articleId }
@@ -75,14 +74,14 @@ class ArticleOperationImpl extends ArticleOperation {
     Pagination(pageNo, totalPages, totalCount, articles)
   }
 
-  override def getPageByUser(user: User, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = autoSession): Pagination[Article] = {
+  override def getPageByUser(user: User, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = Article.autoSession): Pagination[Article] = {
     val totalCount = Article.countByUserId(user.userId)
     val totalPages = (totalCount / pageSize).toInt + (if (totalCount % pageSize == 0) 0 else 1)
     val articles = Article.findAllByUserIdWithPagination(user.userId, pageNo, pageSize)
     Pagination(pageNo, totalPages, totalCount, articles)
   }
 
-  override def getPageByUserStocked(user: User, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = autoSession): Pagination[Article] = {
+  override def getPageByUserStocked(user: User, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = Article.autoSession): Pagination[Article] = {
     val totalCount = Stock.countByUserId(user.userId)
     val totalPages = (totalCount / pageSize).toInt + (if (totalCount % pageSize == 0) 0 else 1)
     val articleIds = Stock.findAllByUserIdWithPaginationOrderByDesc(user.userId, pageNo, pageSize).map { _.articleId }
@@ -90,7 +89,7 @@ class ArticleOperationImpl extends ArticleOperation {
     Pagination(pageNo, totalPages, totalCount, articles)
   }
 
-  override def create(permittedAttributes: PermittedStrongParameters, tagNames: Seq[String])(implicit s: DBSession = autoSession): Article = {
+  override def create(permittedAttributes: PermittedStrongParameters, tagNames: Seq[String])(implicit s: DBSession = Article.autoSession): Article = {
     // article
     val id = {
       Article.createWithPermittedAttributes(permittedAttributes)
@@ -111,7 +110,7 @@ class ArticleOperationImpl extends ArticleOperation {
     getWithTag(id).get
   }
 
-  override def update(origin: Article, permittedAttributes: PermittedStrongParameters, tagNames: Seq[String])(implicit s: DBSession = autoSession): Article = {
+  override def update(origin: Article, permittedAttributes: PermittedStrongParameters, tagNames: Seq[String])(implicit s: DBSession = Article.autoSession): Article = {
     val id: ArticleId = origin.articleId
 
     // article

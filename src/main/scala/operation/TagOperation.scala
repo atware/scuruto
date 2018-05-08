@@ -1,6 +1,5 @@
 package operation
 
-import model.User._
 import model._
 import scalikejdbc.DBSession
 
@@ -9,13 +8,13 @@ import scalikejdbc.DBSession
  */
 sealed trait TagOperation extends OperationBase {
 
-  def get(name: String)(implicit s: DBSession = autoSession): Option[Tag]
+  def get(name: String)(implicit s: DBSession = Tag.autoSession): Option[Tag]
 
 }
 
 class TagOperationImpl extends TagOperation {
 
-  override def get(name: String)(implicit s: DBSession = autoSession): Option[Tag] = {
+  override def get(name: String)(implicit s: DBSession = Tag.autoSession): Option[Tag] = {
     Tag.findByName(name)
   }
 

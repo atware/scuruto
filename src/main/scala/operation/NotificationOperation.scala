@@ -1,6 +1,5 @@
 package operation
 
-import model.User._
 import model.{ Article, Notification, User }
 import scalikejdbc.DBSession
 import view_model._
@@ -11,14 +10,14 @@ import view_model._
 sealed trait NotificationOperation extends OperationBase {
   val NOTICE_LIMIT: Int = 15
 
-  def getNotifications(user: User)(implicit s: DBSession = autoSession): NotificationArea
-  def updateStateAsRead(user: User)(implicit s: DBSession = autoSession): Unit
+  def getNotifications(user: User)(implicit s: DBSession = Notification.autoSession): NotificationArea
+  def updateStateAsRead(user: User)(implicit s: DBSession = Notification.autoSession): Unit
 
 }
 
 class NotificationOperationImpl extends NotificationOperation {
 
-  override def getNotifications(user: User)(implicit s: DBSession = autoSession): NotificationArea = {
+  override def getNotifications(user: User)(implicit s: DBSession = Notification.autoSession): NotificationArea = {
     val notifications = Notification.findRecentsByUserId(user.userId, NOTICE_LIMIT)
     val count = notifications.count(!_.state)
     val notices = notifications.map { notification =>

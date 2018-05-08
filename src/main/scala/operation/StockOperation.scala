@@ -1,7 +1,6 @@
 package operation
 
 import lib.NotificationType
-import model.User._
 import model._
 import model.typebinder.{ ArticleId, UserId }
 import org.joda.time.DateTime
@@ -13,23 +12,23 @@ import skinny.PermittedStrongParameters
  */
 sealed trait StockOperation extends OperationBase {
 
-  def exists(permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = autoSession): Boolean
-  def stock(article: Article, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = autoSession): Long //returns stocks_count
-  def unstock(user: User, articleId: ArticleId)(implicit s: DBSession = autoSession): Long //returns stocks_count
+  def exists(permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = Stock.autoSession): Boolean
+  def stock(article: Article, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = Stock.autoSession): Long //returns stocks_count
+  def unstock(user: User, articleId: ArticleId)(implicit s: DBSession = Stock.autoSession): Long //returns stocks_count
 
-  def getStockers(articleId: ArticleId)(implicit s: DBSession = autoSession): Seq[User]
+  def getStockers(articleId: ArticleId)(implicit s: DBSession = Stock.autoSession): Seq[User]
 
 }
 
 class StockOperationImpl extends StockOperation {
 
-  override def exists(permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = autoSession): Boolean = {
+  override def exists(permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = Stock.autoSession): Boolean = {
     val userId = UserId(getParameterAsLong("user_id", permittedAttributes))
     val articleId = ArticleId(getParameterAsLong("article_id", permittedAttributes))
     Stock.exists(userId, articleId)
   }
 
-  override def stock(article: Article, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = autoSession): Long = {
+  override def stock(article: Article, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = Stock.autoSession): Long = {
     val userId = UserId(getParameterAsLong("user_id", permittedAttributes))
 
     // stock
@@ -56,7 +55,7 @@ class StockOperationImpl extends StockOperation {
     counter
   }
 
-  override def unstock(user: User, articleId: ArticleId)(implicit s: DBSession = autoSession): Long = {
+  override def unstock(user: User, articleId: ArticleId)(implicit s: DBSession = Stock.autoSession): Long = {
     Stock.delete(user.userId, articleId)
     // counter
     val counter = Stock.countByArticleId(articleId)
@@ -64,7 +63,7 @@ class StockOperationImpl extends StockOperation {
     counter
   }
 
-  override def getStockers(articleId: ArticleId)(implicit s: DBSession = autoSession): Seq[User] = {
+  override def getStockers(articleId: ArticleId)(implicit s: DBSession = Stock.autoSession): Seq[User] = {
     Stock.findByArticleIdOrderByStockIdDesc(articleId).flatMap(_.user)
   }
 

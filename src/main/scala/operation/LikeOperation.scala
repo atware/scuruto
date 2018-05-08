@@ -1,7 +1,6 @@
 package operation
 
 import lib.NotificationType
-import model.User._
 import model.typebinder.{ ArticleId, UserId }
 import model.{ Article, Like, Notification, User }
 import org.joda.time.DateTime
@@ -13,21 +12,21 @@ import skinny.PermittedStrongParameters
  */
 sealed trait LikeOperation extends OperationBase {
 
-  def exists(permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = autoSession): Boolean
-  def like(article: Article, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = autoSession): Long //returns likes_count
-  def unlike(user: User, articleId: ArticleId)(implicit s: DBSession = autoSession): Long //returns likes_count
+  def exists(permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = Like.autoSession): Boolean
+  def like(article: Article, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = Like.autoSession): Long //returns likes_count
+  def unlike(user: User, articleId: ArticleId)(implicit s: DBSession = Like.autoSession): Long //returns likes_count
 
 }
 
 class LikeOperationImpl extends LikeOperation {
 
-  override def exists(permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = autoSession): Boolean = {
+  override def exists(permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = Like.autoSession): Boolean = {
     val userId = UserId(getParameterAsLong("user_id", permittedAttributes))
     val articleId = ArticleId(getParameterAsLong("article_id", permittedAttributes))
     Like.exists(userId, articleId)
   }
 
-  override def like(article: Article, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = autoSession): Long = {
+  override def like(article: Article, permittedAttributes: PermittedStrongParameters)(implicit s: DBSession = Like.autoSession): Long = {
     val userId = UserId(getParameterAsLong("user_id", permittedAttributes))
 
     // like
@@ -54,7 +53,7 @@ class LikeOperationImpl extends LikeOperation {
     counter
   }
 
-  override def unlike(user: User, articleId: ArticleId)(implicit s: DBSession = autoSession): Long = {
+  override def unlike(user: User, articleId: ArticleId)(implicit s: DBSession = Like.autoSession): Long = {
     Like.delete(user.userId, articleId)
     // counter
     val counter = Like.countByArticleId(articleId)

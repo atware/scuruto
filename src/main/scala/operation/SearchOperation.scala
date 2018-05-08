@@ -1,6 +1,5 @@
 package operation
 
-import model.User._
 import model.{ Article, Tag }
 import scalikejdbc.DBSession
 import view_model._
@@ -11,13 +10,13 @@ import view_model._
 sealed trait SearchOperation {
   val PAGE_SIZE: Int = 20
 
-  def search(q: String, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = autoSession): SearchResult
+  def search(q: String, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = Tag.autoSession): SearchResult
 
 }
 
 class SearchOperationImpl extends SearchOperation {
 
-  override def search(q: String, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession): SearchResult = {
+  override def search(q: String, pageNo: Int, pageSize: Int = PAGE_SIZE)(implicit s: DBSession = Tag.autoSession): SearchResult = {
     SearchResult(
       q,
       Tag.findByName(q),

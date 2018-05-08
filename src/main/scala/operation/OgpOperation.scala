@@ -2,7 +2,6 @@ package operation
 
 import lib.{ Markdown, Util }
 import model.Article
-import model.User._
 import model.typebinder.ArticleId
 import scalikejdbc.DBSession
 import skinny.SkinnyConfig
@@ -15,7 +14,7 @@ import view_model._
 sealed trait OgpOperation extends OperationBase {
   val ENVVAR_OGP_ALLOW_UA_PREFIX = "OGP_ALLOW_UA_PREFIX"
 
-  def buildOgp(id: ArticleId)(implicit ctx: SkinnyContext, s: DBSession = autoSession): Option[Ogp]
+  def buildOgp(id: ArticleId)(implicit ctx: SkinnyContext, s: DBSession = Article.autoSession): Option[Ogp]
 
 }
 
@@ -27,7 +26,7 @@ class OgpOperationImpl extends OgpOperation {
     } getOrElse Seq()
   }
 
-  override def buildOgp(id: ArticleId)(implicit ctx: SkinnyContext, s: DBSession = autoSession): Option[Ogp] = {
+  override def buildOgp(id: ArticleId)(implicit ctx: SkinnyContext, s: DBSession = Article.autoSession): Option[Ogp] = {
     val ua = ctx.request.getHeader("User-Agent")
     if (allowUAPrefixes.exists(prefix => ua != null && ua.startsWith(prefix))) {
       Article.findById(id).map { article =>
