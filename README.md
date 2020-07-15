@@ -185,6 +185,6 @@ app:
     LOGIN_PERMITTED_EMAIL_DOMAINS: "yourcompany.co.jp"
 ```
 
-## Lisence
+## License
 
 MIT License
